@@ -1,0 +1,44 @@
+/* Right Content Styling */
+
+/* Dark Mode */
+.contentdark {
+  background-color: #1c1c1c; /* Neumorphic dark base */
+  color: #e0e0e0; /* Softer light text */
+  transition: background-color 0.5s ease-in-out, color 0.5s ease-in-out,
+    width 0.5s ease-in-out;
+}
+
+/* Light Mode */
+
+.content {
+  background-color: #f0f3f8; /* Soft blue-gray background */
+  color: #4f4f4f; /* Medium gray text */
+  transition: background-color 0.5s ease-in-out, color 0.5s ease-in-out,
+    width 0.5s ease-in-out;
+}
+
+/* Dark Mode */
+
+.menudark {
+  background-color: #2c2c2c; /* Slightly lighter than main dark bg */
+  color: #cccccc; /* Subtle light gray text */
+  transition: background-color 0.5s ease-in-out, color 0.5s ease-in-out,
+    width 0.5s ease-in-out;
+}
+
+/* Light Mode */
+.menu {
+  background-color: #e8ecf0; /* White base similar to button areas */
+  color: #222222; /* Medium gray text */
+  transition: background-color 0.5s ease-in-out, color 0.5s ease-in-out,
+    width 0.5s ease-in-out;
+}
+
+.contentdarkColor {
+  background-color: #121212; /* Deep dark gray background */
+  color: #f5f5f5; /* Softer light text for contrast */
+}
+.contentColor {
+  background-color: #ffffff; /* Light background */
+  color: #2c3e50; /* Light text color */
+}
