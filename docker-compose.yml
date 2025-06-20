@@ -1,0 +1,12 @@
+services:
+  clikit-app:
+    image: tyga101/one:tagname # <--- Add your Docker Hub repo + tag here
+    container_name: clikit-app
+    build:
+      context: .
+      dockerfile: Dockerfile
+    ports:
+      - "8080:8080"
+    env_file:
+      - ./.env # Client .env in root
+      - ./server/.env # Server .env in server folder
