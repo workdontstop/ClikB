@@ -1,5 +1,8 @@
 # Software Architecture
 
+![Screenshot of feature](./c8a9b7ed-0ca1-4a1d-a05f-3c294aa30990.jpeg)
+
+
 
 # React + TypeScript + Vite
 
