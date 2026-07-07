@@ -1,4 +1,4 @@
-import React from "react";
+﻿import React from "react";
 import {
     Box,
     Container,
@@ -50,7 +50,7 @@ const PrivacyPolicy = () => {
                             </Typography>
                             , operated by{" "}
                             <Typography component="span" color="success.main">
-                                ClikBase (Startup)
+                                ClikIT (Startup)
                             </Typography>
                             , we value your privacy and are committed to protecting your personal data.
                             This Privacy Policy outlines how we collect, use, and safeguard your information
@@ -58,7 +58,8 @@ const PrivacyPolicy = () => {
                             <Typography component="span" color="primary.main">
                                 www.clikb.com
                             </Typography>
-                            (the “App”) and related services. By accessing or using the App,
+                            {' '}
+                            (The â€œAPPâ€) and related services. By accessing or using the App,
                             you agree to the terms of this Privacy Policy.
                         </Typography>
                     </Paper>
@@ -165,6 +166,18 @@ const PrivacyPolicy = () => {
                                     secondary={
                                         <Typography component="span" color="error.main">
                                             clikbateskywalker@gmail.com
+
+                                        </Typography>
+                                    }
+                                    primaryTypographyProps={{ color: "text.primary" }}
+                                    secondaryTypographyProps={{ color: "text.secondary" }}
+                                />
+                                <ListItemText
+                                    primary="Contact:"
+                                    secondary={
+                                        <Typography component="span" color="error.main">
+
+                                            +44 7879213093
                                         </Typography>
                                     }
                                     primaryTypographyProps={{ color: "text.primary" }}
@@ -176,7 +189,7 @@ const PrivacyPolicy = () => {
                                     primary="Parent Company:"
                                     secondary={
                                         <Typography component="span" color="success.main">
-                                            ClikBase (Startup)
+                                            ClikIT
                                         </Typography>
                                     }
                                     primaryTypographyProps={{ color: "text.primary" }}

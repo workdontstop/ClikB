@@ -1,0 +1,206 @@
+﻿[RAG userSnapshotKnowledge] clikb_storybook_bshots_publish_pipeline Object {
+  topic: "Storybook scene workshop, B-shots, videos, and publish pipeline",
+  metadata: {
+    docId: "clikb_storybook_bshots_publish_pipeline",
+    sourceType: "clikb-base-rag",
+    sourceName: "05_storybook_bshots_publish_pipeline.rag.txt",
+    version: 1,
+    vectorIdPrefix: "clikb_storybook_bshots_publish_pipeline::chunk",
+    chunkIdPattern: "clikb_storybook_bshots_publish_pipeline::chunk-0001",
+    deleteFilter: {
+      docId: "clikb_storybook_bshots_publish_pipeline"
+    },
+    searchKeys: ["clikb_storybook_bshots_publish_pipeline", "05_storybook_bshots_publish_pipeline.rag.txt", "Storybook scene workshop, B-shots, videos, and publish pipeline"]
+  },
+  routeMatches: ["/images", "/kickit", "/clikit"],
+  pageNames: ["Storybook", "Shorts", "Stories", "Cinema", "Games", "EditStory"],
+  featureNames: ["Storybook", "scene grid", "B-shots", "A-shots", "Stage A", "Stage B", "Nano images", "Publish", "Continue", "Next", "Debut", "PublishLoader", "PublishLoader2", "EditStory", "bShotNanoImages", "unifiedIndexMap", "B-shot editing", "onInstantBShotSave", "PostStory", "UpdatePostBShotTruth", "UpdatePostAIImage", "UpdatePostAIVideo", "Receive plan and scenes", "B-shot workflow", "Edit a scene", "Publish media", "Scene card", "B-shot card", "Continue / Next / Debut"],
+  sourceFiles: ["src/Storybook.tsx", "src/EditStory.tsx", "src/PromptInput.tsx", "server/src/server.ts"],
+  understanding: "Storybook is the main workshop after PromptInput planning. It receives planned steps, generated prompts, image/video state, Nano image state, reference images, detected characters, B-shot state, audio/narration/music state, and publishing state. It displays each scene card and lets the user open EditStory for a scene. In Stories/Cinema, scenes can be doubled into Stage A and Stage B, then B-shots can be attached to scenes. B-shots have their own prompts, images, videos, TextVideo prompts, and Nano images. Storybook can interleave B-shots with A-shots and keeps unified index maps so EditStory can edit A-shot and B-shot items safely. Continue/Next/Debut/Publish controls guide the user through images, video mode, narration/music, saving, publishing, and final processing. Publish opens loader flow and can process final media with backend/cloud video processing.",
+  pipelineStages: [
+    {
+      id: "receive_plan",
+      name: "Receive plan and scenes",
+      routeMatches: [
+        "/images",
+        "/kickit",
+        "/clikit"
+      ],
+      pageNames: [
+        "Storybook"
+      ],
+      controlIds: [
+        "scene_card"
+      ],
+      userGoal: "Review generated scenes after planning.",
+      systemResult: "Storybook displays steps, generated prompts, scene images/videos, Nano previews, and loader states."
+    },
+    {
+      id: "bshot_workflow",
+      name: "B-shot workflow",
+      routeMatches: [
+        "/kickit",
+        "/images"
+      ],
+      pageNames: [
+        "Storybook"
+      ],
+      controlIds: [
+        "bshot_scene_card"
+      ],
+      userGoal: "Add supporting shots around the main story beats.",
+      systemResult: "Storybook manages bShotPrompts, bShotImages, bShotVideos, bShotTextVideo, and bShotNanoImages."
+    },
+    {
+      id: "edit_scene",
+      name: "Edit a scene",
+      routeMatches: [
+        "/images",
+        "/kickit",
+        "/clikit"
+      ],
+      pageNames: [
+        "Storybook",
+        "EditStory"
+      ],
+      controlIds: [
+        "scene_card",
+        "enter_edit_story"
+      ],
+      userGoal: "Modify a scene before final publishing.",
+      systemResult: "Storybook opens EditStory with unified A-shot/B-shot props and reference data."
+    },
+    {
+      id: "publish_media",
+      name: "Publish media",
+      routeMatches: [
+        "/images",
+        "/kickit",
+        "/clikit"
+      ],
+      pageNames: [
+        "Storybook"
+      ],
+      controlIds: [
+        "publish",
+        "continue_next"
+      ],
+      userGoal: "Save/process final output.",
+      systemResult: "Storybook uploads/saves media and opens publish loader/render flow."
+    }
+  ],
+  uiControls: [
+    {
+      id: "scene_card",
+      visibleLabel: "Scene card",
+      controlType: "media card",
+      routeMatches: [
+        "/images",
+        "/kickit",
+        "/clikit"
+      ],
+      pageNames: [
+        "Storybook"
+      ],
+      sourceFile: "src/Storybook.tsx",
+      userIntent: "Inspect a generated scene.",
+      systemAction: "Displays generated media, prompts, Nano fallback, and loader state.",
+      resultingState: "Clicking an editable scene can open EditStory."
+    },
+    {
+      id: "bshot_scene_card",
+      visibleLabel: "B-shot card",
+      controlType: "media card",
+      routeMatches: [
+        "/kickit",
+        "/images"
+      ],
+      pageNames: [
+        "Storybook"
+      ],
+      sourceFile: "src/Storybook.tsx",
+      userIntent: "Inspect or edit a supporting B-shot.",
+      systemAction: "Displays bShotImages, bShotVideos, or bShotNanoImages and maps to parent scene context.",
+      resultingState: "B-shot can be edited/saved as part of the story."
+    },
+    {
+      id: "continue_next",
+      visibleLabel: "Continue / Next / Debut",
+      controlType: "button",
+      routeMatches: [
+        "/images",
+        "/kickit",
+        "/clikit"
+      ],
+      pageNames: [
+        "Storybook"
+      ],
+      sourceFile: "src/Storybook.tsx",
+      userIntent: "Move to the next production stage.",
+      systemAction: "Runs image upload/save/video mode/narration/music continuation logic depending on state.",
+      resultingState: "Creation advances toward video/publish."
+    },
+    {
+      id: "publish",
+      visibleLabel: "Publish",
+      controlType: "button",
+      routeMatches: [
+        "/images",
+        "/kickit",
+        "/clikit"
+      ],
+      pageNames: [
+        "Storybook"
+      ],
+      sourceFile: "src/Storybook.tsx",
+      userIntent: "Finalize or prepare output for sharing.",
+      systemAction: "Opens PublishLoader2 and publish/render flow.",
+      resultingState: "Final processing can produce published media/feed output."
+    }
+  ],
+  snapshotExample: {
+    sourceLog: "[Brainstorm userSnapshot] typed request",
+    route: "/kickit",
+    pageName: "Stories",
+    lastAction: {
+      type: "button",
+      label: "Publish",
+      tagName: "button",
+      route: "/kickit"
+    }
+  },
+  sourceEvidence: [
+    {
+      sourceFile: "src/Storybook.tsx",
+      featureNames: [
+        "PublishLoader",
+        "PublishLoader2",
+        "EditStory",
+        "bShotNanoImages",
+        "unifiedIndexMap"
+      ],
+      notes: "Main scene/publish workshop and B-shot state manager."
+    },
+    {
+      sourceFile: "src/EditStory.tsx",
+      featureNames: [
+        "B-shot editing",
+        "onInstantBShotSave"
+      ],
+      notes: "Receives unified props from Storybook for per-scene editing."
+    },
+    {
+      sourceFile: "server/src/server.ts",
+      featureNames: [
+        "PostStory",
+        "UpdatePostBShotTruth",
+        "UpdatePostAIImage",
+        "UpdatePostAIVideo"
+      ],
+      notes: "Backend routes for saving media and B-shot truth."
+    }
+  ],
+  extra: {
+    assistantUse: "Use this chunk when the user is in Storybook, editing scenes/B-shots, asking what Continue/Next/Publish does, or asking about final video processing."
+  },
+}

@@ -1,0 +1,246 @@
+﻿[RAG userSnapshotKnowledge] clikb_profile_my_page_follow_system Object {
+  topic: "Profile/My Page and follow system",
+  metadata: {
+    docId: "clikb_profile_my_page_follow_system",
+    sourceType: "clikb-base-rag",
+    sourceName: "09_profile_my_page_follow_system.rag.txt",
+    version: 1,
+    vectorIdPrefix: "clikb_profile_my_page_follow_system::chunk",
+    chunkIdPattern: "clikb_profile_my_page_follow_system::chunk-0001",
+    deleteFilter: {
+      docId: "clikb_profile_my_page_follow_system"
+    },
+    searchKeys: ["clikb_profile_my_page_follow_system", "09_profile_my_page_follow_system.rag.txt", "Profile/My Page and follow system"]
+  },
+  routeMatches: ["/pages", "/feeds"],
+  pageNames: ["Profile", "My Page", "Feeds"],
+  featureNames: ["ProfileInfo", "Mypage", "My Page", "Login", "profile image", "banner", "Posts", "Ranking Hero", "Followers", "Following", "StartFollowButton", "FollowPanel", "Mypage route", "getSnapshotPageName", "My Page menu label", "Login fallback", "profile banner", "username", "Ranking", "Hero", "FollowButton", "FollowersButton", "/getProfile", "/getProfileMore", "/profileInfo", "/UpdateProfilePic", "/UpdateBillboardPic", "/fanList", "/fanpeople", "/fanStatus", "/likesx", "Open My Page/Profile", "Profile identity display", "Follow/follower context", "Profile image", "Banner"],
+  sourceFiles: ["src/App.tsx", "src/MenuSlider.tsx", "src/BottomMenu.tsx", "src/Mypage.tsx", "src/ProfileInfo.tsx", "src/FollowPanel.tsx", "src/FollowButton.tsx", "src/FollowersButton.tsx", "src/FollowStartButton.tsx", "server/src/server.ts"],
+  understanding: "The Profile/My Page section is the user social identity area. App routes /pages into Mypage and userSnapshot names /pages as Profile. Users reach it through MenuSlider My Page or BottomMenu My Page. If the user is a guest/login state, the menu may show Login instead of My Page. ProfileInfo displays banner/billboard image, profile image, username, Posts, Ranking/Hero labels, and FollowPanel controls. Profile images and banners can be clicked and edited through crop/update flows. FollowPanel chooses what to show based on whether there is a profile id, whether the viewer is looking at themselves, whether the viewer is connected, and whether it should show Following, Followers, or StartFollowButton. Backend registers profile and social routes such as /getProfile, /getProfileMore, /profileInfo, /UpdateProfilePic, /UpdateBillboardPic, /fanList, /fanpeople, /fanStatus, and /likesx.",
+  pipelineStages: [
+    {
+      id: "open_profile",
+      name: "Open My Page/Profile",
+      routeMatches: [
+        "/pages"
+      ],
+      pageNames: [
+        "Profile",
+        "My Page"
+      ],
+      controlIds: [
+        "my_page_nav",
+        "bottom_my_page_nav"
+      ],
+      userGoal: "View the user profile/social page.",
+      systemResult: "App renders Mypage and profile info with logged user state."
+    },
+    {
+      id: "profile_identity",
+      name: "Profile identity display",
+      routeMatches: [
+        "/pages"
+      ],
+      pageNames: [
+        "Profile",
+        "My Page"
+      ],
+      controlIds: [
+        "profile_image",
+        "profile_banner"
+      ],
+      userGoal: "See or update profile identity.",
+      systemResult: "ProfileInfo displays billboard/banner, avatar, username, Posts, Ranking/Hero, and crop/update flows."
+    },
+    {
+      id: "follow_context",
+      name: "Follow/follower context",
+      routeMatches: [
+        "/pages",
+        "/feeds"
+      ],
+      pageNames: [
+        "Profile",
+        "Feeds"
+      ],
+      controlIds: [
+        "following",
+        "followers",
+        "start_follow"
+      ],
+      userGoal: "See or change social connection state.",
+      systemResult: "FollowPanel decides whether to show counts, lists, or StartFollowButton based on viewed user and connection state."
+    }
+  ],
+  uiControls: [
+    {
+      id: "my_page_nav",
+      visibleLabel: "My Page",
+      alsoSeenAs: [
+        "Login"
+      ],
+      controlType: "menu item",
+      routeMatches: [
+        "/pages"
+      ],
+      pageNames: [
+        "Profile",
+        "My Page"
+      ],
+      sourceFile: "src/MenuSlider.tsx",
+      userIntent: "Open own profile page or login path if guest.",
+      systemAction: "Navigates to /pages with userId state, or /MagicMirror when in login condition.",
+      resultingState: "Profile/My Page route opens."
+    },
+    {
+      id: "profile_image",
+      visibleLabel: "Profile image",
+      controlType: "image/button",
+      routeMatches: [
+        "/pages"
+      ],
+      pageNames: [
+        "Profile",
+        "My Page"
+      ],
+      sourceFile: "src/ProfileInfo.tsx",
+      userIntent: "View or change avatar.",
+      systemAction: "Profile image click can trigger image/crop/update flow.",
+      resultingState: "Avatar is displayed or updated."
+    },
+    {
+      id: "profile_banner",
+      visibleLabel: "Banner",
+      alsoSeenAs: [
+        "billboard"
+      ],
+      controlType: "image/button",
+      routeMatches: [
+        "/pages"
+      ],
+      pageNames: [
+        "Profile",
+        "My Page"
+      ],
+      sourceFile: "src/ProfileInfo.tsx",
+      userIntent: "View or change profile banner.",
+      systemAction: "Banner click can trigger image/crop/update flow.",
+      resultingState: "Profile billboard/banner is displayed or updated."
+    },
+    {
+      id: "following",
+      visibleLabel: "Following",
+      controlType: "button",
+      routeMatches: [
+        "/pages",
+        "/feeds"
+      ],
+      pageNames: [
+        "Profile",
+        "Feeds"
+      ],
+      sourceFile: "src/FollowButton.tsx",
+      userIntent: "Inspect following or toggle/open following context.",
+      systemAction: "FollowPanel passes onToggle/open behavior to FollowButton.",
+      resultingState: "Following count/list/toggle is exposed."
+    },
+    {
+      id: "followers",
+      visibleLabel: "Followers",
+      controlType: "button",
+      routeMatches: [
+        "/pages",
+        "/feeds"
+      ],
+      pageNames: [
+        "Profile",
+        "Feeds"
+      ],
+      sourceFile: "src/FollowersButton.tsx",
+      userIntent: "Open followers list.",
+      systemAction: "FollowPanel calls showEmotions/followType path for followers/following overlay.",
+      resultingState: "Follower/social list opens."
+    }
+  ],
+  snapshotExample: {
+    sourceLog: "[Brainstorm userSnapshot] typed request",
+    route: "/pages",
+    pageName: "Profile",
+    lastAction: {
+      type: "button",
+      label: "Followers",
+      tagName: "button",
+      route: "/pages"
+    }
+  },
+  sourceEvidence: [
+    {
+      sourceFile: "src/App.tsx",
+      routeMatches: [
+        "/pages"
+      ],
+      pageNames: [
+        "Profile"
+      ],
+      featureNames: [
+        "Mypage route",
+        "getSnapshotPageName"
+      ],
+      notes: "Routes /pages to Mypage and maps route to Profile in userSnapshot."
+    },
+    {
+      sourceFile: "src/MenuSlider.tsx",
+      routeMatches: [
+        "/pages"
+      ],
+      pageNames: [
+        "My Page"
+      ],
+      featureNames: [
+        "My Page menu label",
+        "Login fallback"
+      ],
+      notes: "Desktop navigation to profile/login state."
+    },
+    {
+      sourceFile: "src/ProfileInfo.tsx",
+      featureNames: [
+        "profile banner",
+        "profile image",
+        "username",
+        "Posts",
+        "Ranking",
+        "Hero",
+        "FollowPanel"
+      ],
+      notes: "Profile identity display and profile edit hooks."
+    },
+    {
+      sourceFile: "src/FollowPanel.tsx",
+      featureNames: [
+        "FollowButton",
+        "FollowersButton",
+        "StartFollowButton"
+      ],
+      notes: "Chooses social controls based on profile/user state."
+    },
+    {
+      sourceFile: "server/src/server.ts",
+      featureNames: [
+        "/getProfile",
+        "/getProfileMore",
+        "/profileInfo",
+        "/UpdateProfilePic",
+        "/UpdateBillboardPic",
+        "/fanList",
+        "/fanpeople",
+        "/fanStatus",
+        "/likesx"
+      ],
+      notes: "Backend profile/social routes."
+    }
+  ],
+  extra: {
+    assistantUse: "Use this chunk when the user asks about profile, My Page, following/followers, profile image/banner, or why ClikB is also a social app."
+  },
+}

@@ -1,0 +1,231 @@
+﻿[RAG userSnapshotKnowledge] clikb_home_navigation_and_modes Object {
+  topic: "Home, navigation labels, and app mode routing",
+  metadata: {
+    docId: "clikb_home_navigation_and_modes",
+    sourceType: "clikb-base-rag",
+    sourceName: "02_home_navigation_and_modes.rag.txt",
+    version: 1,
+    vectorIdPrefix: "clikb_home_navigation_and_modes::chunk",
+    chunkIdPattern: "clikb_home_navigation_and_modes::chunk-0001",
+    deleteFilter: {
+      docId: "clikb_home_navigation_and_modes"
+    },
+    searchKeys: ["clikb_home_navigation_and_modes", "02_home_navigation_and_modes.rag.txt", "Home, navigation labels, and app mode routing"]
+  },
+  routeMatches: ["/MagicMirror", "/images", "/kickit", "/clikit", "/pages", "/feeds", "/Feeds", "/settings"],
+  pageNames: ["Home", "MagicMirror", "Shorts", "Cinema", "Stories", "Games", "Interactions", "My Page", "Feeds", "Settings", "Images", "Profile"],
+  featureNames: ["Home", "MagicMirror", "MenuSlider", "BottomMenu", "Get Results", "Create", "instantCall", "getSnapshotPageName", "route map", "menu item routing", "Home screen", "Desktop side navigation", "Mobile bottom navigation", "All Feeds", "Cinema"],
+  sourceFiles: ["src/App.tsx", "src/MenuSlider.tsx", "src/BottomMenu.tsx", "src/MagicMirror.tsx", "src/Mirror.tsx", "src/PromptInput.tsx"],
+  understanding: "The user-facing Home screen is the MagicMirror route. Users see Home in the sidebar, even though the route is /MagicMirror. Home gives a simplified first screen with mode cards and a prompt area so new users are not overwhelmed. Desktop MenuSlider exposes Home, Create, Games, Shorts, Cinema, My Page or Login, All Feeds, and Settings. Mobile BottomMenu exposes Cinema, Shorts, Games, My Page, and Menu. Create is not a standalone backend mode; it opens/unminimizes the creation prompt and routes to /images if the user is outside a creation page. Cinema maps to /kickit, Shorts maps to /images, Games maps to /clikit, My Page maps to /pages, and All Feeds maps to /Feeds or /feeds. Home Get Results is a skin over PromptInput submit through instantCall.",
+  pipelineStages: [
+    {
+      id: "home_screen",
+      name: "Home screen",
+      routeMatches: [
+        "/MagicMirror"
+      ],
+      pageNames: [
+        "Home",
+        "MagicMirror"
+      ],
+      controlIds: [
+        "home_get_results"
+      ],
+      userGoal: "Start simply from the Home screen.",
+      systemResult: "MagicMirror/Mirror hides complexity and passes prompt intent to PromptInput."
+    },
+    {
+      id: "desktop_navigation",
+      name: "Desktop side navigation",
+      routeMatches: [
+        "/MagicMirror",
+        "/images",
+        "/kickit",
+        "/clikit",
+        "/pages",
+        "/Feeds"
+      ],
+      pageNames: [
+        "Home",
+        "Shorts",
+        "Cinema",
+        "Games",
+        "My Page",
+        "Feeds"
+      ],
+      controlIds: [
+        "menu_home",
+        "menu_create",
+        "menu_all_feeds",
+        "menu_my_page"
+      ],
+      userGoal: "Move between major app sections.",
+      systemResult: "MenuSlider maps visible labels to routes and current active state."
+    },
+    {
+      id: "mobile_navigation",
+      name: "Mobile bottom navigation",
+      routeMatches: [
+        "/kickit",
+        "/images",
+        "/clikit",
+        "/pages"
+      ],
+      pageNames: [
+        "Cinema",
+        "Shorts",
+        "Games",
+        "My Page"
+      ],
+      controlIds: [
+        "bottom_cinema",
+        "bottom_shorts",
+        "bottom_games",
+        "bottom_my_page"
+      ],
+      userGoal: "Move between core sections on mobile.",
+      systemResult: "BottomMenu maps visible labels to route changes."
+    }
+  ],
+  uiControls: [
+    {
+      id: "menu_home",
+      visibleLabel: "Home",
+      alsoSeenAs: [
+        "MagicMirror"
+      ],
+      controlType: "menu item",
+      routeMatches: [
+        "/MagicMirror"
+      ],
+      pageNames: [
+        "Home"
+      ],
+      sourceFile: "src/MenuSlider.tsx",
+      userIntent: "Go to the Home screen.",
+      systemAction: "Navigates to /MagicMirror.",
+      resultingState: "Home/MagicMirror view appears."
+    },
+    {
+      id: "menu_create",
+      visibleLabel: "Create",
+      controlType: "menu item",
+      routeMatches: [
+        "/images",
+        "/kickit",
+        "/clikit"
+      ],
+      pageNames: [
+        "Shorts",
+        "Cinema",
+        "Games"
+      ],
+      sourceFile: "src/MenuSlider.tsx",
+      userIntent: "Open the creation prompt.",
+      systemAction: "Calls setminimisePrompt(false) and routes to /images if needed.",
+      resultingState: "Prompt creation controls are visible."
+    },
+    {
+      id: "menu_all_feeds",
+      visibleLabel: "All Feeds",
+      controlType: "menu item",
+      routeMatches: [
+        "/Feeds",
+        "/feeds"
+      ],
+      pageNames: [
+        "Feeds"
+      ],
+      sourceFile: "src/MenuSlider.tsx",
+      userIntent: "Browse all published content.",
+      systemAction: "Navigates to Feeds route.",
+      resultingState: "FeedsGate loads social feed data."
+    },
+    {
+      id: "bottom_cinema",
+      visibleLabel: "Cinema",
+      controlType: "bottom navigation item",
+      routeMatches: [
+        "/kickit"
+      ],
+      pageNames: [
+        "Cinema",
+        "Stories"
+      ],
+      sourceFile: "src/BottomMenu.tsx",
+      userIntent: "Open Cinema/Stories mode.",
+      systemAction: "Navigates to /kickit.",
+      resultingState: "Story/Cinema creation page opens."
+    }
+  ],
+  snapshotExample: {
+    sourceLog: "[Brainstorm userSnapshot] visible request",
+    route: "/MagicMirror",
+    pageName: "Home",
+    device: "mobile",
+    lastAction: {
+      type: "button",
+      label: "Get Results",
+      tagName: "button",
+      route: "/MagicMirror"
+    }
+  },
+  sourceEvidence: [
+    {
+      sourceFile: "src/App.tsx",
+      routeMatches: [
+        "/MagicMirror",
+        "/images",
+        "/kickit",
+        "/clikit",
+        "/pages",
+        "/feeds"
+      ],
+      pageNames: [
+        "Home",
+        "Images",
+        "Stories",
+        "Interactions",
+        "Profile",
+        "Feeds"
+      ],
+      featureNames: [
+        "getSnapshotPageName",
+        "route map"
+      ],
+      notes: "Maps routes to page names for userSnapshot and renders each route."
+    },
+    {
+      sourceFile: "src/MenuSlider.tsx",
+      routeMatches: [
+        "/pages",
+        "/Feeds",
+        "/clikit",
+        "/kickit",
+        "/images",
+        "/settings"
+      ],
+      featureNames: [
+        "menu item routing"
+      ],
+      notes: "Maps visible menu labels to routes."
+    },
+    {
+      sourceFile: "src/Mirror.tsx",
+      routeMatches: [
+        "/MagicMirror"
+      ],
+      pageNames: [
+        "Home"
+      ],
+      featureNames: [
+        "Get Results",
+        "instantCall"
+      ],
+      notes: "Get Results starts prompt flow through instantCall and route navigation."
+    }
+  ],
+  extra: {
+    assistantUse: "Use this chunk when the user asks where they are, what the menu labels mean, how to navigate, or why MagicMirror is called Home."
+  },
+}

@@ -1,4 +1,4 @@
-import { Request, Response } from "express";
+﻿import { Request, Response } from "express";
 import execQuery from "./execQuery";
 import { generateToken, verifyToken } from "./jwtUtils";
 
@@ -10,27 +10,27 @@ function getRandomInt(min: number, max: number) {
 var colorHolder = ["#32a852", "#32a0a8", "#6f32a8", "#a83265", "#a4a832"];
 
 const loginIdQueryGoogle = `
-  SELECT 
+  SELECT
     username, id,email,password, color1, color2, color_type, profile_image, profile_image_thumb,
     first_name, sur_name, quote, reg, billboard1, billboardthumb1, billboard2, billboardthumb2,
-    biography 
+    biography
   FROM members WHERE email = ?
 `;
 
 const loginIdQuery = `
-  SELECT 
+  SELECT
     username, id,email, password, color1, color2, color_type, profile_image, profile_image_thumb,
     first_name, sur_name, quote, reg, billboard1, billboardthumb1, billboard2, billboardthumb2,
-    biography 
+    biography
   FROM members WHERE id = ?
 `;
 
 // Define your registration query
 const registerQuery = `
-  INSERT INTO members 
-    (username, password, email, billboard1, billboardthumb1, billboard2, billboardthumb2, profile_image, profile_image_thumb, color1, color2, color_type, status, notification, tutorial, date, reg) 
-  VALUES 
-    (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+  INSERT INTO members
+    (username, password, email, billboard1, billboardthumb1, billboard2, billboardthumb2, profile_image, profile_image_thumb, color1, color2, color_type, status, notification, tutorial, date, reg,pixels)
+  VALUES
+    (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?,?)
 `;
 
 /**
@@ -97,6 +97,7 @@ export const registerHandlerGoogle = async (
       1, // tutorial default value
       currentTime, // registration date
       1, // reg (assuming this indicates Google registration)
+      600,
     ]);
 
     // Construct the payload

@@ -1,0 +1,223 @@
+﻿[RAG userSnapshotKnowledge] clikb_creation_modes_promptinput_golden_prompt Object {
+  topic: "Creation modes, PromptInput, and golden prompt flow",
+  metadata: {
+    docId: "clikb_creation_modes_promptinput_golden_prompt",
+    sourceType: "clikb-base-rag",
+    sourceName: "03_creation_modes_promptinput_golden_prompt.rag.txt",
+    version: 1,
+    vectorIdPrefix: "clikb_creation_modes_promptinput_golden_prompt::chunk",
+    chunkIdPattern: "clikb_creation_modes_promptinput_golden_prompt::chunk-0001",
+    deleteFilter: {
+      docId: "clikb_creation_modes_promptinput_golden_prompt"
+    },
+    searchKeys: ["clikb_creation_modes_promptinput_golden_prompt", "03_creation_modes_promptinput_golden_prompt.rag.txt", "Creation modes, PromptInput, and golden prompt flow"]
+  },
+  routeMatches: ["/images", "/kickit", "/clikit", "/MagicMirror"],
+  pageNames: ["Shorts", "Stories", "Cinema", "Games", "Interactions", "Home"],
+  featureNames: ["PromptInput", "golden prompt", "StartStory", "StartPlan", "startMemes", "startStory", "startInteractions", "instantCall", "/startStory", "/startMemes", "/startInteractions", "/startPlan", "GptVisualize", "GptMeme", "GptInt", "GptPlan", "Prompt capture", "Mode backend selection", "Plan generation", "Prompt Input", "Shorts", "Cinema", "Games"],
+  sourceFiles: ["src/PromptInput.tsx", "src/Mirror.tsx", "server/src/server.ts", "server/src/GptApi.ts"],
+  understanding: "PromptInput is the real creation controller. It takes prompt text, selected style, selected model, aspect ratio, mode, music options, VIP characters, and Home instantCall, then starts the correct creation path. Shorts mode on /images is for 1 to 9 direct visual/video scenes and optional B-shots. Stories/Cinema on /kickit is the advanced storytelling path. Games/Interactions on /clikit is the interactive video/game path. The golden prompt is the cleaned, enriched prompt that gets sent to planning. StartStory chooses backend route based on mode: /startStory for story/cinema, /startMemes for shorts/meme-like visual scenarios, and /startInteractions for interaction/game mode. After keyPoints, StartPlan calls /startPlan. Story/Cinema doubles story keyPoints into Stage A and Stage B. Interaction mode has node/branching rules: intro/root node, victory/failure endings, branch labels, and 3 to 9 JSON keyPoints.",
+  pipelineStages: [
+    {
+      id: "prompt_capture",
+      name: "Prompt capture",
+      routeMatches: [
+        "/MagicMirror",
+        "/images",
+        "/kickit",
+        "/clikit"
+      ],
+      pageNames: [
+        "Home",
+        "Shorts",
+        "Stories",
+        "Games"
+      ],
+      controlIds: [
+        "prompt_input",
+        "home_get_results"
+      ],
+      userGoal: "Describe what to create.",
+      systemResult: "Prompt text and Generation settings are captured in PromptInput top toolbar state."
+    },
+    {
+      id: "mode_backend_selection",
+      name: "Mode backend selection",
+      routeMatches: [
+        "/images",
+        "/kickit",
+        "/clikit"
+      ],
+      pageNames: [
+        "Shorts",
+        "Stories",
+        "Games"
+      ],
+      controlIds: [
+        "shorts_mode",
+        "cinema_mode",
+        "games_mode"
+      ],
+      userGoal: "Create the correct kind of video/script.",
+      systemResult: "PromptInput selects /startMemes, /startStory, or /startInteractions based on mode."
+    },
+    {
+      id: "plan_generation",
+      name: "Plan generation",
+      routeMatches: [
+        "/images",
+        "/kickit",
+        "/clikit"
+      ],
+      pageNames: [
+        "Shorts",
+        "Stories",
+        "Games"
+      ],
+      controlIds: [
+        "start_generation"
+      ],
+      userGoal: "Get structured scenes from the idea.",
+      systemResult: "Backend returns keyPoints and /startPlan returns scene plan data."
+    }
+  ],
+  uiControls: [
+    {
+      id: "prompt_input",
+      visibleLabel: "Prompt Input",
+      alsoSeenAs: [
+        "textarea",
+        "input",
+        "What would you like to see today?"
+      ],
+      controlType: "text field",
+      routeMatches: [
+        "/MagicMirror",
+        "/images",
+        "/kickit",
+        "/clikit"
+      ],
+      pageNames: [
+        "Home",
+        "Shorts",
+        "Stories",
+        "Games"
+      ],
+      sourceFile: "src/PromptInput.tsx",
+      userIntent: "Type the idea to generate.",
+      systemAction: "Stores prompt and passes it into StartStory/submit flow.",
+      resultingState: "Golden prompt/planning begins when submitted."
+    },
+    {
+      id: "shorts_mode",
+      visibleLabel: "Shorts",
+      controlType: "mode",
+      routeMatches: [
+        "/images"
+      ],
+      pageNames: [
+        "Shorts"
+      ],
+      sourceFile: "src/PromptInput.tsx",
+      userIntent: "Create short visual/video scenes.",
+      systemAction: "Uses the shorts/meme path and /startMemes when appropriate.",
+      resultingState: "Direct scene keyPoints and plan are generated."
+    },
+    {
+      id: "cinema_mode",
+      visibleLabel: "Cinema",
+      alsoSeenAs: [
+        "Stories"
+      ],
+      controlType: "mode",
+      routeMatches: [
+        "/kickit"
+      ],
+      pageNames: [
+        "Cinema",
+        "Stories"
+      ],
+      sourceFile: "src/PromptInput.tsx",
+      userIntent: "Create a story/cinematic video.",
+      systemAction: "Uses /startStory and doubles story keyPoints into Stage A/B.",
+      resultingState: "Advanced story plan feeds Storybook."
+    },
+    {
+      id: "games_mode",
+      visibleLabel: "Games",
+      alsoSeenAs: [
+        "Interactions"
+      ],
+      controlType: "mode",
+      routeMatches: [
+        "/clikit"
+      ],
+      pageNames: [
+        "Games",
+        "Interactions"
+      ],
+      sourceFile: "src/PromptInput.tsx",
+      userIntent: "Create an interactive video/game.",
+      systemAction: "Uses /startInteractions and interaction-specific planner instructions.",
+      resultingState: "Node/branch keyPoints feed interaction creation."
+    }
+  ],
+  snapshotExample: {
+    sourceLog: "[Brainstorm userSnapshot] typed request",
+    route: "/kickit",
+    pageName: "Stories",
+    device: "mobile",
+    app: {
+      prompt: "",
+      promptLength: 0,
+      artstyle: "Auto",
+      model: "",
+      aspectRatio: 1
+    },
+    lastAction: {
+      type: "textarea",
+      label: "Prompt Input",
+      tagName: "textarea",
+      route: "/kickit"
+    }
+  },
+  sourceEvidence: [
+    {
+      sourceFile: "src/PromptInput.tsx",
+      routeMatches: [
+        "/images",
+        "/kickit",
+        "/clikit"
+      ],
+      featureNames: [
+        "StartStory",
+        "StartPlan",
+        "instantCall"
+      ],
+      notes: "Contains mode selection, golden prompt logging, backend selection, keyPoints parsing, and stage doubling."
+    },
+    {
+      sourceFile: "server/src/server.ts",
+      featureNames: [
+        "/startStory",
+        "/startMemes",
+        "/startInteractions",
+        "/startPlan"
+      ],
+      notes: "Registers the backend planning routes."
+    },
+    {
+      sourceFile: "server/src/GptApi.ts",
+      featureNames: [
+        "GptVisualize",
+        "GptMeme",
+        "GptInt",
+        "GptPlan"
+      ],
+      notes: "Contains planner/system prompt logic for visual/story/interaction outputs."
+    }
+  ],
+  extra: {
+    assistantUse: "Use this chunk when the user asks how ClikB creates, what Shorts/Cinema/Games mean, or what the golden prompt/planner does."
+  },
+}

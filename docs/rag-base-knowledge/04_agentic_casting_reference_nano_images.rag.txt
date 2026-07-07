@@ -1,0 +1,213 @@
+﻿[RAG userSnapshotKnowledge] clikb_agentic_casting_reference_nano_images Object {
+  topic: "AI Agent casting, reference images, and Nano image usage",
+  metadata: {
+    docId: "clikb_agentic_casting_reference_nano_images",
+    sourceType: "clikb-base-rag",
+    sourceName: "04_agentic_casting_reference_nano_images.rag.txt",
+    version: 1,
+    vectorIdPrefix: "clikb_agentic_casting_reference_nano_images::chunk",
+    chunkIdPattern: "clikb_agentic_casting_reference_nano_images::chunk-0001",
+    deleteFilter: {
+      docId: "clikb_agentic_casting_reference_nano_images"
+    },
+    searchKeys: ["clikb_agentic_casting_reference_nano_images", "04_agentic_casting_reference_nano_images.rag.txt", "AI Agent casting, reference images, and Nano image usage"]
+  },
+  routeMatches: ["/images", "/kickit", "/MagicMirror", "/clikit"],
+  pageNames: ["Shorts", "Stories", "Cinema", "Home", "Storybook", "EditStory"],
+  featureNames: ["AI Agent", "Create Characters", "referenceImages", "detectedCharacters", "detectedEnvironments", "Nano images", "B-shot Nano images", "VIP characters", "runAutoCastingPipeline", "startAgentCasting", "runReferenceImageGeneration", "proceedToImageGeneration", "nanoImages", "bShotNanoImages", "active characters", "GptExtractCasting", "GptGenerateCastingPrompts", "image generation routes", "Nano Banana routes", "sampleImages", "Agent casting start", "Extract characters and environments", "Reference image generation", "Nano preview and fallback usage", "Active Character Viewer", "Nano image preview"],
+  sourceFiles: ["src/Mirror.tsx", "src/PromptInput.tsx", "src/Storybook.tsx", "src/EditStory.tsx", "src/Notepad.tsx", "server/src/server.ts", "server/src/GptApi.ts", "server/src/fluxSchnellRoute.ts"],
+  understanding: "ClikB has an agentic creation layer for keeping characters, objects, and environments consistent. After a plan exists, the AI Agent can read the script, detect recurring characters/environments, generate casting/reference prompts, then create reference images through selected image model routes. VIP characters are merged into the casting result so existing known characters can be preserved. Reference generation is sequential and can upload/upscale/save images so they can be reused across scene generation and EditStory. Nano images are also part of the visual system: Storybook and EditStory can show Nano-generated image previews/fallbacks when final generatedImagesFlux are not present. B-shot Nano images also appear in the B-shot grid. Nano images are generated/preview visual assets that may stand in for scene or B-shot imagery before or alongside final generated media.",
+  pipelineStages: [
+    {
+      id: "agent_casting_start",
+      name: "Agent casting start",
+      routeMatches: [
+        "/images",
+        "/kickit"
+      ],
+      pageNames: [
+        "Shorts",
+        "Stories"
+      ],
+      controlIds: [
+        "create_characters"
+      ],
+      userGoal: "Create consistency references for recurring subjects.",
+      systemResult: "PromptInput starts runAutoCastingPipeline/startAgentCasting."
+    },
+    {
+      id: "extract_casting",
+      name: "Extract characters and environments",
+      routeMatches: [
+        "/images",
+        "/kickit"
+      ],
+      pageNames: [
+        "Shorts",
+        "Stories"
+      ],
+      controlIds: [
+        "create_characters"
+      ],
+      userGoal: "Find important repeated people, objects, and places.",
+      systemResult: "Backend /extractCasting returns characters and environments, merged with VIP characters."
+    },
+    {
+      id: "reference_image_generation",
+      name: "Reference image generation",
+      routeMatches: [
+        "/images",
+        "/kickit"
+      ],
+      pageNames: [
+        "Shorts",
+        "Stories"
+      ],
+      controlIds: [
+        "create_characters"
+      ],
+      userGoal: "Generate reusable visual references.",
+      systemResult: "Backend image routes generate and save/upscale reference images."
+    },
+    {
+      id: "nano_preview_usage",
+      name: "Nano preview and fallback usage",
+      routeMatches: [
+        "/images",
+        "/kickit"
+      ],
+      pageNames: [
+        "Storybook",
+        "EditStory"
+      ],
+      controlIds: [
+        "scene_preview",
+        "bshot_preview"
+      ],
+      userGoal: "See generated/preview imagery even before final media is complete.",
+      systemResult: "Storybook/EditStory display nanoImages or bShotNanoImages when final generated media is not available."
+    }
+  ],
+  uiControls: [
+    {
+      id: "create_characters",
+      visibleLabel: "Create Characters",
+      alsoSeenAs: [
+        "AI Agent",
+        "Agent casting"
+      ],
+      controlType: "button",
+      routeMatches: [
+        "/images",
+        "/kickit"
+      ],
+      pageNames: [
+        "Shorts",
+        "Stories",
+        "Cinema"
+      ],
+      sourceFile: "src/PromptInput.tsx",
+      userIntent: "Have AI identify and create visual references.",
+      systemAction: "Runs /extractCasting, /generateCastingPrompts, and image model routes.",
+      resultingState: "referenceImages, detectedCharacters, and detectedEnvironments populate creation/editing surfaces."
+    },
+    {
+      id: "reference_image_bar",
+      visibleLabel: "Active Character Viewer",
+      alsoSeenAs: [
+        "reference image bar"
+      ],
+      controlType: "image strip",
+      routeMatches: [
+        "/images",
+        "/kickit",
+        "/clikit"
+      ],
+      pageNames: [
+        "EditStory",
+        "Storybook"
+      ],
+      sourceFile: "src/EditStory.tsx",
+      userIntent: "Inspect or use character/reference images while editing.",
+      systemAction: "Shows referenceImages and action/motion reference images to the editor and Notepad.",
+      resultingState: "User can keep character consistency while changing prompts."
+    },
+    {
+      id: "nano_preview",
+      visibleLabel: "Nano image preview",
+      controlType: "image preview",
+      routeMatches: [
+        "/images",
+        "/kickit"
+      ],
+      pageNames: [
+        "Storybook",
+        "EditStory"
+      ],
+      sourceFile: "src/Storybook.tsx",
+      userIntent: "View generated preview/fallback scene art.",
+      systemAction: "Uses nanoImages or bShotNanoImages when generatedImagesFlux/B-shot images are absent.",
+      resultingState: "Preview art remains visible in the scene grid/editor."
+    }
+  ],
+  snapshotExample: {
+    sourceLog: "[Brainstorm userSnapshot] typed request",
+    route: "/kickit",
+    pageName: "Stories",
+    lastAction: {
+      type: "button",
+      label: "Create Characters",
+      tagName: "button",
+      route: "/kickit"
+    }
+  },
+  sourceEvidence: [
+    {
+      sourceFile: "src/PromptInput.tsx",
+      featureNames: [
+        "runAutoCastingPipeline",
+        "startAgentCasting",
+        "runReferenceImageGeneration",
+        "proceedToImageGeneration"
+      ],
+      notes: "Owns the AI Agent casting/reference image pipeline."
+    },
+    {
+      sourceFile: "src/Storybook.tsx",
+      featureNames: [
+        "nanoImages",
+        "bShotNanoImages"
+      ],
+      notes: "Displays Nano scene previews and B-shot Nano fallbacks."
+    },
+    {
+      sourceFile: "src/EditStory.tsx",
+      featureNames: [
+        "referenceImages",
+        "nanoImages",
+        "active characters"
+      ],
+      notes: "Uses references and Nano images inside editing flows."
+    },
+    {
+      sourceFile: "server/src/GptApi.ts",
+      featureNames: [
+        "GptExtractCasting",
+        "GptGenerateCastingPrompts"
+      ],
+      notes: "Backend AI casting prompt logic."
+    },
+    {
+      sourceFile: "server/src/fluxSchnellRoute.ts",
+      featureNames: [
+        "image generation routes",
+        "Nano Banana routes",
+        "sampleImages"
+      ],
+      notes: "Backend image model routes used by reference/action generation."
+    }
+  ],
+  extra: {
+    assistantUse: "Use this chunk when the user asks about the AI Agent, consistent characters, references, Nano images, or why preview images appear in scene cards."
+  },
+}

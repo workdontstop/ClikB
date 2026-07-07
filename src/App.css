@@ -1,4 +1,4 @@
-/* Global Reset */
+﻿/* Global Reset */
 * {
   box-sizing: border-box;
   margin: 0;
@@ -18,11 +18,37 @@ body {
   width: 100%;
 }
 
+html.mobile-document-scroll,
+body.mobile-document-scroll {
+  height: auto;
+  min-height: 100%;
+  overflow-x: hidden;
+  overflow-y: auto;
+  /* Block native pull-to-refresh / scroll-chaining while the document scrolls
+     (Chrome Android + iOS Safari 16+). */
+  overscroll-behavior-y: none;
+}
+
 /* App Container */
 .app-container {
   display: flex;
   height: 100vh; /* Full viewport height */
   width: 100vw; /* Full viewport width */
+}
+
+html.mobile-document-scroll .app-container {
+  height: auto;
+  min-height: 100vh;
+  overflow: visible;
+  overscroll-behavior-y: none;
+}
+
+html.mobile-document-scroll .content,
+html.mobile-document-scroll .contentdark,
+html.mobile-document-scroll .content-full,
+html.mobile-document-scroll .content-with-menu {
+  height: auto;
+  min-height: 100vh;
 }
 
 @keyframes blink {
@@ -147,4 +173,24 @@ body {
   font-weight: 600;
   font-style: normal;
   font-variation-settings: "wdth" 100;
+}
+
+/* --------------------------------------------------------------------
+   Hide the blinking caret (and focus outline) on any focused <div>
+   -------------------------------------------------------------------- */
+div:focus {
+  caret-color: transparent !important;
+  outline: none;
+}
+
+/* kill all carets on focused elements */
+*:focus {
+  caret-color: transparent !important;
+  outline: none !important; /* remove focus  contenteditable  ring if you also want that gone */
+}
+
+html *:focus {
+  caret-color: transparent !important;
+  outline: none !important;
+  user-select: none !important;
 }

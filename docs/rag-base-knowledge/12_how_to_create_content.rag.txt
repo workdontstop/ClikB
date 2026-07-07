@@ -1,0 +1,1127 @@
+﻿[RAG userSnapshotKnowledge] clikb_how_to_create_content Object {
+  topic: "How to Create Content",
+  metadata: {
+    docId: "clikb_how_to_create_content",
+    sourceType: "clikb-base-rag",
+    sourceName: "12_how_to_create_content.rag.txt",
+    version: 1,
+    vectorIdPrefix: "clikb_how_to_create_content::chunk",
+    chunkIdPattern: "clikb_how_to_create_content::chunk-0001",
+    deleteFilter: {
+      docId: "clikb_how_to_create_content"
+    },
+    searchKeys: ["clikb_how_to_create_content", "12_how_to_create_content.rag.txt", "How to Create Content", "content creation flow", "PromptInput", "PromptToolbar", "NotepadEditor", "Storybook", "EditStory", "music video mode", "B-shots", "interaction creation", "Create Button", "plus icon", "feed plus", "MenuSlider", "TogglePromptButton", "MagicMirror Create"]
+  },
+  routeMatches: ["/MagicMirror", "/images", "/kickit", "/clikit", "/pages"],
+  pageNames: ["Home", "Shorts", "Cinema", "Stories", "Games", "Interactions", "PromptInput", "NotepadEditor", "PromptToolbar", "Storybook", "EditStory", "PublishLoader", "PublishLoader2", "InteractInput"],
+  featureNames: ["How to Create Content", "human in the loop", "golden prompt", "Create Button", "feed plus icon", "Notepad", "Brainstorm", "Templates", "PromptToolbar", "Styles", "ArtStyleSelector", "Models", "AspectRatioBox", "Slideshow", "Characters", "Music", "Pixel cost", "TitleSelector", "WorldModel", "VIP characters", "Direct Upload", "StartStory", "StartPlan", "Nano images", "using imagination", "Create Characters", "Skip", "Auto", "Manual", "Continue", "Next", "Debut", "Publish", "Storybook", "EditStory", "Update with AI", "Auto Prompt", "Action Image Generation", "Motion Storyboard Generation", "B-shots", "A-shots", "Stage A", "Stage B", "Music video mode", "Interaction creation", "Touch mode", "Swipe mode", "PublishLoader", "PublishLoader2", "Lambda FFMPEG render"],
+  sourceFiles: ["src/App.tsx", "src/MenuSlider.tsx", "src/TogglePromptButton.tsx", "src/MagicMirror.tsx", "src/PromptInput.tsx", "src/PromptToolbar.tsx", "src/AspectRatioBox.tsx", "src/ArtStyleSelector.tsx", "src/ModelPixels.tsx", "src/settingsSlice.ts", "src/TitleSelector.tsx", "src/Notepad.tsx", "src/NotepadEditor.tsx", "src/components/PromptConstructor.tsx", "src/Storybook.tsx", "src/EditStory.tsx", "src/WorldModel.tsx", "src/WorldListOpened.tsx", "src/Clikit.tsx", "src/InteractInput.tsx", "src/DefaultStageUI.tsx", "src/TouchEditStageUI.tsx", "src/TouchPreviewStageUI.tsx", "src/SwipeEditStageUI.tsx", "src/SwipePreviewStageUI.tsx", "src/PublishLoader.tsx", "src/PublishLoader2.tsx", "server/src/server.ts", "server/src/GptApi.ts", "server/src/PostDatabase.ts", "server/src/LambdaFfmpegRoutes.ts"],
+  uiEntryPoints: [
+    {
+      id: "sidebar_create_button",
+      uiLabel: "Create Button",
+      sourceFiles: [
+        "src/MenuSlider.tsx",
+        "src/App.tsx"
+      ],
+      whereUserSeesIt: "Left sidebar or mobile menu as the Create row with AddCircleIcon.",
+      userAction: "User presses the Create Button.",
+      codeFlow: "MenuSlider.handleCreateClick toggles setminimisePrompt(prev => !prev). If the current route is not already /clikit, /kickit, or /images, it navigates to /images so PromptInput opens in a creation route.",
+      ragMeaning: "In UI terms, this is the main navigation entry into the PromptInput/golden prompt creation surface. It opens creation; it does not generate content until the later Create button inside PromptInput is pressed."
+    },
+    {
+      id: "feed_plus_icon",
+      uiLabel: "+ / plus icon",
+      sourceFiles: [
+        "src/TogglePromptButton.tsx",
+        "src/Feeds.tsx",
+        "src/FeedLayout.tsx",
+        "src/FeedLayoutHorizontal.tsx"
+      ],
+      whereUserSeesIt: "Right side of the feeds list as the visible circular plus icon.",
+      userAction: "User presses the plus icon while browsing feeds.",
+      codeFlow: "TogglePromptButton renders AddCircleIcon when more is false. Its click handler calls setminimisePrompt(false), which reveals PromptInput over the current feed route.",
+      ragMeaning: "The feed plus icon is a quick-create entry. It opens the same PromptInput creation surface from the feeds UI without the user first using the sidebar."
+    },
+    {
+      id: "magicmirror_create_nav",
+      uiLabel: "MagicMirror Create",
+      sourceFiles: [
+        "src/MagicMirror.tsx"
+      ],
+      whereUserSeesIt: "MagicMirror landing/navigation view.",
+      userAction: "User presses Create from MagicMirror.",
+      codeFlow: "MagicMirror Create calls setminimisePrompt(false) and navigate('/images'). MagicMirror can also auto-open /images after its initial timer by setting minimisePrompt false.",
+      ragMeaning: "MagicMirror is another UI entry into PromptInput, normally landing the user in Shorts/images creation."
+    }
+  ],
+  compactArrowCreationFlow: [
+    "UI entry -> src/MenuSlider.tsx Create Button OR src/TogglePromptButton.tsx feed plus icon OR src/MagicMirror.tsx Create -> setminimisePrompt(false) and /images when needed",
+    "Routing shell -> src/App.tsx -> /images Shorts, /kickit Cinema, or /clikit Games -> src/PromptInput.tsx creation overlay",
+    "Golden prompt -> src/PromptInput.tsx -> src/Notepad.tsx + src/NotepadEditor.tsx + src/components/PromptConstructor.tsx for prompt text, brainstorm, templates, and music prompt construction",
+    "Creative setup -> src/PromptToolbar.tsx -> src/ArtStyleSelector.tsx Styles, src/AspectRatioBox.tsx ratioKey, src/TitleSelector.tsx mode, src/ModelPixels.tsx model cost",
+    "Characters/worlds -> src/WorldModel.tsx + src/WorldListOpened.tsx -> remixData, Vipcharacters, GeneratedImage, referenceImages",
+    "Plan -> src/PromptInput.tsx StartStory/StartPlan -> server/src/server.ts -> server/src/GptApi.ts using /startMemes, /startStory, /startInteractions, /startPlan",
+    "Nano storyboard -> src/Storybook.tsx -> ImageDesignStory or ImageDesignStoryStage -> fluxschnell nano images -> Skip/Create Characters choice",
+    "Images -> src/Storybook.tsx Auto or Manual -> selected model HD generation, nano placeholders, uploads, or direct video path",
+    "Workstation -> Storybook card click -> src/EditStory.tsx -> Update with AI, image prompt edit, narration edit, characters, action image, motion storyboard, video prompt",
+    "Video -> src/Storybook.tsx Continue -> /startPlanVid -> src/EditStory.tsx Auto Prompt/GenerateVideox -> VideoArrayCloud",
+    "Normal publish -> src/Storybook.tsx Next -> B-shot mode -> src/PublishLoader.tsx + src/PublishLoader2.tsx -> server/src/LambdaFfmpegRoutes.ts -> final MP4",
+    "Music video publish -> prompt music upload activates music video mode -> Debut publishes from video mode and bypasses B-shots",
+    "Games publish caveat -> /clikit type 3 -> src/Clikit.tsx -> src/InteractInput.tsx + Touch/Swipe stage files -> /interactionSave instead of normal PublishLoader flow"
+  ],
+  flowDiagram: [
+    "Feed/Home UI -> sidebar Create Button or right-side plus icon -> setminimisePrompt(false) -> PromptInput opens",
+    "Home/MagicMirror or mode rout--> PromptInput -> TitleSelector chooses /images Shorts, /kickit Cinema, or /clikit Games",
+    "-> PromptInput shell -> Notepad/NotepadEditor golden prompt text",
+    "-> PromptToolbar controls: Styles + pixel cost + Models + Slideshow + Characters + Music",
+    "-> PromptInput creative setup: Styles/ArtStyleSelector chooses selectedStyle; Models chooses modelz/settings.model; AspectRatioBox cycles ratioKey/settings.aspectRatio as 1=9:16, 2=1:1, 3=16:9",
+    "-> optional WorldModel/direct upload/manual VIP characters -> remixData + Vipcharacters + GeneratedImage/reference data",
+    "-> Create button countdown -> handleActualSubmit pixel check -> StartStory",
+    "-> StartStory chooses backend: type 0 /startMemes, type 1 /startStory, type 3 /startInteractions",
+    "-> music upload on type 1 activates music video mode and injects exact music scene count into the planning prompt",
+    "-> StartPlan /startPlan builds Planx from keyPoints; Story/Cinema duplicates each keyPoint into Stage A and Stage B",
+    "-> Storybook opens while image prompts prefetch -> ImageDesignStory or ImageDesignStoryStage -> fluxschnell nano images",
+    "-> path choice overlay: Skip goes straight to Storybook; Create Characters runs extractCasting and generateCastingPrompts",
+    "-> Storybook scene grid: Auto generates HD images with selected model; Manual/Video path can use nano images as start frames/placeholders",
+    "-> click any Storybook card -> EditStory workstation for image prompt, narration, video prompt, characters, action images, and motion storyboard control",
+    "-> Continue saves images and enters video mode; Video mode creates/uses PlanVid from /startPlanVid and EditStory Auto Prompt creates TextVideo",
+    "-> Next moves normal content into B-shot mode; Music video mode uses Debut and bypasses B-shots",
+    "-> B-shot mode creates supporting prompts/images/videos and publishes from the B-shot grid",
+    "-> PublishLoader or PublishLoader2 -> Lambda/cloud video recipe -> final scripted MP4 with scenes, videos, narration, music, and optional B-shots",
+    "-> Games/Interactions route stores generated video slots and opens InteractInput for Touch/Swipe authoring instead of the normal publish path"
+  ],
+  promptInputCreativeSetup: {
+    purpose: "PromptInput is not only a text box. Before StartStory, the user can lock the visual language, image model, and output frame shape. These choices remain human-controlled settings that travel into planning, Storybook generation, EditStory regeneration, video prompting, layout, and publishing.",
+    controls: [
+      {
+        id: "art_style_selection",
+        visibleLabel: "Styles",
+        sourceFiles: [
+          "src/PromptToolbar.tsx",
+          "src/ArtStyleSelector.tsx",
+          "src/PromptInput.tsx",
+          "server/src/GptApi.ts"
+        ],
+        codeDetails: [
+          "PromptInput owns selectedStyle with default Auto and passes selectedStyle/setSelectedStyle into PromptToolbar.",
+          "PromptToolbar shows the Styles button; the label stays Styles when selectedStyle is Auto and becomes the selected style name after the user chooses one.",
+          "The style dialog includes an Auto option plus ArtStyleSelector. handleSelectStyle updates selectedStyle and customStyleInput; customStyleInput later dispatches setArtstyle into Redux settings.artstyle.",
+          "WorldModel can also feed worldStyle into PromptToolbar, which auto-selects that style when worldStyle is present.",
+          "PromptToolbar can call /GptArtstylePrompt to generate a preview prompt/image for an art style and stores those previews in imagesMap.",
+          "StartPlan receives selectedStyle. If selectedStyle is not Auto, PromptInput applies applyArtStyleToPlan(plan, selectedStyle) before storing Planx, so the style becomes part of the actual story plan and downstream image prompts."
+        ],
+        ragMeaning: "When the user asks about art style in creation, describe it as a pre-planning creative direction control, not just decoration. It controls selectedStyle/settings.artstyle and can alter Planx before Storybook starts generation."
+      },
+      {
+        id: "model_selection",
+        visibleLabel: "Models",
+        sourceFiles: [
+          "src/PromptToolbar.tsx",
+          "src/PromptInput.tsx",
+          "src/Storybook.tsx",
+          "src/EditStory.tsx",
+          "src/ModelPixels.tsx",
+          "src/settingsSlice.ts"
+        ],
+        codeDetails: [
+          "PromptInput owns modelz with default Models and mirrors it to Redux through setModel when handleSelect is called.",
+          "PromptToolbar receives models, modelz, homeModel, and handleSelectModel from PromptInput. Its Models dropdown maps flattenedModels into MenuItem rows and calls handleSelectModel(m.value, null).",
+          "The active image model is displayed with activeModelz; homeModel normalizes Models to Schnell so the UI can distinguish the default/home model from the selected model.",
+          "ModelPixels and calcModelPixels show the pixel price for each selected model and are also used before generation to estimate the cost of scene image work.",
+          "Storybook and EditStory use modelz to select the real image route for generation/regeneration, including Imagen, Imagen2, minimax, minimax2, fluxUltra, fluxUltra2, fluxDev, HiDream, GptImage, seeDream, or fluxschnell/Schnell.",
+          "The selected model matters before and after planning: it affects Auto HD image generation, manual image regeneration, action images, motion storyboard images, conversion sizing, and pixel cost."
+        ],
+        ragMeaning: "When the user asks about model selection in PromptInput, explain that the Models control chooses the image generation model for downstream Storybook/EditStory image work, not the video model list inside EditStory."
+      },
+      {
+        id: "aspect_ratio_selection",
+        visibleLabel: "AspectRatioBox",
+        sourceFiles: [
+          "src/AspectRatioBox.tsx",
+          "src/PromptInput.tsx",
+          "src/Storybook.tsx",
+          "src/EditStory.tsx",
+          "src/settingsSlice.ts"
+        ],
+        codeDetails: [
+          "AspectRatioBox reads settings.aspectRatio from Redux as ratioKey and maps 1 to 9:16, 2 to 1:1, and 3 to 16:9.",
+          "Clicking AspectRatioBox dispatches cycleAspectRatio, wrapping the numeric key through 1, 2, and 3.",
+          "PromptInput renders AspectRatioBox before scenes exist: inline on desktop near the prompt controls and as the mobile frame selector near TitleSelector.",
+          "PromptInput translates ratioKey into generation dimensions: 1 becomes 1080x1920, 2 becomes 1080x1080, and 3 becomes 1920x1080, and sends ty: ratioKey to image routes.",
+          "Storybook uses ratioKey for prompt/image requests, grid card sizing, generated image payloads, publish payloads, and the visual layout of the storyboard.",
+          "EditStory reads the same ratioKey for regeneration, action/motion image references, video prompt context, conversion sizes, and per-scene editing layout."
+        ],
+        ragMeaning: "When the user asks about aspect ratio, describe it as the frame/format control for Shorts/Cinema/Games creation, connected to Redux settings.aspectRatio and reused across generation, editing, and publish."
+      }
+    ]
+  },
+  understanding: "ClikB is an AI content creation system designed around human-in-the-loop control. The user does not just type a prompt and wait for a black-box result; PromptInput, NotepadEditor, Storybook, and EditStory keep exposing intermediate planning, scene, image, video, character, narration, and publishing decisions so the user can intervene at every major stage. The base creation entry is the golden prompt in PromptInput. The visible shell opens Notepad/NotepadEditor, where the prompt text is edited, brainstorm and template tools live, and music-specific scene timing is calculated when a Golden Music file has been selected. PromptToolbar wraps the creation surface with Styles, model selection, pixel cost/balance, Slideshow preview, Characters revisit, Music upload, and window controls. TitleSelector maps routes to modes: /images is Shorts, /kickit is Cinema/Stories, and /clikit is Games/Interactions. StartStory is the first real controller: it merges Vipcharacters into remixData as character descriptions, chooses /startMemes for type 0, /startStory for type 1, and /startInteractions for type 3, then receives keyPoints. In music video mode, type 1 with promptMusicUrl rewrites the planning request so the story must produce exactly promptMusicSceneCount scenes based on the song segmentation. Story/Cinema duplicates every returned keyPoint into adjacent Stage A and Stage B slots before StartPlan sends the keyPoints to /startPlan and stores Planx. After this, Storybook becomes the workshop. Before HD generation, it prefetches scene image prompts through ImageDesignStory or ImageDesignStoryStage, then fires cheap fluxschnell nano images in the background. These nano images create the 'using imagination' storyboard layer: they make every scene visually identifiable before expensive HD images exist and can also serve as placeholder/start-frame images for the Manual/Video path. Once prompts are prefetched, PromptInput shows a path choice overlay with Skip and Create Characters. Skip hides the character studio and lets Storybook continue. Create Characters runs the casting pipeline through /extractCasting and /generateCastingPrompts, merges VIP characters from WorldModel/direct upload/manual character input, and produces referenceImages for later character injection. In Storybook, Auto means generate the actual HD images sequentially using the selected image model and active scene characters. Manual/Video mode sets the app up so nano images can stand in as scene images while the user manually uploads or regenerates images, or continues to video with nano start frames; this is intentional creative freedom for image-only, video-only, or mixed workflows where allowed. The major Storybook stages are image mode, video mode, and B-shot mode. Continue saves/uses the images and moves to video mode. In video mode Storybook creates PlanVid through /startPlanVid, passes it to EditStory, and the main button becomes Next for normal content or Debut for music video mode. Next opens B-shot mode for normal Shorts/Cinema flows; music video mode does not use B-shots and publishes from video mode through PublishLoader/PublishLoader2. B-shots are supporting cutaways/reactions attached around A-shots. With narration in Story/Cinema, B-shots are calculated around Stage B and audio duration; without narration or in Shorts-like flows, default B-shot placeholders can be created. B-shot prompts use the base visual prompt and previous video prompt context, then generate their own nano images. EditStory is the workhorse workstation. It receives unified A-shot/B-shot data from Storybook: GeneratedText, GeneratedTextx, TextVideo, ImagesHdCloud, VideoArrayCloud, nanoImages, referenceImages, detectedCharacters, Vipcharacters, PlanVid, timing, music mode props, and model settings. Image mode exposes Update with AI, Scene Image Prompt, Enhance/Safety/Recreate style controls, active character circles, and per-scene regeneration. Video mode exposes a horizontal model list, duration, audio toggle, Auto Prompt, video prompt text, generated video controls, reference video/lip-sync tools, and character injection. Auto Prompt requires a selected video model; it uses PlanVid, scene text, image description, duration, targetModel, ratioKey, and imageUrl to call VideoDesign or GptVideoVisualMiniMax, then fills TextVideo. GenerateVideox maps selected video models to backend routes such as veo3fast, sora2, minimax23Route, Seedance2, KlingRouteo1, minimax23Routex, omniHuman, or klingPro, and sends active character/action/motion images as activechracterimages and activechracternames. The audio toggle is represented by musicKling/generateAudio/useaudio, because some video models generate native audio and others should be run without audio. EditStory also has Action Image Generation and Motion Storyboard Generation. Action images let a user create one specific action reference frame, such as a character jumping over a car instead of standing near it; the action prompt can include @Character handles so selected character images become sampleImages. Motion storyboard turns the current video prompt into a multi-panel grid image through GptRemakeText and then an image model, giving newer video models a complete storyboard reference for long or complex movement. Games/Interactions are a special caveat. The /clikit route runs PromptInput with type 3 and StartStory calls /startInteractions. GptInt returns node-labeled keyPoints with root, branches, victory, and failure/game-over structure. Generated videos are stored in localStorage slots and localInteractionpostId, then Clikit opens InteractInput. InteractInput offers Touch and Swipe authoring using DefaultStageUI, TouchEditStageUI, TouchPreviewStageUI, SwipeEditStageUI, and SwipePreviewStageUI. The user places hotspots, picks branch videos, adds audio, previews, and saves through /interactionSave, so this mode is video-only and goes to the interaction creation tool rather than the normal final publish flow. Final publishing for non-interaction content is handled through PublishLoader and PublishLoader2. PublishLoader manages preflight/narration/music choices and can hand off music-video publishing. PublishLoader2 receives images, videos, audio, B-shots, music settings, clip duration, music segments, ratio, and Lambda status. The backend/cloud processing assembles the final scripted MP4 with the selected scene media, narration/music, and optional B-shot material.",
+  pipelineStages: [
+    {
+      id: "golden_prompt_setup",
+      name: "Golden prompt setup",
+      routeMatches: [
+        "/MagicMirror",
+        "/images",
+        "/kickit",
+        "/clikit"
+      ],
+      pageNames: [
+        "PromptInput",
+        "NotepadEditor"
+      ],
+      controlIds: [
+        "prompt_input",
+        "brainstorm",
+        "templates",
+        "music_upload",
+        "title_selector"
+      ],
+      userGoal: "Describe the content idea and choose the broad creation mode.",
+      systemResult: "PromptInput stores prompt, selected style, selected model, aspect ratio, mode route, music mode state, world/VIP data, and cached Notepad construction data."
+    },
+    {
+      id: "promptinput_creative_setup",
+      name: "PromptInput creative setup",
+      routeMatches: [
+        "/MagicMirror",
+        "/images",
+        "/kickit",
+        "/clikit"
+      ],
+      pageNames: [
+        "PromptInput",
+        "PromptToolbar"
+      ],
+      controlIds: [
+        "art_style_selection",
+        "model_selection",
+        "aspect_ratio_selection",
+        "pixel_cost"
+      ],
+      userGoal: "Choose the visual style, image model, and output frame before starting the planner.",
+      systemResult: "selectedStyle/settings.artstyle, modelz/settings.model, and ratioKey/settings.aspectRatio are stored before generation and then reused by StartPlan, Storybook, EditStory, image routes, video prompt routes, layout, conversion, and publish."
+    },
+    {
+      id: "planning_and_mode_backend",
+      name: "Planning and mode backend",
+      routeMatches: [
+        "/images",
+        "/kickit",
+        "/clikit"
+      ],
+      pageNames: [
+        "Shorts",
+        "Cinema",
+        "Games"
+      ],
+      controlIds: [
+        "create_button",
+        "start_story"
+      ],
+      userGoal: "Turn the golden prompt into structured scenes.",
+      systemResult: "StartStory calls /startMemes, /startStory, or /startInteractions; type 1 with music injects exact scene count; StartPlan calls /startPlan and stores Planx."
+    },
+    {
+      id: "nano_storyboard_and_casting",
+      name: "Nano storyboard and casting",
+      routeMatches: [
+        "/images",
+        "/kickit",
+        "/clikit"
+      ],
+      pageNames: [
+        "Storybook",
+        "PromptInput"
+      ],
+      controlIds: [
+        "skip",
+        "create_characters",
+        "character_studio"
+      ],
+      userGoal: "Preview the generated scenes and decide whether to make character references.",
+      systemResult: "Storybook prefetches image prompts, fires fluxschnell nano images, then PromptInput either skips casting or runs /extractCasting and /generateCastingPrompts."
+    },
+    {
+      id: "storybook_image_workshop",
+      name: "Storybook image workshop",
+      routeMatches: [
+        "/images",
+        "/kickit",
+        "/clikit"
+      ],
+      pageNames: [
+        "Storybook"
+      ],
+      controlIds: [
+        "auto",
+        "manual",
+        "scene_card",
+        "continue"
+      ],
+      userGoal: "Choose automatic HD image generation or a manual/nano-driven path.",
+      systemResult: "Auto generates HD scene images sequentially; Manual/Video can preload nano images as image slots and leave room for manual image uploads or direct video creation."
+    },
+    {
+      id: "editstory_workstation",
+      name: "EditStory workstation",
+      routeMatches: [
+        "/images",
+        "/kickit",
+        "/clikit"
+      ],
+      pageNames: [
+        "EditStory"
+      ],
+      controlIds: [
+        "update_with_ai",
+        "auto_prompt",
+        "generate_video",
+        "action_image",
+        "motion_storyboard"
+      ],
+      userGoal: "Manually edit any scene, prompt, video prompt, narration, action reference, or motion storyboard.",
+      systemResult: "EditStory uses GptRemake/GptRemakeText/EditGeneratedVisualTextOnly/VideoDesign routes and selected image/video model routes while preserving active scene context and character references."
+    },
+    {
+      id: "video_bshot_publish",
+      name: "Video, B-shot, and publish",
+      routeMatches: [
+        "/images",
+        "/kickit"
+      ],
+      pageNames: [
+        "Storybook",
+        "PublishLoader",
+        "PublishLoader2"
+      ],
+      controlIds: [
+        "continue",
+        "next",
+        "debut",
+        "publish"
+      ],
+      userGoal: "Move from images into video, supporting B-shots, or final render.",
+      systemResult: "Continue enters video mode, Next enters B-shot mode for normal content, Debut publishes music-video mode, and PublishLoader2 processes the cloud render recipe."
+    },
+    {
+      id: "interaction_authoring",
+      name: "Interaction authoring",
+      routeMatches: [
+        "/clikit"
+      ],
+      pageNames: [
+        "Games",
+        "Interactions",
+        "InteractInput"
+      ],
+      controlIds: [
+        "touch",
+        "swipe",
+        "preview",
+        "publish_interaction"
+      ],
+      userGoal: "Build an interactive video/game after generated video slots exist.",
+      systemResult: "Clikit reads localstoragevid slots and localInteractionpostId, then InteractInput lets the user author Touch/Swipe branches and save with /interactionSave."
+    }
+  ],
+  uiControls: [
+    {
+      id: "prompt_input",
+      visibleLabel: "Prompt Input",
+      alsoSeenAs: [
+        "golden prompt",
+        "Notepad",
+        "NotepadEditor"
+      ],
+      controlType: "text workspace",
+      routeMatches: [
+        "/MagicMirror",
+        "/images",
+        "/kickit",
+        "/clikit"
+      ],
+      pageNames: [
+        "PromptInput",
+        "NotepadEditor"
+      ],
+      sourceFile: "src/PromptInput.tsx",
+      userIntent: "Write or revise the base idea for content creation.",
+      systemAction: "Stores prompt and opens NotepadEditor, where brainstorm/templates/music prompt construction can modify the same golden prompt.",
+      resultingState: "Create submission can start StartStory."
+    },
+    {
+      id: "sidebar_create_button",
+      visibleLabel: "Create Button",
+      alsoSeenAs: [
+        "Create",
+        "left menu Create",
+        "AddCircleIcon"
+      ],
+      controlType: "navigation entry",
+      routeMatches: [
+        "/",
+        "/MagicMirror",
+        "/images",
+        "/kickit",
+        "/clikit",
+        "/feeds"
+      ],
+      pageNames: [
+        "Home",
+        "Shorts",
+        "Cinema",
+        "Games",
+        "Feeds"
+      ],
+      sourceFile: "src/MenuSlider.tsx",
+      userIntent: "Open PromptInput from the main app navigation.",
+      systemAction: "handleCreateClick toggles setminimisePrompt and navigates to /images if the current page is not already a creation page.",
+      resultingState: "PromptInput/golden prompt becomes visible for content creation."
+    },
+    {
+      id: "feed_plus_icon",
+      visibleLabel: "+",
+      alsoSeenAs: [
+        "right-side plus",
+        "feed plus icon",
+        "AddCircleIcon quick create"
+      ],
+      controlType: "quick creation entry",
+      routeMatches: [
+        "/images",
+        "/kickit",
+        "/clikit",
+        "/feeds"
+      ],
+      pageNames: [
+        "Feeds",
+        "Shorts",
+        "Cinema",
+        "Games"
+      ],
+      sourceFile: "src/TogglePromptButton.tsx",
+      userIntent: "Open PromptInput directly while browsing feed cards.",
+      systemAction: "When the button is in Create state, TogglePromptButton renders AddCircleIcon and calls setminimisePrompt(false) on click.",
+      resultingState: "The same PromptInput surface opens over the feed list."
+    },
+    {
+      id: "magicmirror_create_nav",
+      visibleLabel: "Create",
+      alsoSeenAs: [
+        "MagicMirror Create"
+      ],
+      controlType: "landing navigation entry",
+      routeMatches: [
+        "/MagicMirror"
+      ],
+      pageNames: [
+        "MagicMirror"
+      ],
+      sourceFile: "src/MagicMirror.tsx",
+      userIntent: "Enter creation from the landing/mirror screen.",
+      systemAction: "The Create nav handler sets minimisePrompt false and navigates to /images.",
+      resultingState: "PromptInput opens in the Shorts/images route."
+    },
+    {
+      id: "brainstorm",
+      visibleLabel: "Brainstorm",
+      controlType: "AI chat panel",
+      routeMatches: [
+        "/images",
+        "/kickit",
+        "/clikit"
+      ],
+      pageNames: [
+        "NotepadEditor"
+      ],
+      sourceFile: "src/components/PromptConstructor.tsx",
+      userIntent: "Use AI to explore or rewrite the prompt before creation.",
+      systemAction: "PromptConstructor opens BrainstormChat and sends snapshot-aware messages to brainstorm endpoints.",
+      resultingState: "The prompt can be refined before StartStory."
+    },
+    {
+      id: "prompt_toolbar",
+      visibleLabel: "PromptToolbar",
+      alsoSeenAs: [
+        "Styles",
+        "Models",
+        "Slideshow",
+        "Characters",
+        "Music",
+        "Pixel cost"
+      ],
+      controlType: "top toolbar",
+      routeMatches: [
+        "/images",
+        "/kickit",
+        "/clikit"
+      ],
+      pageNames: [
+        "PromptInput",
+        "Storybook"
+      ],
+      sourceFile: "src/PromptToolbar.tsx",
+      userIntent: "Set style/model/music/character options and monitor generation cost.",
+      systemAction: "Updates selectedStyle/artstyle, model selection, music picker state, character studio revisit, slideshow preview, and pixel-cost display.",
+      resultingState: "Generation requests use the selected model/style/music/reference settings."
+    },
+    {
+      id: "art_style_selection",
+      visibleLabel: "Styles",
+      alsoSeenAs: [
+        "ArtStyleSelector",
+        "selectedStyle",
+        "setArtstyle"
+      ],
+      controlType: "creative style selector",
+      routeMatches: [
+        "/images",
+        "/kickit",
+        "/clikit"
+      ],
+      pageNames: [
+        "PromptInput",
+        "PromptToolbar"
+      ],
+      sourceFile: "src/PromptToolbar.tsx",
+      userIntent: "Pick the visual art direction before scene planning and generation.",
+      systemAction: "Opens the style dialog with Auto plus ArtStyleSelector categories; handleSelectStyle updates selectedStyle/customStyleInput, debounced custom input dispatches setArtstyle, worldStyle can auto-fill the style, and /GptArtstylePrompt can create style previews.",
+      resultingState: "PromptInput StartPlan receives selectedStyle and applies applyArtStyleToPlan when the style is not Auto."
+    },
+    {
+      id: "model_selection",
+      visibleLabel: "Models",
+      alsoSeenAs: [
+        "modelz",
+        "setModel",
+        "ModelPixels",
+        "image model"
+      ],
+      controlType: "image model selector",
+      routeMatches: [
+        "/images",
+        "/kickit",
+        "/clikit"
+      ],
+      pageNames: [
+        "PromptInput",
+        "PromptToolbar",
+        "Storybook",
+        "EditStory"
+      ],
+      sourceFile: "src/PromptToolbar.tsx",
+      userIntent: "Choose which image model should create or regenerate the scene visuals.",
+      systemAction: "PromptToolbar maps flattenedModels into the Models menu and calls handleSelectModel; PromptInput handleSelect dispatches setModel and sets modelz; ModelPixels displays cost for the chosen model.",
+      resultingState: "Storybook and EditStory route HD images, regenerated images, action images, and motion storyboard images through the selected model family."
+    },
+    {
+      id: "aspect_ratio_selection",
+      visibleLabel: "AspectRatioBox",
+      alsoSeenAs: [
+        "aspect ratio",
+        "ratioKey",
+        "settings.aspectRatio"
+      ],
+      controlType: "frame shape selector",
+      routeMatches: [
+        "/MagicMirror",
+        "/images",
+        "/kickit",
+        "/clikit"
+      ],
+      pageNames: [
+        "PromptInput",
+        "Storybook",
+        "EditStory",
+        "PublishLoader2"
+      ],
+      sourceFile: "src/AspectRatioBox.tsx",
+      userIntent: "Select vertical, square, or landscape framing before generating content.",
+      systemAction: "AspectRatioBox reads settings.aspectRatio, displays the mapped frame, and dispatches cycleAspectRatio on click: 1 is 9:16, 2 is 1:1, and 3 is 16:9.",
+      resultingState: "PromptInput, Storybook, EditStory, and publish use ratioKey for image dimensions, ty payloads, grid layout, video prompt context, conversion, and final render ratio."
+    },
+    {
+      id: "title_selector",
+      visibleLabel: "Shorts / Cinema / Games",
+      controlType: "mode selector",
+      routeMatches: [
+        "/images",
+        "/kickit",
+        "/clikit"
+      ],
+      pageNames: [
+        "Shorts",
+        "Cinema",
+        "Games"
+      ],
+      sourceFile: "src/TitleSelector.tsx",
+      userIntent: "Switch the creation mode before prompt submission.",
+      systemAction: "Navigates to /images, /kickit, or /clikit and therefore changes PromptInput type.",
+      resultingState: "StartStory chooses /startMemes, /startStory, or /startInteractions."
+    },
+    {
+      id: "music_upload",
+      visibleLabel: "Music",
+      alsoSeenAs: [
+        "Golden Music",
+        "Upload MP3"
+      ],
+      controlType: "music picker",
+      routeMatches: [
+        "/kickit"
+      ],
+      pageNames: [
+        "PromptToolbar",
+        "NotepadEditor",
+        "Storybook"
+      ],
+      sourceFile: "src/PromptToolbar.tsx",
+      userIntent: "Create a music video from a selected or uploaded track.",
+      systemAction: "Sets promptMusicUrl/name/breaker/segments; NotepadEditor calculates musicSceneCount; StartStory enforces the exact scene count.",
+      resultingState: "Story/Cinema switches into music video mode and the video-stage button becomes Debut."
+    },
+    {
+      id: "world_model_characters",
+      visibleLabel: "Characters",
+      alsoSeenAs: [
+        "WorldModel",
+        "Direct Upload",
+        "VIP characters"
+      ],
+      controlType: "character/source selector",
+      routeMatches: [
+        "/images",
+        "/kickit",
+        "/clikit"
+      ],
+      pageNames: [
+        "PromptInput",
+        "Storybook",
+        "EditStory"
+      ],
+      sourceFile: "src/WorldModel.tsx",
+      userIntent: "Bring characters from created worlds, direct upload, or manual character details.",
+      systemAction: "Sets remixData, worldStyle, worldCover, GeneratedImage, and Vipcharacters, then merges VIP data into planning/casting/reference flows.",
+      resultingState: "Character references are available for image generation, action images, motion storyboards, and video generation."
+    },
+    {
+      id: "create_characters_choice",
+      visibleLabel: "Skip / Create Characters",
+      controlType: "path choice",
+      routeMatches: [
+        "/images",
+        "/kickit",
+        "/clikit"
+      ],
+      pageNames: [
+        "PromptInput"
+      ],
+      sourceFile: "src/PromptInput.tsx",
+      userIntent: "Choose whether to invest in character/environment reference creation after seeing the nano storyboard.",
+      systemAction: "Skip hides the modal; Create Characters starts runAutoCastingPipeline and reference image generation.",
+      resultingState: "Storybook continues either without references or with generated/VIP referenceImages."
+    },
+    {
+      id: "auto_manual_storybook",
+      visibleLabel: "Auto / Manual",
+      controlType: "generation mode buttons",
+      routeMatches: [
+        "/images",
+        "/kickit",
+        "/clikit"
+      ],
+      pageNames: [
+        "Storybook"
+      ],
+      sourceFile: "src/Storybook.tsx",
+      userIntent: "Choose automatic HD image generation or a manual/nano-video workflow.",
+      systemAction: "Auto sets normal HD image generation; Manual/Video sets CreationMode so nano images can populate image slots and the user can proceed or edit manually.",
+      resultingState: "Scene media becomes ready for Continue/video mode."
+    },
+    {
+      id: "storybook_continue_next_debut_publish",
+      visibleLabel: "Continue / Next / Debut / Publish",
+      controlType: "stage progression buttons",
+      routeMatches: [
+        "/images",
+        "/kickit"
+      ],
+      pageNames: [
+        "Storybook",
+        "PublishLoader",
+        "PublishLoader2"
+      ],
+      sourceFile: "src/Storybook.tsx",
+      userIntent: "Advance from images to videos, from videos to B-shots, or from music/video mode to final publishing.",
+      systemAction: "Continue saves/uses images and enters video mode; Next opens B-shot mode; Debut triggers music video publishing; Publish opens PublishLoader2.",
+      resultingState: "Content progresses toward final cloud rendering."
+    },
+    {
+      id: "editstory_scene_card",
+      visibleLabel: "Scene card",
+      alsoSeenAs: [
+        "click grid item",
+        "EditStory"
+      ],
+      controlType: "editable media card",
+      routeMatches: [
+        "/images",
+        "/kickit",
+        "/clikit"
+      ],
+      pageNames: [
+        "Storybook",
+        "EditStory"
+      ],
+      sourceFile: "src/Storybook.tsx",
+      userIntent: "Open one scene, A-shot, or B-shot for detailed editing.",
+      systemAction: "Storybook passes unified A/B-shot props, prompts, media, references, PlanVid, and mode state into EditStory.",
+      resultingState: "The user can edit image, video, narration, action, and motion details."
+    },
+    {
+      id: "update_with_ai",
+      visibleLabel: "Update with AI",
+      alsoSeenAs: [
+        "Describe change to Gpt",
+        "UPDATE SCENE WITH AI"
+      ],
+      controlType: "AI edit field",
+      routeMatches: [
+        "/images",
+        "/kickit",
+        "/clikit"
+      ],
+      pageNames: [
+        "EditStory"
+      ],
+      sourceFile: "src/EditStory.tsx",
+      userIntent: "Ask the AI to modify the current image prompt, video prompt, action prompt, or scene text.",
+      systemAction: "Calls GptRemake/GptRemakeSafe/GptRemakeText or EditGeneratedVisualTextOnly with scene context, image description, target model, duration, ratio, and image URL.",
+      resultingState: "The selected prompt or TextVideo field is rewritten in place."
+    },
+    {
+      id: "auto_prompt_video",
+      visibleLabel: "Auto Prompt",
+      controlType: "video prompt generator",
+      routeMatches: [
+        "/images",
+        "/kickit",
+        "/clikit"
+      ],
+      pageNames: [
+        "EditStory"
+      ],
+      sourceFile: "src/EditStory.tsx",
+      userIntent: "Generate a model-specific video prompt from the current scene image and story context.",
+      systemAction: "Requires videModel; sends PlanVid, imageDescription, question, targetModel, duration, ratioKey, and optional imageUrl to VideoDesign or GptVideoVisualMiniMax.",
+      resultingState: "TextVideo is populated for video generation."
+    },
+    {
+      id: "action_motion_images",
+      visibleLabel: "Action Image / Motion Storyboard",
+      controlType: "reference image generator",
+      routeMatches: [
+        "/images",
+        "/kickit",
+        "/clikit"
+      ],
+      pageNames: [
+        "EditStory"
+      ],
+      sourceFile: "src/EditStory.tsx",
+      userIntent: "Create targeted action frames or multi-panel motion boards for stronger video generation control.",
+      systemAction: "Action mode sends actionPrompt plus @Character sampleImages to the selected image route; Motion mode converts TextVideo with GptRemakeText into a grid prompt and generates a storyboard image.",
+      resultingState: "Generated action/motion images can be activated as references for the current scene."
+    },
+    {
+      id: "interaction_touch_swipe",
+      visibleLabel: "Touch / Swipe",
+      controlType: "interaction builder mode",
+      routeMatches: [
+        "/clikit"
+      ],
+      pageNames: [
+        "InteractInput"
+      ],
+      sourceFile: "src/InteractInput.tsx",
+      userIntent: "Turn generated game videos into playable branches.",
+      systemAction: "DefaultStageUI enters TouchEditStageUI or SwipeEditStageUI; preview components test the interaction; /interactionSave persists the final config.",
+      resultingState: "Interactive content is saved and routed to profile/pages."
+    }
+  ],
+  snapshotExample: {
+    sourceLog: "[Brainstorm userSnapshot] user asks how to create content",
+    route: "/kickit",
+    pageName: "Cinema",
+    device: "desktop",
+    app: {
+      prompt: "A character-driven music video story",
+      promptLength: 38,
+      artstyle: "Auto",
+      model: "Schnell",
+      aspectRatio: 1
+    },
+    ui: {
+      isMenuOpen: true,
+      minimisePrompt: false,
+      isBrainstormChatOpen: false
+    },
+    recentActions: [
+      {
+        type: "button",
+        label: "Music",
+        tagName: "button",
+        route: "/kickit"
+      },
+      {
+        type: "textarea",
+        label: "Prompt Input",
+        tagName: "textarea",
+        route: "/kickit"
+      },
+      {
+        type: "button",
+        label: "Create Characters",
+        tagName: "button",
+        route: "/kickit"
+      }
+    ]
+  },
+  sourceEvidence: [
+    {
+      sourceFile: "src/MenuSlider.tsx",
+      pageNames: [
+        "Home",
+        "Shorts",
+        "Cinema",
+        "Games",
+        "Feeds"
+      ],
+      featureNames: [
+        "Create Button",
+        "AddCircleIcon",
+        "handleCreateClick",
+        "setminimisePrompt",
+        "navigate('/images')"
+      ],
+      notes: "Primary sidebar/mobile menu entry into creation. Create toggles the prompt surface and moves to /images if the user is not already on a creation route."
+    },
+    {
+      sourceFile: "src/TogglePromptButton.tsx",
+      pageNames: [
+        "Feeds",
+        "Shorts",
+        "Cinema",
+        "Games"
+      ],
+      featureNames: [
+        "feed plus icon",
+        "AddCircleIcon",
+        "setminimisePrompt(false)",
+        "quick create"
+      ],
+      notes: "Right-side feed quick-create control. In Create state it renders AddCircleIcon and opens PromptInput by setting minimisePrompt false."
+    },
+    {
+      sourceFile: "src/MagicMirror.tsx",
+      pageNames: [
+        "MagicMirror"
+      ],
+      featureNames: [
+        "Create nav",
+        "setminimisePrompt(false)",
+        "navigate('/images')",
+        "auto-open creation"
+      ],
+      notes: "Landing/mirror entry into creation. The Create nav opens PromptInput on /images, and the initial timer can also auto-open /images with PromptInput visible."
+    },
+    {
+      sourceFile: "src/App.tsx",
+      pageNames: [
+        "App shell"
+      ],
+      featureNames: [
+        "minimisePrompt",
+        "MagicMirror route",
+        "creation routes",
+        "setminimisePrompt"
+      ],
+      notes: "Top-level shell that owns the create overlay state and passes creation/opening props into MagicMirror and feed/creation pages."
+    },
+    {
+      sourceFile: "src/PromptInput.tsx",
+      routeMatches: [
+        "/images",
+        "/kickit",
+        "/clikit"
+      ],
+      pageNames: [
+        "PromptInput"
+      ],
+      featureNames: [
+        "StartStory",
+        "StartPlan",
+        "handleActualSubmit",
+        "runAutoCastingPipeline",
+        "Vipcharacters",
+        "promptMusicUrl",
+        "promptMusicSceneCount",
+        "showPathChoiceOverlay"
+      ],
+      notes: "Main creation controller. It chooses planning routes, injects VIP character descriptions into remixData, doubles Story/Cinema keyPoints, opens Notepad, passes music mode props, and displays Skip/Create Characters."
+    },
+    {
+      sourceFile: "src/PromptInput.tsx",
+      pageNames: [
+        "PromptInput"
+      ],
+      featureNames: [
+        "selectedStyle",
+        "modelz",
+        "ratioKey",
+        "handleSelect",
+        "setModel",
+        "AspectRatioBox",
+        "PromptToolbar",
+        "applyArtStyleToPlan",
+        "ty: ratioKey"
+      ],
+      notes: "Owns the PromptInput creative setup. selectedStyle starts as Auto, modelz starts as Models, ratioKey comes from settings.aspectRatio, handleSelect stores the model with setModel/setModelz, and StartPlan can apply the selected style to Planx."
+    },
+    {
+      sourceFile: "src/PromptToolbar.tsx",
+      pageNames: [
+        "PromptToolbar"
+      ],
+      featureNames: [
+        "Styles",
+        "Models",
+        "Slideshow",
+        "Characters",
+        "Music",
+        "MorphButton"
+      ],
+      notes: "Top toolbar for model/style/music/character/slideshow/pixel controls."
+    },
+    {
+      sourceFile: "src/PromptToolbar.tsx",
+      pageNames: [
+        "PromptToolbar"
+      ],
+      featureNames: [
+        "ArtStyleSelector",
+        "handleSelectStyle",
+        "setArtstyle",
+        "GptArtstylePrompt",
+        "flattenedModels",
+        "handleSelectModel",
+        "ModelPixels"
+      ],
+      notes: "Concrete UI owner for Styles and Models. It updates selectedStyle/customStyleInput, persists artstyle to Redux, renders model choices, calls handleSelectModel, and shows per-model pixel cost."
+    },
+    {
+      sourceFile: "src/AspectRatioBox.tsx",
+      pageNames: [
+        "PromptInput"
+      ],
+      featureNames: [
+        "ratioMap",
+        "cycleAspectRatio",
+        "settings.aspectRatio",
+        "ratioKey",
+        "9:16",
+        "1:1",
+        "16:9"
+      ],
+      notes: "Aspect ratio selector. It maps numeric Redux keys to visible frame shapes and cycles the key on click."
+    },
+    {
+      sourceFile: "src/settingsSlice.ts",
+      featureNames: [
+        "artstyle",
+        "model",
+        "prompt",
+        "aspectRatio",
+        "setArtstyle",
+        "setModel",
+        "setAspectRatio",
+        "cycleAspectRatio"
+      ],
+      notes: "Redux storage for PromptInput creative controls and prompt text."
+    },
+    {
+      sourceFile: "src/NotepadEditor.tsx",
+      pageNames: [
+        "NotepadEditor"
+      ],
+      featureNames: [
+        "PromptConstructor",
+        "BrainstormChat",
+        "Templates",
+        "musicSceneCount",
+        "musicSegments",
+        "musicBreakerSec"
+      ],
+      notes: "Prompt writing surface, brainstorm/template access, and music mode segmentation/count logic."
+    },
+    {
+      sourceFile: "src/Storybook.tsx",
+      pageNames: [
+        "Storybook"
+      ],
+      featureNames: [
+        "ImageDesignStory",
+        "ImageDesignStoryStage",
+        "fluxschnell nano images",
+        "CreationMode",
+        "PlanVid",
+        "Continue",
+        "Next",
+        "Debut",
+        "B-shots",
+        "PublishLoader",
+        "PublishLoader2",
+        "unifiedIndexMap"
+      ],
+      notes: "Main post-planning workshop. It prefetches prompts/nano images, manages Auto/Manual, image/video/B-shot stages, music publishing, and passes unified scene data into EditStory."
+    },
+    {
+      sourceFile: "src/EditStory.tsx",
+      pageNames: [
+        "EditStory"
+      ],
+      featureNames: [
+        "Update with AI",
+        "Auto Prompt",
+        "GenerateVideox",
+        "EditGeneratedVisualTextOnlyFn",
+        "Action Image Generation",
+        "Motion Storyboard Generation",
+        "activechracterimages",
+        "musicKling",
+        "videModel"
+      ],
+      notes: "Per-scene workstation for image edits, narration edits, video prompts, video generation, action references, motion storyboards, character injection, and B-shot editing."
+    },
+    {
+      sourceFile: "src/WorldModel.tsx",
+      pageNames: [
+        "PromptInput"
+      ],
+      featureNames: [
+        "Direct Upload",
+        "Vipcharacters",
+        "setRemixData",
+        "setWorldStyle",
+        "setWorldCover"
+      ],
+      notes: "World/character import layer that can feed style, world bible/remix text, direct uploaded images, and VIP character data into creation."
+    },
+    {
+      sourceFile: "src/Clikit.tsx",
+      routeMatches: [
+        "/clikit"
+      ],
+      pageNames: [
+        "Games",
+        "Interactions"
+      ],
+      featureNames: [
+        "PromptInput type 3",
+        "localstoragevid",
+        "localInteractionpostId",
+        "InteractInput"
+      ],
+      notes: "Games route mounts PromptInput type 3 and later reads generated video slots to open the interaction builder."
+    },
+    {
+      sourceFile: "src/InteractInput.tsx",
+      routeMatches: [
+        "/clikit"
+      ],
+      pageNames: [
+        "InteractInput"
+      ],
+      featureNames: [
+        "TouchEditStageUI",
+        "TouchPreviewStageUI",
+        "SwipeEditStageUI",
+        "SwipePreviewStageUI",
+        "interactionSave"
+      ],
+      notes: "Interactive authoring surface for Touch/Swipe branches, audio, preview, and saving."
+    },
+    {
+      sourceFile: "server/src/server.ts",
+      featureNames: [
+        "/startStory",
+        "/startMemes",
+        "/startInteractions",
+        "/startPlan",
+        "/startPlanVid",
+        "/extractCasting",
+        "/generateCastingPrompts",
+        "/ImageDesignStory",
+        "/ImageDesignStoryStage",
+        "/VideoDesign",
+        "/EditGeneratedVisualTextOnly",
+        "/GptRemake",
+        "/GptRemakeText",
+        "/interactionSave"
+      ],
+      notes: "Registers the backend routes used by the complete creation flow."
+    },
+    {
+      sourceFile: "server/src/GptApi.ts",
+      featureNames: [
+        "GptVisualize",
+        "GptMeme",
+        "GptInt",
+        "GptPlan",
+        "GptVideoPlan",
+        "GptTextVisual",
+        "GptTextVisualStages",
+        "GptVideoVisual",
+        "GptVideoVisualMiniMax",
+        "EditGeneratedVisualTextOnly"
+      ],
+      notes: "Planner and prompt-generation backend logic for story/meme/interaction keyPoints, image prompts, staged prompts, video plans, and video prompts."
+    },
+    {
+      sourceFile: "server/src/LambdaFfmpegRoutes.ts",
+      featureNames: [
+        "cloud final render",
+        "lambda ffmpeg",
+        "final scripted MP4"
+      ],
+      notes: "Final processing layer used by PublishLoader2 to stitch media into the rendered output."
+    }
+  ],
+  extra: {
+    assistantUse: "Use this chunk when the user asks how content is created in ClikB, how the creation modes differ, what PromptInput/PromptToolbar/Storybook/EditStory do, how music video mode changes the flow, why nano images exist, or why Games/Interactions are handled differently.",
+    modeCaveats: [
+      "Shorts/type 0 uses /startMemes and supports 1-9 visual scenes. It can proceed through image, video, and B-shot-like support flows when the project shape allows it.",
+      "Cinema/Stories/type 1 uses /startStory and duplicates every returned scene into Stage A and Stage B before visual prompt generation.",
+      "Music video mode is type 1 plus promptMusicUrl. It locks planning to the calculated music scene count, uses Debut in video mode, and bypasses the B-shot branch.",
+      "Games/Interactions/type 3 uses /startInteractions and produces node-labeled game scenes. It is video-only and hands off to InteractInput rather than the normal publish flow.",
+      "Normal non-game, non-music content can be images-only, videos-only, or a mix of images/videos depending on Storybook/EditStory user decisions and publish settings."
+    ],
+    actualImplementationNotes: [
+      "The UI can enter PromptInput from MenuSlider's left Create Button, TogglePromptButton's right-side feed plus icon, or MagicMirror's Create nav.",
+      "These UI entry buttons only open creation by changing minimisePrompt and route state; the actual content generation begins later when the user presses the Create button inside PromptInput.",
+      "StartStory appends Vipcharacters as character descriptions inside remixData before calling the planner.",
+      "Storybook uses ImageDesignStoryStage for Story/Cinema staged prompts and ImageDesignStory for normal prompts.",
+      "Nano images are generated through fluxschnell and stored in nanoImages or bShotNanoImages.",
+      "CreationMode === Video can copy nano images into generated image slots so video generation has scene start frames without forcing HD image generation.",
+      "PromptInput creative setup includes selectedStyle/settings.artstyle, modelz/settings.model, and ratioKey/settings.aspectRatio before StartStory runs.",
+      "Styles are controlled by PromptToolbar and ArtStyleSelector. A non-Auto selectedStyle is applied to Planx through applyArtStyleToPlan during StartPlan.",
+      "Models are controlled by PromptToolbar's Models menu and PromptInput handleSelect; modelz determines the downstream image route and ModelPixels determines cost display/estimation.",
+      "AspectRatioBox cycles settings.aspectRatio through 1=9:16, 2=1:1, and 3=16:9. The same ratioKey becomes ty in image requests and ratio/layout data across Storybook, EditStory, and PublishLoader2.",
+      "EditStory Auto Prompt depends on videModel and writes TextVideo; GenerateVideox sends TextVideo plus image/start-frame/reference data to the selected video route.",
+      "Action and motion images are optional references that can be activated per scene and included in video generation alongside character references.",
+      "PublishLoader2 receives musicSegments, musicBreakerSec, B-shot arrays, generated audios, clip duration, and lambdaPublishStatus for final cloud processing."
+    ]
+  },
+}

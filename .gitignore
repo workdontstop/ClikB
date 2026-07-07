@@ -1,4 +1,4 @@
-# Logs
+﻿# Logs
 logs
 *.log
 npm-debug.log*
@@ -7,12 +7,16 @@ yarn-error.log*
 pnpm-debug.log*
 lerna-debug.log*
 
+# Dependencies and build output
 node_modules
 dist
 dist-ssr
+dev-dist
+client/dist
+server/dist
 *.local
 
-# Editor directories and files
+# Editors and OS files
 .vscode/*
 !.vscode/extensions.json
 .idea
@@ -22,3 +26,64 @@ dist-ssr
 *.njsproj
 *.sln
 *.sw?
+
+# Local scratch, generated, and recovery artifacts
+.codex-media/
+action_modal_original.txt
+build_error.txt
+diff*.txt
+head_*.txt
+vlc-help.txt
+endpoints.txt
+*.patch
+fix_*.*
+patch_*.*
+restore_*.ps1
+scratch.js
+temp_*.cjs
+test_api.cjs
+unfix_morph.cjs
+src/ai_patches.txt
+src/patch_*.cjs
+src/*Backup*.tsx
+src/Storybook_Current_Before_Restore.tsx
+src/*.restored.tsx
+server/fix*.js
+server/image.png
+server/src/EADDRINUSE.txt
+server/src/test-sam.ts
+docs/*.docx
+
+# Secrets and env files
+**/*.env
+.env*
+server/.env*
+client/.env*
+!.env.example
+!server/.env.example
+
+# Docker deployment files that commonly contain production secrets
+# Dockerfile and docker-compose.yml are intentionally not ignored here.
+docker-compose.prod.yml
+docker-compose.secrets.yml
+docker-compose.override.yml
+compose.prod.yml
+ops/
+deploy/
+infra/
+*.local.yml
+*.override.yml
+.docker/
+
+# Keys and certificates
+*.pem
+*.key
+id_rsa*
+id_ed25519*
+*.crt
+*.csr
+
+# Google service-account keys
+TTXgoogleStream.json
+TTSgoogleStream.json
+*google*Stream*.json

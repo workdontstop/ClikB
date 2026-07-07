@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useCallback } from "react";
+﻿import React, { useState, useEffect, useCallback } from "react";
 import {
   Box,
   Button,
@@ -131,8 +131,8 @@ export default function StoryVideoEditor({ isOpen, feeds, verticalActiveIndex, s
               feedItem.xh7,
               feedItem.xh8,
             ].filter(Boolean) as string[];
-      
-      
+
+
       */
 
       setImages(storyImages);
@@ -182,6 +182,9 @@ export default function StoryVideoEditor({ isOpen, feeds, verticalActiveIndex, s
           question: feeds[verticalActiveIndex].caption
         };
 
+        console.log("=== AUTO PROMPT CLIENT-SIDE (EditPost.tsx) PARAMETERS AND DATA SENT ===");
+        console.log("Index (i):", i);
+        console.log("Request Payload (requestData):", JSON.stringify(requestData, null, 2));
 
         const response = await axios.post<any>(
           `${CLIK_URL}/VideoDesign`,
@@ -189,6 +192,10 @@ export default function StoryVideoEditor({ isOpen, feeds, verticalActiveIndex, s
           { withCredentials: true }
         );
         const datax = response.data;
+
+        console.log("=== AUTO PROMPT CLIENT-SIDE (EditPost.tsx) RESPONSE RECEIVED ===");
+        console.log("Response Status:", response.status);
+        console.log("Response Data (datax):", JSON.stringify(datax, null, 2));
 
         const visualPromptText = datax.visualPrompt;
 
@@ -312,7 +319,7 @@ export default function StoryVideoEditor({ isOpen, feeds, verticalActiveIndex, s
           throw new Error(`Error from server: ${response.status}`);
         }
 
-        // Extract the videoBase64 from the server’s response.
+        // Extract the videoBase64 from the serverâ€™s response.
         const { videoBase64 } = response.data;
         if (!videoBase64) {
           throw new Error("No videoBase64 returned from server");
@@ -498,9 +505,9 @@ export default function StoryVideoEditor({ isOpen, feeds, verticalActiveIndex, s
 
 
   /* ------------------------------------------------------------------ */
-  /* 2️⃣  EFFECT  –– fires whenever the images array changes            */
+  /* 2ï¸âƒ£  EFFECT  â€“â€“ fires whenever the images array changes            */
   useEffect(() => {
-    // if there’s no image at index-0 yet, bail out early
+    // if thereâ€™s no image at index-0 yet, bail out early
     if (!images || images.length === 0 || !images[0]) return;
 
     let cancelled = false;           // clean-up flag in case the component unmounts
@@ -525,7 +532,7 @@ export default function StoryVideoEditor({ isOpen, feeds, verticalActiveIndex, s
     return () => {
       cancelled = true;
     };
-  }, [images]);                       // 🔑 re-run only when the image list changes
+  }, [images]);                       // ðŸ”‘ re-run only when the image list changes
 
 
   return (

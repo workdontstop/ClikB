@@ -1,4 +1,4 @@
-// CropImageModal.tsx
+﻿// CropImageModal.tsx
 import { useState, useCallback, useEffect, CSSProperties } from "react";
 import Cropper from "react-easy-crop";
 import CloseIcon from "@mui/icons-material/Close";
@@ -21,54 +21,8 @@ import zIndex from "@mui/material/styles/zIndex";
  * Helper to crop the image using HTML canvas.
  * This returns a base64 string of the cropped area.
  */
-async function getCroppedImg(
-    imageSrc: string,
-    pixelCrop: { x: number; y: number; width: number; height: number },
-    typeVal: number
-): Promise<string> {
-    // Create the image
 
 
-
-
-
-
-    const createImage = (url: string): Promise<HTMLImageElement> =>
-        new Promise((resolve, reject) => {
-            const image = new Image();
-            // If your server or images require CORS:
-            image.setAttribute("crossOrigin", "anonymous");
-            image.src = url;
-            image.onload = () => resolve(image);
-            image.onerror = (err) => reject(err);
-        });
-
-    const image = await createImage(imageSrc);
-
-    const canvas = document.createElement("canvas");
-    const ctx = canvas.getContext("2d");
-    if (!ctx) throw new Error("No 2D context found.");
-
-    /**
-     * If typeVal == 1, override the final canvas to 729×540.
-     * Otherwise, match the cropped area (the default).
-     */
-    if (typeVal === 1) {
-
-
-        canvas.width = 960;
-        canvas.height = 540;
-    } else {
-        canvas.width = pixelCrop.width;
-        canvas.height = pixelCrop.height;
-    }
-
-    // Move the image so the top-left of the cropping area is (0,0)
-    ctx.translate(-pixelCrop.x, -pixelCrop.y);
-    ctx.drawImage(image, 0, 0);
-
-    return canvas.toDataURL("image/jpeg");
-}
 
 interface CropImageModalProps {
     /** Whether the modal is open or not */
@@ -83,8 +37,8 @@ interface CropImageModalProps {
 }
 
 /**
- * A fullscreen overlay for cropping the image. 
- * The zoom/Save/Cancel area is partially hidden by style, 
+ * A fullscreen overlay for cropping the image.
+ * The zoom/Save/Cancel area is partially hidden by style,
  * but the core logic is unchanged.
  */
 export function CropImageModal({
@@ -104,6 +58,69 @@ export function CropImageModal({
     const loggedUser = useSelector((state: RootState) => state.profile.loggedUser);
 
     const CLIK_URL = import.meta.env.VITE_CLIK_URL;
+
+    async function getCroppedImg(
+        imageSrc: string,
+        pixelCrop: { x: number; y: number; width: number; height: number },
+        typeVal: number
+    ): Promise<string> {
+        // Load image
+        const image = await new Promise<HTMLImageElement>((resolve, reject) => {
+            const img = new Image();
+            img.crossOrigin = "anonymous"; // keep if needed for CORS
+            img.onload = () => resolve(img);
+            img.onerror = reject;
+            img.src = imageSrc;
+        });
+
+        // Output size: lock to 16:9 (960Ã—540) when typeVal === 1,
+        // otherwise use the crop rect size.
+        const outW = typeVal === 1 ? 960 : Math.round(pixelCrop.width);
+        const outH = typeVal === 1 ? 540 : Math.round(pixelCrop.height);
+
+        const canvas = document.createElement("canvas");
+        canvas.width = outW;
+        canvas.height = outH;
+
+        const ctx = canvas.getContext("2d");
+        if (!ctx) throw new Error("No 2D context found.");
+
+        // If the image is displayed at a different size than its bitmap,
+        // map crop pixels to the image's natural pixels.
+        const scaleX = image.naturalWidth / image.width;
+        const scaleY = image.naturalHeight / image.height;
+
+        // Source rectangle (in the image's pixel space)
+        let sx = Math.floor(pixelCrop.x * scaleX);
+        let sy = Math.floor(pixelCrop.y * scaleY);
+        let sWidth = Math.floor(pixelCrop.width * scaleX);
+        let sHeight = Math.floor(pixelCrop.height * scaleY);
+
+        // Clamp to the image bounds (avoids occasional 1px bleed)
+        sx = Math.max(0, Math.min(sx, image.naturalWidth - 1));
+        sy = Math.max(0, Math.min(sy, image.naturalHeight - 1));
+        sWidth = Math.max(1, Math.min(sWidth, image.naturalWidth - sx));
+        sHeight = Math.max(1, Math.min(sHeight, image.naturalHeight - sy));
+
+        // Better downscaling quality
+        ctx.imageSmoothingEnabled = true;
+        (ctx as any).imageSmoothingQuality = "high";
+
+        // Copy the crop rect -> scale to the output canvas
+        ctx.drawImage(
+            image,
+            sx,        // source x
+            sy,        // source y
+            sWidth,    // source width
+            sHeight,   // source height
+            0,         // destination x
+            0,         // destination y
+            outW,      // destination width
+            outH       // destination height
+        );
+
+        return canvas.toDataURL("image/jpeg", 0.9);
+    }
 
 
 
@@ -264,7 +281,7 @@ export function CropImageModal({
         const img = new Image();
         img.src = base64;
 
-        // We'll do this synchronously – you may want to wrap in a Promise if needed
+        // We'll do this synchronously â€“ you may want to wrap in a Promise if needed
         // so that you can wait for image.onload if the base64 isn't pre-decoded yet:
         // but usually the base64 is instantly decodable by the browser.
 
@@ -291,7 +308,7 @@ export function CropImageModal({
         ctx.drawImage(img, 0, 0, newWidth, newHeight);
 
         // Return new base64
-        // Quality ~0.8 as an example – adjust to your taste
+        // Quality ~0.8 as an example â€“ adjust to your taste
         return canvas.toDataURL("image/jpeg", 0.8);
     }
 

@@ -1,11 +1,13 @@
-import { configureStore } from "@reduxjs/toolkit";
+﻿import { configureStore } from "@reduxjs/toolkit";
 import settingsReducer from "./settingsSlice"; // Import the reducer from settingsSlice
 import profileReducer from "./profileSlice"; // Import the reducer from profileSlice
+import brainstormReducer from "./brainstormSlice";
 
 export const store = configureStore({
   reducer: {
     settings: settingsReducer, // Add the settings reducer
     profile: profileReducer, // Add the profile reducer
+    brainstorm: brainstormReducer,
   },
 });
 

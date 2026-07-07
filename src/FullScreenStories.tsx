@@ -1,11 +1,19 @@
-// FullScreenStories.tsx
-import React, { useCallback, useEffect, useRef, useState } from "react";
+﻿// FullScreenStories.tsx
+import React, { useCallback, useEffect, useRef, useState, useLayoutEffect, useMemo } from "react";
 
-import { Button, Box, Typography, CircularProgress, IconButton } from "@mui/material";
+import { Button, Box, Typography, CircularProgress, IconButton, Stack } from "@mui/material";
 
-import Sandbox from "./Sandbox"; // adjust the import path as needed
+import Sandbox from "./Sandbox"; // adjust the import path as needed font scroll
 
 import SmartDisplayIcon from '@mui/icons-material/SmartDisplay';
+
+import InteractInput from "./InteractInput";
+
+import FollowPanel from "./FollowPanel";
+
+import { bgcolor, keyframes } from '@mui/system';
+
+
 
 import { AnimatePresence, motion } from "framer-motion";
 import { matchMobile, matchPc } from "./DetectDevice";
@@ -13,12 +21,23 @@ import PlayArrowIcon from '@mui/icons-material/PlayArrow';
 import AudiotrackIcon from '@mui/icons-material/Audiotrack';
 import axios from "axios";
 import PauseIcon from '@mui/icons-material/Pause';
-
+import MoreVertIcon from '@mui/icons-material/MoreVert';
+import CloseIcon from '@mui/icons-material/Close';
+import AdjustIcon from '@mui/icons-material/Adjust';
 import { setShowmenuToggle } from "./settingsSlice";
 
 import { useSelector, useDispatch } from "react-redux";
+
+import { RootState, } from "./store";
+
+
+import type { Hotspot } from "./TouchPreviewStageUI";
+
+
 import { useLocation } from 'react-router-dom';
 import { useNavigate } from "react-router-dom";
+import Badge from '@mui/material/Badge';
+import Favorite from '@mui/icons-material/Favorite';
 
 import { activateFullscreenMute, deactivateFullscreenMute } from "./settingsSlice";
 
@@ -28,6 +47,10 @@ import VolumeOffIcon from '@mui/icons-material/VolumeOff';
 
 import EditPost from "./EditPost";
 
+import Plan from "./Plan";
+/////feedtype
+
+import VideoPlayer from './VideoPlayer'; // Adjust path as needed
 
 import {
     FormControl,
@@ -38,7 +61,7 @@ import {
 } from "@mui/material";
 
 
-import { RootState, } from "./store";
+
 import { isIPhone13, isSafari } from "react-device-detect";
 
 interface FeedItem {
@@ -49,7 +72,7 @@ interface FeedItem {
     sender: number;
 
     // Existing fields
-    x1?: string;
+    x1: string;
     xt1?: string;
     x2?: string;
     xt2?: string;
@@ -65,6 +88,8 @@ interface FeedItem {
     xt7?: string;
     x8?: string;
     xt8?: string;
+    x9?: string;
+    xt9?: string;
     item1?: string; // For type 1 items
 
     // New fields
@@ -78,7 +103,8 @@ interface FeedItem {
     xa6?: string;
     xa7?: string;
     xa8?: string;
-    videoUrl?: String;
+    xa9?: string;
+    videoUrl: String;
 
     xh1?: string;
     xh2?: string;
@@ -88,6 +114,7 @@ interface FeedItem {
     xh6?: string;
     xh7?: string;
     xh8?: string;
+    xh9?: string;
 
     xv1?: string;
     xv2?: string;
@@ -97,6 +124,7 @@ interface FeedItem {
     xv6?: string;
     xv7?: string;
     xv8?: string;
+    xv9?: string;
 
     mainint?: string;
     int1?: any;
@@ -109,6 +137,46 @@ interface FeedItem {
     intx2?: any;
     inty2?: any;
     mode?: any;
+
+    nobgmvideo?: string;
+
+    kontext?: string;
+    prompt?: string;
+
+    ratio?: number;
+    model?: string;
+
+
+    main?: string;                  // main video URL
+    inttype?: number;
+    subl?: string;                  // left sub-video URL
+    subr?: string;                  // right sub-video URL
+
+    // touch hotspots (normalized 0..1)
+    touchl?: "left";                // label (optional if you store it)
+    touchlx?: number;               // left hotspot x
+    touchly?: number;               // left hotspot y
+    touchlr?: number;               // left hotspot radius
+
+    touchr?: "right";               // label
+    touchrx?: number;               // right hotspot x
+    touchry?: number;               // right hotspot y
+    touchrr?: number;
+
+
+    mainaud?: string;
+    sub1aud?: string;
+    sub2aud?: string;
+
+    favCount?: number;
+    interactionAudioMain?: string | null;
+    interactionAudioLeft?: string | null;
+    interactionAudioRight?: string | null;
+    touchConfigJson?: string | null;
+
+    intbg?: number;
+
+
 
 }
 
@@ -142,24 +210,39 @@ interface FullScreenStoriesProps {
     closePop: any;
     storyVidArray: any;
     setStoryVidArray: any;
+    searchData: any;
+    MyPageId: any;
+    likedArray: any;
+    likeCountArray: any;
+    setLikedArray: any;
+    setLikeCountArray: any;
+    setLikesPostid: any;
+    setLikes: any;
+    setShowEmotions: any;
+
+    setsearchDataNav: any;
+    setMyPageIdNav: any;
+    setfeedLastIdNav: any;
+    setfeedScrollPosNav: any;
+
 
 }
 
 /**
  * FullScreenStories:
- *  - Renders a vertical, full‑viewport container (with scroll snapping) for all story posts.
- *  - Each post (feed item) is rendered as one full‑viewport “page.”
+ *  - Renders a vertical, fullâ€‘viewport container (with scroll snapping) for all story posts.
+ *  - Each post (feed item) is rendered as one fullâ€‘viewport â€œpage.â€
  *  - The horizontal container for images is laid out (but user scrolling is disabled)
  *    so you can later slide images with JS.
- *  - On mount (or when activeIndex changes), the browser’s TTS narrates the text in xt1.
+ *  - On mount (or when activeIndex changes), the browserâ€™s TTS narrates the text in xt1.
  *  - Intersection Observer sets `activeStory = false` whenever a new post enters the viewport.
  *
  * NEW FUNCTIONALITY:
  *  - A new horizontal container ref (horizontalContainerRef) is attached (for the active feed only)
  *    and an IntersectionObserver on its children saves the current horizontal active index.
- *  - When an utterance finishes naturally, if the current horizontal index isn’t the last image,
- *    the container scrolls to the next image and that caption’s audio is automatically played.
- *  - Each vertical post is independent. When clicking play on a post that isn’t active,
+ *  - When an utterance finishes naturally, if the current horizontal index isnâ€™t the last image,
+ *    the container scrolls to the next image and that captionâ€™s audio is automatically played.
+ *  - Each vertical post is independent. When clicking play on a post that isnâ€™t active,
  *    the activeIndex is updated and its horizontal index reset.
  */
 const FullScreenStories: React.FC<FullScreenStoriesProps> = ({
@@ -190,9 +273,37 @@ const FullScreenStories: React.FC<FullScreenStoriesProps> = ({
     type,
     closePop,
     storyVidArray,
-    setStoryVidArray
+    setStoryVidArray,
+    searchData,
+    MyPageId,
+    likedArray,
+    likeCountArray,
+    setLikedArray,
+    setLikeCountArray,
+
+    setLikesPostid,
+    setLikes,
+    setShowEmotions,
+
+    setsearchDataNav,
+    setMyPageIdNav,
+    setfeedLastIdNav,
+    setfeedScrollPosNav
 
 }) => {
+
+
+    // Early-out if list is empty or index invalid
+    if (
+        !Array.isArray(feeds) ||
+        feeds.length === 0 ||
+        verticalActiveIndex == null ||
+        verticalActiveIndex < 0 ||
+        verticalActiveIndex >= feeds.length
+    ) {
+        return null; // or a lightweight skeleton
+    }
+
     // Reference to the vertical container so we can scroll to the active post on mount.
     const verticalContainerRef = useRef<HTMLDivElement>(null);
     // Reference for the horizontal container of the active feed.
@@ -207,9 +318,15 @@ const FullScreenStories: React.FC<FullScreenStoriesProps> = ({
 
     const [mp4type, setmp4type] = useState(0);
 
+    const [showDel, setShowDel] = useState(0);
+
+    const [Deleted, setDeleted] = useState(false);
+
     const [isOpen, setisOpen] = useState(false);
 
     const [hidevol, sethidevol] = useState(false);
+
+    const [HideT, setHideT] = useState(false);
 
 
     const [Hideprofile, setHideprofile] = useState(false);
@@ -265,7 +382,7 @@ const FullScreenStories: React.FC<FullScreenStoriesProps> = ({
     }
 
 
-    // false ⇢ caption visible   |   true ⇢ caption hidden
+    // false â‡¢ caption visible   |   true â‡¢ caption hidden
     const [hideVidCap, setHideVidCap] = useState<boolean[]>(
         () => feeds.map(() => false)          // length == feeds.length
     );
@@ -280,12 +397,12 @@ const FullScreenStories: React.FC<FullScreenStoriesProps> = ({
 
     const [Zoom2x, setZoom2x] = useState(false);
     const [Zoom1x, setZoom1x] = useState(false);
-
+    const [Zoom3x, setZoom3x] = useState(false);
     // Replace with your actual API endpoint
     const CLIK_URL = import.meta.env.VITE_CLIK_URL
     const VITE_GOOGLE_TTS = import.meta.env.VITE_GOOGLE_TTS;
 
-    // Track whether the current story is active (we’ll reset it to false on each new post).
+    // Track whether the current story is active (weâ€™ll reset it to false on each new post).
     const [activeStory, setActiveStory] = useState<boolean>(false);
     // Track whether audio is paused (in addition to audioPlaying coming from props)
     const [audioPaused, setAudioPaused] = useState<boolean>(false);
@@ -306,40 +423,195 @@ const FullScreenStories: React.FC<FullScreenStoriesProps> = ({
 
     const [LoadingDatabase, setLoadingDatabase] = useState<boolean>(false);
 
+    const [LoadingDatabase2, setLoadingDatabase2] = useState<boolean>(false);
 
     const imgRef: any = useRef(null);
-    const [isNineTwelve, setIsNineTwelve] = useState(false);
+    const [isNineTwelve, setIsNineTwelve] = useState(true);
+
+    const [width, setwidth] = useState(0);
+
+    const [height, setheight] = useState(0);
+
+
+    const [mode, setmode] = useState<"swipe" | "touch">("swipe");
+    const [stage, setStage] = useState<number>(2); // preview by default
+    const [videoArrayx, setVideoArrayx] = useState<[string, string, string]>(["", "", ""]);
+
+    const DEFAULT_HOTSPOTS: [Hotspot, Hotspot] = [
+        { id: "left", x: 0.3, y: 0.6, r: 0.12 },
+        { id: "right", x: 0.7, y: 0.6, r: 0.12 },
+    ];
+
+    const [initialHotspots, setInitialHotspots] =
+        useState<[Hotspot, Hotspot]>(DEFAULT_HOTSPOTS);
+
+    // Get the active feed row directly
+    const row = useMemo(() => feeds?.[verticalActiveIndex], [feeds, verticalActiveIndex]);
+
+    const mapIntType = (n?: number): "swipe" | "touch" => (n === 1 ? "touch" : "swipe");
+    // NEW audio states
+    const [mainAud, setMainAud] = useState<string>("");
+    const [sub1Aud, setSub1Aud] = useState<string>("");
+    const [sub2Aud, setSub2Aud] = useState<string>("");
+
+    const [mainAudioUrlx, setMainAudioUrlx] = useState<string>("");
+    const [sub1AudioUrlx, setSub1AudioUrlx] = useState<string>("");
+    const [sub2AudioUrlx, setSub2AudioUrlx] = useState<string>("");
+
+
+    const IS_IPHONE_OR_SAFARI = (() => {
+        const ua = navigator.userAgent || "";
+        const vendor = navigator.vendor || "";
+
+        // iPhone / iPod (classic UA check)
+        const isIPhone = /iPhone|iPod/i.test(ua);
+
+        // Safari (exclude Chrome/Edge/Opera/Firefox variants on iOS & desktop)
+        const isSafari =
+            /Safari/i.test(ua) &&
+            /Apple/i.test(vendor) &&
+            !/(CriOS|Chrome|Edg|OPR|Opera|FxiOS|Firefox)/i.test(ua);
+
+        return isIPhone || isSafari;
+    })();
+
+
+
+    //settshow(false);
+
+    // ...
 
     useEffect(() => {
-        const node = imgRef.current;
+        if (!row) return;
+
+        // 1) Mode from numeric inttype
+        const newMode = mapIntType(row.inttype);
+        setmode(newMode);
+
+        // 2) Videos (use exact values; fallback to empty string if undefined)
+        setVideoArrayx([row.main ?? "", row.subl ?? "", row.subr ?? ""]);
+
+        // 2b) ðŸ”Š Audio URLs (exact values; fallback to empty string)
+        setMainAud(row.mainaud ?? "");
+        setSub1Aud(row.sub1aud ?? "");
+        setSub2Aud(row.sub2aud ?? "");
+
+        // 3) Hotspots: use EXACT values from DB (no clamp). Only set if all present & finite.
+        if (newMode === "touch") {
+            const lx = Number(row.touchlx);
+            const ly = Number(row.touchly);
+            const lr = Number(row.touchlr);
+            const rx = Number(row.touchrx);
+            const ry = Number(row.touchry);
+            const rr = Number(row.touchrr);
+
+            const allFinite = [lx, ly, lr, rx, ry, rr].every((v) => Number.isFinite(v));
+
+            if (allFinite) {
+                setInitialHotspots([
+                    { id: "left", x: lx, y: ly, r: lr },
+                    { id: "right", x: rx, y: ry, r: rr },
+                ]);
+            } else {
+                setInitialHotspots(DEFAULT_HOTSPOTS);
+            }
+        } else {
+            setInitialHotspots(DEFAULT_HOTSPOTS);
+        }
+
+        // Always land in preview when switching items
+        setStage(2);
+    }, [
+        row,                // rerun when the active row object changes
+        row?.inttype,
+        row?.main,
+        row?.subl,
+        row?.subr,
+        row?.mainaud,       // ðŸ”Š deps for audio
+        row?.sub1aud,
+        row?.sub2aud,
+        row?.touchlx,
+        row?.touchly,
+        row?.touchlr,
+        row?.touchrx,
+        row?.touchry,
+        row?.touchrr,
+    ]);
+
+
+
+    // Inside your component
+    const OpenLikes = (
+        postidentity: any,
+        search: any,
+        myPageId: any,
+        feedLastId: any,
+        feedtypeforhorizontal: any
+    ) => {
+        // existing behavior
+        setLikesPostid(postidentity);
+        setLikes(true);
+        setShowEmotions(true);
+
+        // new bits
+        setsearchDataNav(search);
+        setMyPageIdNav(myPageId);
+        setfeedLastIdNav(feedLastId);
+        setfeedScrollPosNav(feedtypeforhorizontal);
+    };
+
+
+
+    useEffect(() => {
+        // pick the element once
+        const node =
+            playvid
+                ? videoRefs.current[verticalActiveIndex]        // <video>
+                : imgRef.current;                               // <img>
+
         if (!node) return;
 
 
 
-        const TARGET = 9 / 12;   // 0.75
-        const TOL = 0;     // ±2 % wiggle room
-
         const check = () => {
-            const { naturalWidth: w, naturalHeight: h } = node;
-            if (!w || !h) return;                     // image not loaded yet
-            setIsNineTwelve(w === 1080 && h === 1920);
+            const { width: w, height: h } = node.getBoundingClientRect();
+            if (!w || !h) return;          // not laid out yet
 
-
+            /// alert(w)
+            setwidth(w);
+            setheight(h);
         };
 
-        // run immediately for cached files
-        if (node.complete) check();
+        // ---------- IMAGES ----------
+        if (!playvid) {
+            if ((node as HTMLImageElement).complete) check();
+            node.addEventListener("load", check);
+        }
 
-        // run when a fresh load finishes
-        node.addEventListener("load", check);
+        // ---------- VIDEOS ----------
+        else {
+            const v = node as HTMLVideoElement;
 
-        // clean-up when the element unmounts or the slide changes
-        return () => node.removeEventListener("load", check);
-    }, [verticalActiveIndex, feeds, imgRef.current]);                     // re-measure when the active slide flips
+            // metadata already available?
+            if (v.readyState >= v.HAVE_METADATA) check();
+
+            // fire when metadata arrives (gives videoWidth/Height + painted size)
+            v.addEventListener("loadedmetadata", check);
+        }
+
+        // optional: ResizeObserver if you want live updates
+        // const ro = new ResizeObserver(check);
+        // ro.observe(node);
+
+        return () => {
+            node.removeEventListener("load", check);
+            node.removeEventListener("loadedmetadata", check);
+            // ro.disconnect();
+        };
+    }, [verticalActiveIndex, feeds, playvid]);      // **donâ€™t include imgRef.current**
 
 
-
-    /* 1️⃣  NEW STATE  –– lives with your other useState hooks            */
+    /* 1ï¸âƒ£  NEW STATE  â€“â€“ lives with your other useState hooks            */
     const [firstImageDims, setFirstImageDims] = useState<{
         width: number;
         height: number;
@@ -369,6 +641,7 @@ const FullScreenStories: React.FC<FullScreenStoriesProps> = ({
     const iconTimeoutRef = useRef<NodeJS.Timeout | null>(null);
     const iconTimeoutRefn = useRef<NodeJS.Timeout | null>(null);
     const iconTimeoutRefx = useRef<NodeJS.Timeout | null>(null);
+    const iconTimeoutRefxb = useRef<NodeJS.Timeout | null>(null);
     const iconTimeoutRefxx = useRef<NodeJS.Timeout | null>(null);
     const iconTimeoutRefxxa = useRef<NodeJS.Timeout | null>(null);
     const iconTimeoutRefxxa2 = useRef<NodeJS.Timeout | null>(null);
@@ -397,7 +670,7 @@ const FullScreenStories: React.FC<FullScreenStoriesProps> = ({
 
     }, [videoArray, verticalActiveIndex]);
 
-    // Auto‑advance function using the Web Speech API.
+    // Autoâ€‘advance function using the Web Speech API.
     const playAudio = useCallback(
         (index: number) => {
 
@@ -455,7 +728,7 @@ const FullScreenStories: React.FC<FullScreenStoriesProps> = ({
                                 }, 500);
                                 return nextIndex;
                             } else {
-                                // Reached the last image – stop audio.
+                                // Reached the last image â€“ stop audio.
                                 setAudioPlaying(false);
                                 setAudioPaused(false);
                                 return currentIndex;
@@ -478,6 +751,119 @@ const FullScreenStories: React.FC<FullScreenStoriesProps> = ({
     );
 
 
+    const [connected, setconnected] = useState(false);
+
+
+
+    const popIn = keyframes`
+  0%   { transform: scale(0.2); opacity: 0; }
+  60%  { transform: scale(1.1); opacity: 1; }
+  100% { transform: scale(1);   opacity: 1; }
+`;
+
+    const shake = keyframes`
+  0%   { transform: translateX(0) rotate(0deg); }
+  20%  { transform: translateX(-4px) rotate(-4deg); }
+  40%  { transform: translateX(2px)  rotate(4deg); }
+  60%  { transform: translateX(-3px) rotate(-3deg); }
+  80%  { transform: translateX(1px)  rotate(3deg); }
+  100% { transform: translateX(0) rotate(0deg); }
+`;
+
+    // add these states near your component top
+    const [ZoomHeartx, setZoomHeartx] = useState(false);
+    const [ZoomCountx, setZoomCountx] = useState(false);
+
+    // new states (top of component)
+    const [liked, setLiked] = useState(false);
+    const [likesCount, setLikesCount] = useState(0);
+
+    const [anim, setAnim] = useState(false);
+
+
+    // call this to like/unlike
+
+    // helper to coerce numbers
+    const toNum = (v: any) => (Number.isFinite(Number(v)) ? Number(v) : 0);
+
+    /**
+     * addLike(postId, userIdx, index?)
+     * - Updates single-item states (liked, likesCount)
+     * - Updates per-index arrays (likedArray, likeCountArray) using the matching postId
+     * Pass index if you have it; otherwise we fallback to findIndex by postId in feeds.
+     */
+    const addLike = async (postId: number, userIdx: number, index?: number) => {
+        if (!userIdx) return;
+
+        try {
+            const requestData = { values: { postid: postId, userid: userIdx } };
+            const { data }: any = await axios.post(
+                `${CLIK_URL}/addlikes`,
+                requestData,
+                { withCredentials: true, headers: { "Content-Type": "application/json" } }
+            );
+
+            if (data?.ok) {
+                const likedNow = !!data.liked;           // true when liked, false when unliked
+                const likesNow = toNum(data.likes);      // server-provided count
+
+                // update the simple states (for current post view)
+                setLiked(likedNow);
+                setLikesCount(likesNow);
+
+                // figure out which index this post is at (prefer the index param to avoid searching)
+                let idx = typeof index === 'number' ? index : -1;
+                if (idx < 0) {
+                    idx = Array.isArray(feeds) ? feeds.findIndex((f: any) => Number(f?.id) === postId) : -1;
+                }
+                if (idx < 0) return data; // not visible in current window; nothing else to do
+
+                // liked array
+                setLikedArray((prev: Array<{ postId: number; liked: boolean }>) => {
+                    const next = [...prev];
+                    // ensure index exists
+                    if (idx >= next.length) {
+                        next.length = idx + 1; // extends with empty slots
+                    }
+                    next[idx] = { postId, liked: likedNow }; // overwrite regardless
+                    return next;
+                });
+
+
+
+                // like-count array
+                setLikeCountArray((prev: Array<{ postId: number; count: number }>) => {
+                    const next = [...prev];
+                    if (idx >= next.length) {
+                        next.length = idx + 1;
+                    }
+                    next[idx] = { postId, count: likesNow }; // overwrite regardless
+                    return next;
+                });
+
+            }
+
+            return data;
+        } catch (err) {
+            console.error("addLike failed:", err);
+            throw err;
+        }
+    };
+
+
+
+
+
+    /// const [liked, setLiked] = useState(false);
+    // const [anim, setAnim] = useState(false);
+
+
+
+    useEffect(() => {
+        const item = feeds?.[verticalActiveIndex ?? -1];
+        if (!item) return;                // â† avoid the undefined read
+        setconnected(item.favCount === 1);
+    }, [feeds, verticalActiveIndex]);
 
 
 
@@ -547,7 +933,7 @@ const FullScreenStories: React.FC<FullScreenStoriesProps> = ({
         // Attempt to play it once user interaction occurs
         const startSilentAudio = () => {
             silentAudio.play().catch(() => {
-                // Fail silently if the user hasn’t interacted yet
+                // Fail silently if the user hasnâ€™t interacted yet
             });
         };
 
@@ -579,7 +965,7 @@ const FullScreenStories: React.FC<FullScreenStoriesProps> = ({
     // 3. On first render, run the detector and update state.
     useEffect(() => {
         setIsIphone(checkIsIphone());
-    }, []); // empty deps → run once after initial render
+    }, []); // empty deps â†’ run once after initial render
 
 
 
@@ -592,9 +978,8 @@ const FullScreenStories: React.FC<FullScreenStoriesProps> = ({
             const audioData = AudioArray[verticalIdx];
             if (!audioData) return;
 
-            // [0] = captionAudio, then xa1..xa8
+            // [0] = xa1, then xa2..xa8
             const trackList = [
-                audioData.captionAudio,
                 audioData.xa1,
                 audioData.xa2,
                 audioData.xa3,
@@ -605,11 +990,8 @@ const FullScreenStories: React.FC<FullScreenStoriesProps> = ({
                 audioData.xa8,
             ].filter(Boolean);
 
-            // Start playback from 'horizontalIdx'.
-            // If horizontalIdx=0 => start with captionAudio
-            // If horizontalIdx=2 => skip captionAudio, xa1 => start from xa2
             const audioEl = audioElementRef.current;
-            let currentTrackIndex = horizontalIdx === 0 ? 0 : horizontalIdx + 1;
+            let currentTrackIndex = horizontalIdx;
 
             // 2) Helper to load + play the next track
             const playNext = () => {
@@ -796,75 +1178,260 @@ const FullScreenStories: React.FC<FullScreenStoriesProps> = ({
     );
 
 
-
-
-
-
-
-
-
-    // Automatically scroll vertically to the active post.
-    useEffect(() => {
-        if (verticalContainerRef.current && activeIndex !== null) {
-            const container = verticalContainerRef.current;
-            const containerHeight = container.clientHeight;
-            container.scrollTo({
-                top: activeIndex * containerHeight,
-                behavior: "instant",
-            });
-            // Reset horizontal active index whenever vertical active post changes.
-            setHorizontalActiveIndex(0);
+    const rangeKeysAB = (prefix: string, max = 9) => {
+        const keys: string[] = [];
+        for (let i = 1; i <= max; i++) {
+            keys.push(`${prefix}${i}`);   // A
+            keys.push(`${prefix}${i}B`);  // B
         }
+        return keys;
+    };
+
+    const collectUrls = <T extends Record<string, any>>(obj: T, keys: string[]) =>
+        keys.map((k) => obj[k]).filter(Boolean) as string[];
+
+    /* ---------- AUDIO (xa1..xa9 + xa1B..xa9B) ---------- */
+    const deleteFeedAudio = async (feed: FeedItem) => {
+        const keys = rangeKeysAB("xa", 9);
+        const urls = collectUrls(feed as any, keys);
+
+        for (const url of urls) {
+            await startDeleteAudio(url);
+        }
+    };
+
+    /* ---------- IMAGES (x1..x9 + x1B..x9B) ---------- */
+    const deleteFeedImages = async (feed: FeedItem) => {
+        const keys = rangeKeysAB("x", 9);
+        const urls = collectUrls(feed as any, keys);
+
+        for (const url of urls) {
+            await startDelete(url);
+        }
+    };
+
+    /* ---------- HD IMAGES (xh1..xh9 + xh1B..xh9B) ---------- */
+    const deleteFeedImagesHd = async (feed: FeedItem) => {
+        const keys = rangeKeysAB("xh", 9);
+        const urls = collectUrls(feed as any, keys);
+
+        for (const url of urls) {
+            await startDelete(url);
+        }
+    };
+
+    /* ---------- VIDEOS (xv1..xv9 + xv1B..xv9B) ---------- */
+    const deleteFeedVideo = async (feed: FeedItem) => {
+        const keys = rangeKeysAB("xv", 9);
+        const urls = collectUrls(feed as any, keys);
+
+        for (const url of urls) {
+            await startDeleteVid(url);
+        }
+    };
+
+
+
+
+    const startDeleteVid = async (vidUrl: string) => {
+        try {
+            setLoadingDatabase2(true);
+            //del-
+            await axios.post(
+                `${CLIK_URL}/del-video`,
+                { url: vidUrl },          // <-- body
+                { withCredentials: true }   // <-- config
+            );
+
+            // success: update UI, toast, etc.
+        } catch (err) {
+            console.error("Delete failed:", err);
+        } finally {
+            setLoadingDatabase2(false);
+        }
+    };
+
+
+
+    const startDelete = async (imageUrl: any) => {
+        try {
+            setLoadingDatabase2(true);
+            //del-
+            await axios.post(
+                `${CLIK_URL}/del-image`,
+                { url: imageUrl },          // <-- body
+                { withCredentials: true }   // <-- config
+            );
+
+            // success: update UI, toast, etc.
+        } catch (err) {
+            console.error("Delete failed:", err);
+        } finally {
+            setLoadingDatabase2(false);
+        }
+    };
+
+
+
+    const startDeleteAudio = async (audioUrl: any) => {
+        try {
+
+            setLoadingDatabase2(true);
+            //del-
+            await axios.post(
+                `${CLIK_URL}/del-audio`,
+                { url: audioUrl },          // <-- body
+                { withCredentials: true }   // <-- config
+            );
+
+            // success: update UI, toast, etc.
+        } catch (err) {
+            console.error("Delete failed:", err);
+        } finally {
+            setLoadingDatabase2(false);
+        }
+    };
+
+
+    const startDeleteDB = async (id: any) => {
+        try {
+            setLoadingDatabase2(true);
+            //del-
+            await axios.post(
+                `${CLIK_URL}/delPost`,
+                { postId: id },          // <-- body
+                { withCredentials: true }   // <-- config
+            );
+
+            // success: update UI, toast, etc.
+            setDeleted(true);
+        } catch (err) {
+            console.error("Delete failed:", err);
+        } finally {
+            setLoadingDatabase2(false);
+        }
+    };
+
+    useLayoutEffect(() => {
+        if (activeIndex == null) return;                       // guard
+        const container = verticalContainerRef.current;
+        if (!container) return;
+
+        const target = container.children.item(activeIndex) as HTMLElement | null;
+        if (!target) return;                                   // bad index guard
+
+        container.scrollTo({
+            top: target.offsetTop,                               // â† exact offset
+            behavior: "instant",                                    // "instant" â†’ "auto"
+        });
+
+        setHorizontalActiveIndex(0);                           // reset row
     }, [activeIndex]);
 
 
-    /* 2️⃣  UPDATED handler -------------------------------------- */
+    /* 2ï¸âƒ£  UPDATED handler -------------------------------------- */
     const handlePlay = useCallback((index: number) => {
-        //// alert('jhg');
+        //// a
         const idx = verticalActiveIndex;
         const audio = audioRefs.current[idx];
         const video = videoRefs.current[idx];
 
         if (!audio || !video) return;
 
-        /* A. restart + play audio */
-        audio.currentTime = 0;
+        /// alert('jhg');
+        /* A. restart + play audio (SKIPPED FOR AUTOPLAY) */
         if (MuteReducer) {
             audio.muted = true;
         } else {
             audio.muted = false;
         }
-        audio.play()
-            .then(() => setAudioFlag(idx, true))       // 🔔 flag[idx] = true
-            .catch(() => { });
 
-        /* B. prime video for iOS */
-        if (matchMobile) {
-
-            video.muted = true;
-            video.play().then(() => video.pause()).catch(() => { });
-
-        }
-
-        /* C. when audio ends (or pauses) */
+        /* C. Skip audio and play video immediately */
+        setplayvid(true);
+        video.currentTime = 0;
+        video.play().catch(() => { });
         const onFinish = () => {
-            setAudioFlag(idx, false);                     // 🔔 flag[idx] = false
-            if (video.paused) {
-
-
-                setplayvid(true);
-                video.currentTime = 0;
-                ///  video.muted = false;
-                video.play().catch(() => { });
-
-            }
+            setAudioFlag(idx, false);
             audio.removeEventListener("ended", onFinish);
-
         };
 
         audio.addEventListener("ended", onFinish);
 
     }, [verticalActiveIndex, matchMobile, setplayvid, audioRefs, videoRefs, MuteReducer]);
+
+    const [allowTrue, setallowTrue] = useState(true);
+
+
+
+    const startDeleteVidx = async (vidUrl: string, idd: any) => {
+        try {
+            //// setLoadingDatabase(true);
+            //del-
+            await axios.post(
+                `${CLIK_URL}/del-video`,
+                { url: vidUrl },          // <-- body
+                { withCredentials: true }   // <-- config
+            );
+
+            // success: update UI, toast, etc.
+
+            startDeleteDBx(idd);
+
+        } catch (err) {
+            console.error("Delete failed:", err);
+        } finally {
+            /// setLoadingDatabase(false);
+        }
+    };
+
+    const startDeleteDBx = async (id: any) => {
+        try {
+            ///setLoadingDatabase(true);
+            //del-
+            await axios.put(
+                `${CLIK_URL}/delPostnobg`,
+                { postId: id },          // <-- body
+                { withCredentials: true }   // <-- config
+            );
+
+            setallowTrue(false)
+            // success: update UI, toast, etc.
+            /// setDeleted(true);
+        } catch (err) {
+            console.error("Delete failed:", err);
+        } finally {
+            ///setLoadingDatabase(false);
+        }
+    };
+
+    useEffect(() => {
+        // Get the video element for the current index
+        const video = videoRefs.current?.[verticalActiveIndex];
+        if (!video) return; // nothing to attach to yet
+
+        // Handler that logs when playback starts / resumes
+        const handlePlay = () => {
+            if (feeds[verticalActiveIndex].nobgmvideo && allowTrue) {
+                // startDeleteVidx(feeds[verticalActiveIndex].nobgmvideo, feeds[verticalActiveIndex].id)
+            }
+        }
+
+        // Attach listeners for both "play" (initial) and "playing" (resume)
+        video.addEventListener('play', handlePlay);
+        video.addEventListener('playing', handlePlay);
+
+        // If the video is *already* playing when we mount, log immediately
+        if (!video.paused && !video.ended) {
+            //  console.log('video playing alreday');
+        }
+
+        // Clean-up on unmount or when verticalActiveIndex changes
+        return () => {
+            video.removeEventListener('play', handlePlay);
+            video.removeEventListener('playing', handlePlay);
+        };
+    }, [verticalActiveIndex, videoRefs, feeds]);
+
 
 
     useEffect(() => {
@@ -909,7 +1476,7 @@ const FullScreenStories: React.FC<FullScreenStoriesProps> = ({
                             if (video) {
 
 
-                                // ⏸️ Pause/stop branch
+                                // â¸ï¸ Pause/stop branch
                                 setplayvid(false);
                                 video.pause();
                                 video.currentTime = 0;        // rewind to start
@@ -950,9 +1517,10 @@ const FullScreenStories: React.FC<FullScreenStoriesProps> = ({
 
                                     } else {
 
+                                        if (isIphone) { } else {
 
-                                        handlePlay(idx)
-
+                                            handlePlay(idx)
+                                        }
 
                                     }
 
@@ -970,11 +1538,22 @@ const FullScreenStories: React.FC<FullScreenStoriesProps> = ({
 
                                     } else {
 
+                                        if (feeds[verticalActiveIndex].captionAudio) {
+
+                                            handlePlay(idx)
+                                        } else {
+                                            if (video) {
+                                                video.play();
+                                            } setplayvid(true);
+
+                                        }
+
+
                                         //  alert('hh');
-                                        handlePlay(idx)
+
                                     }
                                 }
-                            }, matchMobile ? 3000 : 2000)
+                            }, matchMobile ? 800 : 800)
 
                             //////////////////VIDEO////////////
 
@@ -1042,14 +1621,14 @@ const FullScreenStories: React.FC<FullScreenStoriesProps> = ({
 
     /**
      * Example of calling Google Text-to-Speech instead of ElevenLabs.
-     * 
+     *
      * @param stepText - The text you want to synthesize
      * @param stepIndex - The index of the current step (to store in 'generatedAudios')
      * @param voiceName - The voice name (e.g., "en-US-Chirp-HD-F"), or whichever voice you prefer
-     * 
-     * Note: you will need valid Google TTS credentials or an API key. 
+     *
+     * Note: you will need valid Google TTS credentials or an API key.
      *       (If you have an API Key, you can pass it as a query param:  ?key=YOUR_API_KEY)
-     *       If you’re using an OAuth token, you’ll need an Authorization header with a Bearer token.
+     *       If youâ€™re using an OAuth token, youâ€™ll need an Authorization header with a Bearer token.
      */
     const fetchAndGenerateSpeech = useCallback(
         async (stepText: string, stepIndex: number, voiceName: string, voiceId: any) => {
@@ -1621,13 +2200,13 @@ const FullScreenStories: React.FC<FullScreenStoriesProps> = ({
                 console.log(`Error checking video HEAD request:`, error);
             }
 
-            // If we haven’t succeeded and still have attempts left, wait a few seconds and try again
+            // If we havenâ€™t succeeded and still have attempts left, wait a few seconds and try again
             if (attempt < maxAttempts) {
                 setTimeout(() => {
                     checkVideoAvailability(url, attempt + 1, maxAttempts);
                 }, 2000); // poll every 3 seconds
             } else {
-                console.log(`Reached max attempts (${maxAttempts}) – video still not ready`);
+                console.log(`Reached max attempts (${maxAttempts}) â€“ video still not ready`);
                 setIsLoading(false); // fallback to false or keep it true if you prefer
             }
         },
@@ -1644,7 +2223,7 @@ const FullScreenStories: React.FC<FullScreenStoriesProps> = ({
               // No URL => definitely "loading"
               setIsLoading(true);
           }
-     
+
           */
 
     }, [videoArray, verticalActiveIndex, checkVideoAvailability]);
@@ -1653,6 +2232,9 @@ const FullScreenStories: React.FC<FullScreenStoriesProps> = ({
     const location = useLocation();
 
     const { userId } = location.state || {};
+
+    const useDocumentFeedScroll =
+        matchMobile && ["/", "/images", "/kickit", "/clikit", "/feeds", "/pages"].includes(location.pathname.toLowerCase());
 
 
     const GotoProfile = useCallback(
@@ -1676,9 +2258,11 @@ const FullScreenStories: React.FC<FullScreenStoriesProps> = ({
 
                 // Hide the icon overlay after 0.5s
                 iconTimeoutRefxx.current = setTimeout(() => {
-                    const feedScrollPos = feedContainerRef.current?.scrollTop ?? 0;
+                    const feedScrollPos = useDocumentFeedScroll ? window.scrollY : feedContainerRef.current?.scrollTop ?? 0;
 
                     const feedLastId = feeds[index + 1] ? feeds[index + 1].id : 0;
+
+                    /// alert(feedLastId);
                     /// alert(feedLastId);
 
                     console.log(
@@ -1686,9 +2270,12 @@ const FullScreenStories: React.FC<FullScreenStoriesProps> = ({
                     );
 
                     const routeState = {
+                        ownerId: MyPageId,
                         routeScrollPos: feedScrollPos,
                         routelastId: feedLastId,
                         fullscreen: true,  // Added fullscreen mode flag
+                        feedtype: type,
+                        search: searchData
                     };
 
 
@@ -1712,7 +2299,7 @@ const FullScreenStories: React.FC<FullScreenStoriesProps> = ({
 
             }
         },
-        [LastId, feedContainerRef, navigate, location.pathname, userId, type]
+        [LastId, feedContainerRef, navigate, location.pathname, userId, type, searchData, MyPageId, useDocumentFeedScroll]
     );
 
 
@@ -1723,6 +2310,8 @@ const FullScreenStories: React.FC<FullScreenStoriesProps> = ({
             feeds.map((_, i) => prev[i] ?? false) // preserve existing flags
         );
     }, [feeds.length]);
+
+
 
 
 
@@ -1770,7 +2359,7 @@ const FullScreenStories: React.FC<FullScreenStoriesProps> = ({
 
                     width: matchMobile ? "100%" : '100%',
                     left: matchMobile ? "0px" : '-0vw',
-                    height: "100vh",
+                    height: matchMobile ? "100dvh" : "100dvh",
                     textAlign: "center",
                     color: '#ffffff',
                     backgroundColor: 'rgb(0,0,0,0.45)'
@@ -1792,7 +2381,7 @@ const FullScreenStories: React.FC<FullScreenStoriesProps> = ({
 
                     width: matchMobile ? "100%" : '100%',
                     left: matchMobile ? "0px" : '-0vw',
-                    height: "100vh",
+                    height: matchMobile ? "100dvh" : "100dvh",
                     textAlign: "center",
                     color: '#ffffff',
                     backgroundColor: 'rgb(0,0,0,0.45)'
@@ -1815,7 +2404,7 @@ const FullScreenStories: React.FC<FullScreenStoriesProps> = ({
 
                     width: matchMobile ? "100%" : '100%',
                     left: matchMobile ? "0px" : '-0vw',
-                    height: "100vh",
+                    height: matchMobile ? "100dvh" : "100dvh",
                     textAlign: "center",
                     color: '#ffffff',
                     backgroundColor: 'rgb(0,0,0,0.45)'
@@ -1832,6 +2421,28 @@ const FullScreenStories: React.FC<FullScreenStoriesProps> = ({
 
 
 
+
+            {LoadingDatabase2 ? <div
+                style={{
+                    position: "fixed",
+                    top: "0vh",
+                    zIndex: 9999,
+
+                    width: matchMobile ? "100%" : '100%',
+                    left: matchMobile ? "0px" : '-0vw',
+                    height: matchMobile ? "100dvh" : "100dvh",
+                    textAlign: "center",
+                    color: '#ffffff',
+                    backgroundColor: 'rgb(0,0,0,0.45)'
+                }}
+            > <div
+                style={{
+
+                    marginTop: "20vh",
+
+                }}
+            >  Deleting.. </div>  </div> : null
+            }
 
 
             <Box
@@ -1866,7 +2477,7 @@ const FullScreenStories: React.FC<FullScreenStoriesProps> = ({
                     right: 0,
 
                     width: matchMobile ? '100vw' : isMenuOpen ? "80vw" : '100vw',
-                    height: "100vh", // use 100vh so the container fits snugly
+                    height: matchMobile ? "100dvh" : "100dvh", // use 100dvh so the container fits snugly  backgroundColor
                     backgroundColor: darkModeReducer ? 'rgb(30,30,30,0.95)' : 'rgb(210,210,210,0.95)',
                     zIndex: 9990,
                     overflowY: "scroll",
@@ -1876,17 +2487,17 @@ const FullScreenStories: React.FC<FullScreenStoriesProps> = ({
                     overscrollBehavior: "contain",
                     WebkitOverflowScrolling: "touch",
                     "&::-webkit-scrollbar": {
-                        width: "5px",
+                        width: "8px",
                     },
                     "&::-webkit-scrollbar-track": {
-                        background: "#f1f1f1",
+                        background: "rgb(255,255,255,0.2)",
                     },
                     "&::-webkit-scrollbar-thumb": {
-                        background: "#888",
+                        background: "rgb(150,150,150,0.8)",
                         borderRadius: "4px",
                     },
                     "&::-webkit-scrollbar-thumb:hover": {
-                        background: "#555",
+                        background: "rgb(255,255,255,0.1)",
                     },
                 }}
             >
@@ -1916,7 +2527,7 @@ const FullScreenStories: React.FC<FullScreenStoriesProps> = ({
                             ref={(el) => (fullscreenRefsX.current[index] = el!)}
                             sx={{
                                 width: matchMobile ? '100vw' : isMenuOpen ? "80vw" : '100vw',
-                                maxHeight: "100vh",
+                                maxHeight: matchMobile ? "100dvh" : "100dvh",
                                 scrollSnapAlign: "start",
                                 scrollSnapStop: "always",
                                 position: "relative",
@@ -1947,7 +2558,7 @@ const FullScreenStories: React.FC<FullScreenStoriesProps> = ({
                                         }}
                                         sx={{
                                             width: "100%",
-                                            height: matchMobile ? "100vh" : "102vh",
+                                            height: matchMobile ? "100dvh" : "100dvh",
                                             whiteSpace: "nowrap",
                                             scrollSnapType: "x mandatory",
                                             scrollBehavior: "smooth",
@@ -1977,7 +2588,7 @@ const FullScreenStories: React.FC<FullScreenStoriesProps> = ({
                                                     textAlign: "center",
                                                 }}
                                             >
-                                                {/*  If the voice selector is NOT visible, show the “Generate Audio” button  */}
+                                                {/*  If the voice selector is NOT visible, show the â€œGenerate Audioâ€ button  */}
 
                                                 <Button
                                                     onClick={() => {
@@ -2020,6 +2631,129 @@ const FullScreenStories: React.FC<FullScreenStoriesProps> = ({
 
 
 
+                                        {showDel === 1 && index === verticalActiveIndex ? <Box
+                                            sx={{
+                                                position: "fixed",
+                                                inset: 0,
+                                                width: "100vw",
+                                                height: matchMobile ? "100dvh" : "100dvh",
+                                                bgcolor: "rgba(0,0,0,0.15)",
+                                                display: "flex",
+                                                alignItems: "center",
+                                                justifyContent: "center",
+                                                zIndex: 1300,
+                                            }}
+                                        // onClick={onCancel}
+                                        >
+                                            {/* Prevent inner clicks from closing */}
+                                            <Box
+                                                onClick={(e) => e.stopPropagation()}
+                                                sx={{
+                                                    width: 280,
+                                                    bgcolor: "#f9f9f9",
+                                                    color: Deleted ? 'blue' : '#000000',
+                                                    borderRadius: 4,
+                                                    p: 3,
+                                                    boxShadow: 24,
+                                                    textAlign: "center",
+                                                    fontFamily: "-apple-system, BlinkMacSystemFont, \"San Francisco\", \"Segoe UI\", Roboto, Helvetica, Arial, sans-serif",
+                                                }}
+                                            >
+                                                <Typography variant="h6" gutterBottom>
+                                                    {Deleted ? '  Deleted' : '  Delete this item?'}
+                                                </Typography>
+                                                <Typography variant="body2" color="textSecondary" sx={{ mb: 3 }}>
+                                                    {Deleted ? '' : 'This action canâ€™t be undone.'}
+                                                </Typography>
+
+                                                <Stack direction="row" spacing={2} justifyContent="center">
+
+                                                    {Deleted ?
+                                                        <Button
+                                                            variant="outlined"
+                                                            color="inherit"
+                                                            size="large"
+                                                            fullWidth
+                                                            sx={{ borderRadius: 3, textTransform: "none", fontSize: "1rem" }}
+                                                            onClick={() => {
+
+                                                                setShowDel(0);
+
+                                                            }}
+                                                        >
+                                                            Close
+                                                        </Button> :
+
+                                                        <>
+                                                            <Button
+                                                                variant="contained"
+                                                                color="error"
+                                                                size="large"
+                                                                fullWidth
+                                                                sx={{ borderRadius: 3, textTransform: "none", fontSize: "1rem" }}
+                                                                onClick={async () => {
+                                                                    try {
+                                                                        // 1ï¸âƒ£ delete all S3 objects in parallel
+                                                                        await Promise.all([
+                                                                            deleteFeedImages(feeds[index]),
+                                                                            deleteFeedImagesHd(feeds[index]),
+                                                                            deleteFeedVideo(feeds[index]),
+                                                                            startDeleteVid(videoArray[verticalActiveIndex]),
+                                                                            startDelete(feeds[index].item1),
+                                                                            startDeleteAudio(feeds[index].captionAudio),
+                                                                            deleteFeedAudio(feeds[index]),
+                                                                            startDelete(feeds[index].kontext),
+
+
+                                                                        ]);
+
+                                                                        // 2ï¸âƒ£ now that S3 is clean, delete the DB row
+                                                                        await startDeleteDB(feeds[index].id);   // <= or whatever your post id field is
+
+
+                                                                    } catch (err) {
+                                                                        console.error("Delete failed:", err);
+
+                                                                    }
+                                                                }}
+
+                                                            >
+                                                                Yes
+                                                            </Button>
+                                                            <Button
+                                                                variant="outlined"
+                                                                color="inherit"
+                                                                size="large"
+                                                                fullWidth
+                                                                sx={{ borderRadius: 3, textTransform: "none", fontSize: "1rem" }}
+                                                                onClick={() => {
+
+                                                                    setShowDel(2);
+
+                                                                }}
+                                                            >
+                                                                No
+                                                            </Button>
+                                                        </>
+                                                    }
+                                                </Stack>
+                                            </Box>
+                                        </Box> : null}
+
+
+                                        {
+                                            showDel === 2 && index === verticalActiveIndex ?
+                                                <Plan
+                                                    ty={0}
+                                                    isMenuOpen={isMenuOpen}
+                                                    feeds={feeds}
+                                                    verticalActiveIndex={verticalActiveIndex}
+                                                    setZoom2x={setZoom2x}
+                                                    setShowDel={setShowDel} />
+                                                : null
+                                        }
+
+
 
                                         {
 
@@ -2027,17 +2761,17 @@ const FullScreenStories: React.FC<FullScreenStoriesProps> = ({
 
                                                 <Box
 
-                                                    onMouseEnter={() => setZoom2x(true)}
-                                                    onMouseOver={() => setZoom2x(true)}
-                                                    onMouseLeave={() => setZoom2x(false)}
+                                                    onMouseEnter={() => setZoom3x(true)}
+                                                    onMouseOver={() => setZoom3x(true)}
+                                                    onMouseLeave={() => setZoom3x(false)}
 
-                                                    onTouchStart={() => setZoom2x(true)}
-                                                    onTouchEnd={() => setZoom2x(false)}
+                                                    onTouchStart={() => setZoom3x(true)}
+                                                    onTouchEnd={() => setZoom3x(false)}
 
                                                     onClick={() => {
 
-                                                        setZoom2x(true);
-                                                        setTimeout(() => setZoom2x(false), 300);
+                                                        setZoom3x(true);
+                                                        setTimeout(() => setZoom3x(false), 300);
 
 
                                                         if (MuteReducer) {
@@ -2051,43 +2785,39 @@ const FullScreenStories: React.FC<FullScreenStoriesProps> = ({
                                                     }}
 
                                                     sx={{
-                                                        height: "0vh",
-                                                        position: "fixed",
-                                                        top: matchMobile ? "6.5vh" : isMenuOpen ? '6vh' : "8.5vh",
-                                                        left: matchMobile
-                                                            ? "85vw"
-                                                            : isMenuOpen
-                                                                ? "46.8vw"
-                                                                : "36.8vw",
-                                                        width: matchMobile ? "100%" : "100%",
-                                                        display: "flex",
+                                                        position: "absolute",
+                                                        display: "none",
+                                                        bottom: matchMobile ? "245px" : "255px",
+                                                        right: matchMobile ? "2vw" : "calc(50% - 230px)",
+                                                        width: "auto",
                                                         alignItems: "center",
                                                         zIndex: 1000,
-
                                                     }}
                                                 >
-                                                    {/* unified icon + label button */}
+                                                    {/* unified icon + label  video button */}
                                                     <Box
-                                                        className={`toggle-image ${Zoom2x ? "bounce" : ""}`}
+                                                        className={`toggle-image ${Zoom3x ? "bounce" : ""}`}
                                                         onClick={() => {
                                                         }}
                                                         sx={{
-                                                            opacity: 0.8,
+                                                            opacity: 0.85,
                                                             alignItems: "center",
-                                                            gap: 0,          // keep icon centred when collapsed
-                                                            width: 55,  // pill width → circle width
+                                                            gap: 0,          // keep icon centred when collapsed start delete
+                                                            width: 55,  // pill width â†’ circle width
                                                             height: 55,
                                                             px: 0,         // same padding you used on the label
                                                             py: 0.4,
                                                             borderRadius: "50%",
                                                             bgcolor: darkModeReducer
-                                                                ? "rgba(0,0,0,0.65)"
-                                                                : "rgb(250,250,250)",
+                                                                ? "rgba(0,0,0,0.35)"
+                                                                : "rgb(250,250,250,0.3)",
                                                             backdropFilter: "blur(1px)",
                                                             boxShadow: 3,
 
-                                                            display: MuteReducer ? "inline-flex" :
+                                                            display: hideVidCap[verticalActiveIndex] ? "none" : MuteReducer ? "inline-flex" :
                                                                 hidevol ? 'none' : 'inline-flex',
+
+
                                                             cursor: "pointer",
                                                             "&:hover": {
                                                                 bgcolor: darkModeReducer
@@ -2095,6 +2825,7 @@ const FullScreenStories: React.FC<FullScreenStoriesProps> = ({
                                                                     : "rgba(250,250,250,0.3)",
                                                             },
 
+                                                            visibility: 'visible',
                                                             transition: "width 250ms ease, border-radius 250ms ease",
                                                         }}
                                                     >
@@ -2123,15 +2854,108 @@ const FullScreenStories: React.FC<FullScreenStoriesProps> = ({
                                                             />}
 
 
-                                                        {/* sliding label — collapses to 0 px width */}
+                                                        {/* sliding label â€” collapses to 0 px width */}
 
                                                     </Box>
+
+
                                                 </Box>
 
 
                                                 : null
                                         }
 
+
+                                        {
+
+                                            index === verticalActiveIndex ?
+
+                                                <Box
+
+                                                    onMouseEnter={() => setZoom2x(true)}
+                                                    onMouseOver={() => setZoom2x(true)}
+                                                    onMouseLeave={() => setZoom2x(false)}
+
+                                                    onTouchStart={() => setZoom2x(true)}
+                                                    onTouchEnd={() => setZoom2x(false)}
+
+                                                    onClick={() => {
+
+
+                                                    }}
+
+                                                    sx={{
+                                                        position: "absolute",
+                                                        display: "none",
+                                                        bottom: matchMobile ? "180px" : "190px",
+                                                        right: matchMobile ? "2vw" : "calc(50% - 230px)",
+                                                        width: "auto",
+                                                        alignItems: "center",
+                                                        zIndex: 1000,
+                                                    }}
+                                                >
+                                                    {/* unified icon + label button */}
+                                                    <Box
+                                                        className={`toggle-image ${Zoom2x ? "bounce" : ""}`}
+                                                        onClick={() => {
+                                                            setDeleted(false);
+                                                            setShowDel(2);
+
+
+                                                        }}
+                                                        sx={{
+                                                            opacity: 0.85,
+                                                            alignItems: "center",
+                                                            gap: 0,          // keep icon centred when collapsed
+                                                            width: 55,  // pill width â†’ circle width video
+                                                            height: 55,
+                                                            px: 0,         // same padding you used on the label
+                                                            py: 0.4,
+                                                            borderRadius: "50%",
+                                                            bgcolor: darkModeReducer
+                                                                ? "rgba(0,0,0,0.35)"
+                                                                : "rgb(250,250,250,0.3)",
+                                                            backdropFilter: "blur(1px)",
+                                                            boxShadow: 3,
+
+                                                            display: hideVidCap[verticalActiveIndex] ? "none" : "inline-flex",
+
+                                                            cursor: "pointer",
+                                                            "&:hover": {
+                                                                bgcolor: darkModeReducer
+                                                                    ? "rgba(100,100,100,0.3)"
+                                                                    : "rgba(250,250,250,0.3)",
+                                                            },
+
+                                                            transition: "width 250ms ease, border-radius 250ms ease",
+                                                        }}
+                                                    >
+                                                        {/* camera icon */}
+                                                        {item.mode === 2 && !playvid ? <AdjustIcon
+                                                            sx={{
+                                                                fontSize: matchMobile ? "1.8rem" : "1.7rem",
+                                                                color: darkModeReducer ? "#fff" : "#000",
+                                                                textAlign: 'center',
+                                                                margin: 'auto',
+                                                            }}
+                                                        /> : <MoreVertIcon
+                                                            sx={{
+                                                                fontSize: matchMobile ? "1.8rem" : "1.7rem",
+                                                                color: darkModeReducer ? "#fff" : "#000",
+                                                                textAlign: 'center',
+                                                                margin: 'auto',
+                                                            }}
+                                                        />}
+
+
+                                                        {/* sliding label â€” collapses to 0 px width */}
+
+                                                    </Box>
+
+
+                                                </Box>
+
+                                                : null}
 
                                         {
 
@@ -2148,8 +2972,12 @@ const FullScreenStories: React.FC<FullScreenStoriesProps> = ({
 
                                                 sx={{
                                                     display: "inline-block",
-                                                    width: matchMobile ? '100vw' : isMenuOpen ? "80vw" : '100vw',
-                                                    height: matchMobile ? "90vh" : "100vh",
+                                                    width: matchMobile ? '100vw' : isMenuOpen ?
+
+                                                        "80vw" : '100vw',
+                                                    transform: matchMobile ? 'scale(1)' : item.ratio === 3 ? 'scale(1)' : 'scale(1)',
+
+                                                    height: matchMobile ? "100dvh" : "100dvh",
                                                     scrollSnapAlign: "start",
                                                     position: "relative",
                                                     verticalAlign: "top",
@@ -2194,7 +3022,7 @@ const FullScreenStories: React.FC<FullScreenStoriesProps> = ({
                                                         right: 0,
                                                         display: matchMobile ? 'none' : 'block',
                                                         width: matchMobile ? '100vw' : isMenuOpen ? "80vw" : '100vw',
-                                                        height: "100vh", // use 100vh so the container fits snugly
+                                                        height: matchMobile ? "100dvh" : "100dvh", // use 100dvh so the container fits snugly
                                                         /// backgroundColor: darkModeReducer ? 'rgb(30,30,30,0.95)' : 'rgb(210,210,210,0.95)',
                                                         zIndex: 0,
 
@@ -2206,143 +3034,213 @@ const FullScreenStories: React.FC<FullScreenStoriesProps> = ({
                                                 {verticalActiveIndex === index ?
                                                     <>
 
+                                                        {item.mode === 2 ?
+
+                                                            playvid &&
+                                                            <Box
+                                                                /////// onClick={() => { setHideT(true) }}
+                                                                style={{ padding: '0px', }}>
+                                                                <InteractInput
+                                                                    intbg={feeds[verticalActiveIndex].intbg}
+                                                                    setActiveStory={setActiveStory}
+                                                                    feedData={item}
+                                                                    videoArray={videoArrayx}
+
+                                                                    mainAudioUrlx={mainAudioUrlx}
+                                                                    sub1AudioUrlx={sub1AudioUrlx}
+                                                                    sub2AudioUrlx={sub2AudioUrlx}
+                                                                    setMainAudioUrlx={setMainAudioUrlx}
+                                                                    setSub1AudioUrlx={setSub1AudioUrlx}
+                                                                    setSub2AudioUrlx={setSub2AudioUrlx}
 
 
-                                                        <video
+                                                                    mainAudioUrl={mainAud}
+                                                                    sub1AudioUrl={sub1Aud}
+                                                                    sub2AudioUrl={sub2Aud}
 
-                                                            onClick={() => {
+                                                                    setMainAudioUrl={setMainAud}
+                                                                    setSub1AudioUrl={setSub1Aud}
+                                                                    setSub2AudioUrl={setSub2Aud}
 
+                                                                    wipeInteractionState={() => {
 
-                                                                if (hideVidCap[verticalActiveIndex]) {
+                                                                    }}
 
-                                                                    if (!matchMobile) {
-                                                                        const video = videoRefs.current[index];
-                                                                        if (video) {
-                                                                            video.play();
-                                                                        }
+                                                                    interactionPostId={item.id}
+                                                                    vid1={videoArrayx[0]}
+                                                                    vid2={videoArrayx[1]}
+                                                                    vid3={videoArrayx[2]}
+                                                                    mode={mode}
+                                                                    setmode={setmode}
+                                                                    stage={stage}
+                                                                    setStage={setStage}
+                                                                    // If InteractInput supports seeding touch hotspots:
+
+                                                                    feeds={true}
+                                                                    touchHotspots={initialHotspots}
+                                                                    setTouchHotspots={setInitialHotspots}
+                                                                />
+                                                            </Box>
+                                                            :
+
+                                                            <VideoPlayer
+                                                                loop={false}
+                                                                onEnded={() => {
+                                                                    if (index < feeds.length - 1) {
+                                                                        const nextEl = fullscreenRefsX.current[index + 1];
+                                                                        if (nextEl) nextEl.scrollIntoView({ behavior: 'smooth', block: 'start' });
                                                                     }
+                                                                }}
+                                                                singleMode={false}
+                                                                // Identity
+                                                                index={index}
+                                                                src={videoArray[verticalActiveIndex]} // Or item.src depending on your loop logic
+                                                                isActive={index === verticalActiveIndex} // Ensures controls only show on active slide
 
-                                                                    setCapFlag(index, false);
+                                                                // State Passing
+                                                                isUIHidden={!!hideVidCap[verticalActiveIndex]}
+                                                                setUIHidden={(val) => setCapFlag(index, val)}
 
-                                                                } else {
+                                                                // Ref (Important: Updates your existing videoRefs array)
+                                                                onRefAssign={(el) => (videoRefs.current[index] = el)}
 
-                                                                    if (matchMobile) {
-                                                                        const video = videoRefs.current[index];
-                                                                        if (video) {
-                                                                            video.pause();
-                                                                        }
-                                                                    }
+                                                                // Styling Logic Variables
+                                                                matchMobile={matchMobile}
+                                                                isNineTwelve={isNineTwelve}
+                                                                isMenuOpen={isMenuOpen}
+                                                                item={item}
+                                                                playvid={playvid}
 
-                                                                    setCapFlag(index, true);
-
-                                                                }
-
-                                                            }}
-                                                            ref={el => (videoRefs.current[index] = el)}
-                                                            playsInline
-
-                                                            loop
-                                                            webkit-playsinline="true"
-                                                            src={videoArray[verticalActiveIndex]}
-                                                            controls={hideVidCap[verticalActiveIndex]}
-                                                            muted={MuteReducer}
-                                                            style={{
-                                                                width: matchMobile ? '100%' : 'auto',
-                                                                height: matchMobile ? isNineTwelve ? '110vh' : '100% ' : '100% ',
-                                                                objectFit: matchMobile ? 'cover' : 'contain',
-                                                                position: 'absolute',
-                                                                zIndex: 3,
-                                                                top: matchMobile ? isNineTwelve ? '50%' : '55%' : '50%',
-                                                                left: '50%',
-                                                                marginTop: matchMobile ? '0vh' : '0px',
-                                                                transform: 'translate(-50%, -50%)',
-                                                                transition: 'transform 7s ease-in-out',
-                                                                display: playvid ? 'block' : 'none'
-                                                            }}
-                                                        />
+                                                                // Audio & Theme
+                                                                muted={MuteReducer}
+                                                                darkMode={darkModeReducer}
+                                                            />
+                                                        }
 
                                                     </> : null}
 
-                                                {matchMobile ?
-                                                    <Box
-                                                        sx={{
-                                                            position: 'absolute',
-                                                            width: '100vw',
-                                                            height: '100dvh',
-                                                            display: 'flex',
-                                                            justifyContent: 'center',
-                                                            alignItems: 'center',
-                                                            zIndex: 2,
-                                                            margin: 'auto',
-                                                            textAlign: 'center',
-                                                        }}
-                                                    >
-                                                        <img
-                                                            ref={verticalActiveIndex === index ? imgRef : null}
-                                                            src={storyImages[0]}
-                                                            alt={`Story-${item.id}-0`}
-                                                            onClick={e => {
-                                                                e.stopPropagation();
-                                                                if (videoArray[verticalActiveIndex]) {
-                                                                    if (type === 1 || type === 10) {
+
+
+                                                {
+
+                                                    verticalActiveIndex === index
+
+                                                        ? matchMobile ?
+                                                            <Box
+                                                                sx={{
+                                                                    position: 'absolute',
+                                                                    width: '100vw',
+                                                                    height: "100dvh",
+                                                                    display: 'flex',
+                                                                    justifyContent: 'center',
+                                                                    alignItems: 'center',
+                                                                    zIndex: 2,
+                                                                    margin: 'auto',
+                                                                    textAlign: 'center',
+                                                                }}
+                                                            >
+                                                                <img
+                                                                    ref={verticalActiveIndex === index ? imgRef : null}
+                                                                    src={storyImages[0]}
+                                                                    alt={`Story-${item.id}-0`}
+                                                                    onClick={e => {
+                                                                        e.stopPropagation();
+
                                                                         const video = videoRefs.current[index];
-                                                                        if (video) {
-                                                                            video.play();
+
+                                                                        if (type === 3) {
+
+
+
+                                                                            if (video) {
+                                                                                video.play();
+                                                                            }
+                                                                            setplayvid(true);
+
+
+                                                                        } else {
+                                                                            if (videoArray[verticalActiveIndex]) {
+
+
+
+                                                                                if (type === 1 || type === 10) {
+
+                                                                                    if (video) {
+                                                                                        video.play();
+                                                                                    }
+                                                                                    setplayvid(true);
+                                                                                } else {
+                                                                                    if (video) {
+                                                                                        video.play();
+                                                                                    }
+                                                                                    setplayvid(true);
+
+                                                                                }
+                                                                            } else {
+                                                                                setActiveStory(prev => !prev);
+                                                                                settshow(false);
+                                                                            }
                                                                         }
-                                                                        setplayvid(true);
+                                                                    }}
+                                                                    style={{
+                                                                        maxWidth: '100%',
+                                                                        maxHeight: '100%',
+                                                                        width: matchMobile ? '100%' : 'auto',
+                                                                        height: '100%',
+                                                                        objectFit: 'contain',
+                                                                        cursor: 'pointer',
+                                                                        display: 'block',
+                                                                        opacity: playvid ? 0 : 1,
+                                                                        pointerEvents: playvid ? 'none' : 'auto',
+                                                                        transition: "opacity 1s ease-out"
+                                                                    }}
+                                                                />
+                                                            </Box>
+                                                            : <img
+                                                                ref={verticalActiveIndex === index ? imgRef : null}
+                                                                src={storyImages[0]}
+                                                                alt={`Story-${item.id}-${0}`}
+                                                                onClick={(e) => {
+                                                                    e.stopPropagation();
+                                                                    if (videoArray[verticalActiveIndex]) {
+
+                                                                        const video = videoRefs.current[index];
+
+                                                                        if (type === 1 || type === 10) {
+
+                                                                            if (video) {
+                                                                                video.play();
+                                                                            }
+                                                                            setplayvid(true);
+
+                                                                        } else {
+
+                                                                            if (video) {
+                                                                                video.play();
+                                                                            }
+                                                                            setplayvid(true);
+                                                                        }
                                                                     } else {
-                                                                        handlePlay(index)
+                                                                        setActiveStory((prev) => !prev);
+                                                                        settshow(false);
                                                                     }
-                                                                } else {
-                                                                    setActiveStory(prev => !prev);
-                                                                    settshow(false);
-                                                                }
-                                                            }}
-                                                            style={{
-                                                                maxWidth: '100%',
-                                                                maxHeight: '100%',
-                                                                width: matchMobile ? '100%' : 'auto',
-                                                                height: 'auto',
-                                                                objectFit: matchMobile ? 'cover' : 'contain',
-                                                                cursor: 'pointer',
-                                                            }}
-                                                        />
-                                                    </Box>
-                                                    : <img
-                                                        ref={verticalActiveIndex === index ? imgRef : null}
-                                                        src={storyImages[0]}
-                                                        alt={`Story-${item.id}-${0}`}
-                                                        onClick={(e) => {
-                                                            e.stopPropagation();
-                                                            if (videoArray[verticalActiveIndex]) {
-                                                                if (type === 1 || type === 10) {
-                                                                    const video = videoRefs.current[index];
-                                                                    if (video) {
-                                                                        video.play();
-                                                                    }
-                                                                    setplayvid(true);
-
-                                                                } else {
-
-                                                                    handlePlay(index)
-                                                                }
-                                                            } else {
-                                                                setActiveStory((prev) => !prev);
-                                                                settshow(false);
-                                                            }
-                                                        }}
-                                                        style={{
-                                                            cursor: "pointer",
-                                                            position: "absolute",
-                                                            top: "50%",
-                                                            left: "50%",
-                                                            transform: "translate(-50%, -50%)",
-                                                            width: matchMobile ? "100%" : "auto",
-                                                            height: "100dvh",
-                                                            objectFit: matchMobile ? "cover" : "contain",
-                                                            zIndex: 1,
-                                                        }}
-                                                    />
+                                                                }}
+                                                                style={{
+                                                                    cursor: "pointer",
+                                                                    position: "absolute",
+                                                                    top: "50%",
+                                                                    left: "50%",
+                                                                    transform: "translate(-50%, -50%)",
+                                                                    width: matchMobile ? "100%" : "auto",
+                                                                    height: "100dvh",
+                                                                    objectFit: matchMobile ? "cover" : "contain",
+                                                                    zIndex: 1,
+                                                                    display: 'block',
+                                                                    opacity: playvid ? 0 : 1,
+                                                                    pointerEvents: playvid ? 'none' : 'auto',
+                                                                    transition: "opacity 1s ease-out"
+                                                                }}
+                                                            /> : null
                                                 }
 
                                                 {videoArray[verticalActiveIndex] && (
@@ -2350,14 +3248,14 @@ const FullScreenStories: React.FC<FullScreenStoriesProps> = ({
                                                         onClick={(e: any) => {
                                                             /// e.stopPropagation();
                                                             //  setplayvid(true);
-
+                                                            const video = videoRefs.current[index];
 
 
                                                             if (type === 1 || type === 10) {
 
 
 
-                                                                const video = videoRefs.current[index];
+
                                                                 if (video) {
                                                                     video.play();
 
@@ -2367,7 +3265,15 @@ const FullScreenStories: React.FC<FullScreenStoriesProps> = ({
 
                                                             } else {
 
-                                                                handlePlay(index)
+                                                                if (feeds[verticalActiveIndex].captionAudio) {
+
+                                                                    handlePlay(index)
+                                                                } else {
+                                                                    if (video) {
+                                                                        video.play();
+                                                                    } setplayvid(true);
+
+                                                                }
                                                             }
 
                                                         }}
@@ -2388,29 +3294,89 @@ const FullScreenStories: React.FC<FullScreenStoriesProps> = ({
                                                         {audioPlayingx[verticalActiveIndex] ? <AudiotrackIcon fontSize="inherit" /> : <PlayArrowIcon fontSize="inherit" />}
                                                     </Box>
 
+
+
                                                 )
                                                 }
 
-                                                {!activeStory && (
+
+
+                                                {type === 3 && !playvid ?
+
+
                                                     <Box
-                                                        //onClick={() => { /* your onClick logic here */ }}
+                                                        onClick={(e: any) => {
+                                                            /// e.stopPropagation();
+                                                            //  setplayvid(true);
+                                                            const video = videoRefs.current[index];
+
+
+
+                                                            if (video) {
+                                                                video.play();
+
+                                                            }
+                                                            /// alert('kk');
+                                                            setplayvid(true);
+                                                        }}
                                                         sx={{
                                                             position: 'absolute',
-                                                            bottom: matchMobile ? '' : 0,
-                                                            top: matchMobile ? isNineTwelve ?
-                                                                isIphone ? ActiveCap ? '76vh' : '86vh' :
-                                                                    ActiveCap ? '70vh' : '80vh' :
+                                                            top: '50%',
+                                                            left: '50%',
+                                                            transform: 'translate(-50%, -50%)',
+                                                            zIndex: 2,
+                                                            color: '#fff',
+                                                            fontSize: audioPlayingx[verticalActiveIndex] ? '5rem' : '4rem',
+                                                            opacity: 0.8,
+                                                            cursor: 'pointer',
+                                                            // Use drop-shadow for an SVG icon
+                                                            filter: 'drop-shadow(0 3px 6px rgba(0, 0, 0, 0.15))',
+                                                        }}
+                                                    >
+                                                        {audioPlayingx[verticalActiveIndex] ? <AudiotrackIcon fontSize="inherit" /> : <PlayArrowIcon fontSize="inherit" />}
+                                                    </Box> : null}
+
+                                                {!activeStory && (
+                                                    <Box
+                                                        //onClick={() => { /* your onClick logic here */ e.stopPropagation(); }}
+                                                        sx={{
+                                                            position: 'absolute',
+                                                            bottom: matchMobile ? '' :
+                                                                item.ratio === 3 ?
+                                                                    item.model === 'Gpt Image' ? height / 100 :
+                                                                        isMenuOpen ? height / 20 : height / 30 :
+                                                                    height / 100,
 
 
-                                                                isIphone ? ActiveCap ? '70vh' : '80vh' :
-                                                                    ActiveCap ? '70vh' : '80vh'
+                                                            top: matchMobile ?
+
+                                                                item.mode === 2 ?
+                                                                    loggedUser ? loggedUser.id === feeds[index].sender ? '80vh' : '75.7vh' : null
+                                                                    : isNineTwelve ?
+                                                                        ActiveCap ? '66vh' :
+
+                                                                            loggedUser ? loggedUser.id === feeds[index].sender ?
+                                                                                '80.3vh' : '76vh' : null :
+
+
+
+                                                                        ActiveCap ? '70vh' :
+                                                                            loggedUser ? loggedUser.id === feeds[index].sender ?
+                                                                                '84.3vh' : '80vh' : null
+
 
                                                                 : '',
 
                                                             left: matchMobile ? '0px' : '50%',
-
                                                             transform: matchMobile ? 'none' : 'translateX(-50%)',
-                                                            width: matchMobile ? '100%' : '28vw',
+                                                            width: matchMobile ? '100%' :
+                                                                item.ratio === 1 ? '56.25dvh' :
+                                                                item.ratio === 2 ? '100%' :
+                                                                item.ratio === 3 ?
+                                                                    item.model === 'Gpt Image' ?
+                                                                        isMenuOpen ? width / 1.1 : width / 1.5 :
+                                                                        isMenuOpen ? width / 1.02 : width / 1.2 :
+                                                                width,
                                                             boxSizing: 'border-box',
                                                             display: verticalActiveIndex === index ?
 
@@ -2442,7 +3408,7 @@ const FullScreenStories: React.FC<FullScreenStoriesProps> = ({
                                                             sx={{
                                                                 width: matchMobile ? '87%' : '86%',
                                                                 color: 'rgba(255, 255, 255, 1)', // visible white
-                                                                textShadow: '0px 0px 3px rgba(0,0,0,0.1)',
+                                                                textShadow: '0px 1px 3px rgba(0,0,0,0.9), 0px 0px 6px rgba(0,0,0,0.7)',
                                                                 display: 'flex',
                                                                 flexDirection: 'column',
                                                                 justifyContent: 'space-between',
@@ -2457,14 +3423,17 @@ const FullScreenStories: React.FC<FullScreenStoriesProps> = ({
                                                                 onClick={() => {
 
 
-                                                                    GotoProfile(feeds[index].sender, verticalActiveIndex - 1);
+                                                                    //GotoProfile(feeds[index].sender, verticalActiveIndex - 1);
                                                                 }}
                                                                 variant="subtitle2"
                                                                 sx={{
                                                                     cursor: 'pointer',
                                                                     fontWeight: 'bold',
                                                                     mb: 1,
-                                                                    fontSize: matchMobile ? '1.2rem' : '1.3rem',
+                                                                    fontSize: matchMobile ? '0.95rem' : '1.3rem',
+
+
+
                                                                 }}
                                                             >
 
@@ -2476,130 +3445,287 @@ const FullScreenStories: React.FC<FullScreenStoriesProps> = ({
                                                                             'linear-gradient(to bottom, rgba(70, 70, 70, 0) 0%, rgba(70, 70, 70, 0.7) 50%, rgba(70, 70, 70, 0) 100%)'
                                                                             :
                                                                             'linear-gradient(to bottom, rgba(90, 90, 100, 0) 0%, rgba(90, 90, 100, 0.7) 50%, rgba(90, 90, 100, 0) 100%)',
-                                                                }}>   {`@${feeds[index].username}`} </span>
+                                                                }}>
+                                                                    {///feeds[verticalActiveIndex].favCount
+                                                                    }
+
+
+                                                                    <FollowPanel
+                                                                        setShowEmotions={false}
+                                                                        setfollowType={0}
+                                                                        type={1}
+                                                                        typex={false}
+                                                                        userProfile={feeds[index].sender}
+                                                                        loggedUser={loggedUser}
+                                                                        connected={connected}
+                                                                        setConnected={setconnected}
+
+                                                                        counts={30}
+                                                                        followersReducer={0}
+                                                                        followingReducer={0}
+                                                                        refresh={() => { }}
+                                                                        onFollowersClick={() => console.log("open followers list")}
+                                                                        onFollowToggle={(next) => console.log("follow ->", next)}
+                                                                    />
+                                                                </span>
                                                             </Typography>
 
+                                                            {ActiveCap && (
+                                                                <Box
+                                                                    onClick={(e) => { e.stopPropagation(); setActiveCap(false); setHideT(false); }}
+                                                                    sx={{ position: 'fixed', top: 0, left: 0, right: 0, bottom: 0, zIndex: 99998 }}
+                                                                />
+                                                            )}
                                                             <Typography
 
-                                                                onClick={() => {
-
-                                                                    ActiveCap ?
-                                                                        setActiveCap(false) :
-
-                                                                        setActiveCap(true)
-
-
+                                                                onClick={(e) => {
+                                                                    e.stopPropagation();
+                                                                    if (ActiveCap) return;
+                                                                    if (type === 3) setHideT(true);
+                                                                    setActiveCap(true);
                                                                 }}
                                                                 variant="body2"
-                                                                sx={{
-                                                                    fontSize: matchMobile ? '1.2rem' : '1.3rem',
+                                                                sx={ActiveCap ? {
+                                                                    position: 'fixed',
+                                                                    bottom: 0,
+                                                                    left: 0,
+                                                                    width: '100%',
+                                                                    height: '70vh',
+                                                                    bgcolor: 'rgba(0, 0, 0, 0.75)',
+                                                                    backdropFilter: 'blur(20px)',
+                                                                    zIndex: 99999,
+                                                                    padding: matchMobile ? '60px 5vw 4vh' : '60px 3vw 4vh',
+                                                                    borderTopLeftRadius: '24px',
+                                                                    borderTopRightRadius: '24px',
+                                                                    color: '#fff',
+                                                                    fontWeight: 'bold',
+                                                                    fontSize: matchMobile ? '1.1rem' : '1.4rem',
+                                                                    lineHeight: 1.6,
+                                                                    overflowY: 'auto',
                                                                     whiteSpace: 'normal',
                                                                     wordBreak: 'break-word',
-                                                                    maxHeight: matchMobile ?
-                                                                        '' :
-                                                                        '14vh',
-
-                                                                    height: matchMobile ?
-                                                                        ActiveCap ? '14vh' : '4vh' :
-                                                                        '',
-
-
+                                                                    display: 'block',
+                                                                    boxSizing: 'border-box',
+                                                                    boxShadow: '0 -4px 30px rgba(0,0,0,0.5)',
+                                                                    transition: 'all 0.3s ease-in-out',
+                                                                    "&::-webkit-scrollbar": { width: "8px" },
+                                                                    "&::-webkit-scrollbar-track": { background: "rgb(255,255,255,0)" },
+                                                                    "&::-webkit-scrollbar-thumb": { background: "rgba(255,255,255,0.3)", borderRadius: "4px" },
+                                                                } : {
+                                                                    fontSize: matchMobile ? '0.95rem' : '1.3rem',
+                                                                    whiteSpace: 'normal',
+                                                                    wordBreak: 'break-word',
+                                                                    maxHeight: '7vh',
+                                                                    display: 'block',
                                                                     overflowY: 'auto',
-                                                                    "&::-webkit-scrollbar": {
-                                                                        width: "8px",
-                                                                    },
-                                                                    "&::-webkit-scrollbar-track": {
-                                                                        background: "rgb(255,255,255,0)",
-                                                                    },
-                                                                    "&::-webkit-scrollbar-thumb": {
-                                                                        background: "rgb(255,255,255,0)",
-                                                                        borderRadius: "4px",
-                                                                    },
-                                                                    "&::-webkit-scrollbar-thumb:hover": {
-                                                                        background: "rgb(255,255,255,0)",
-                                                                    },
+                                                                    transition: 'all 0.3s ease-in-out',
+                                                                    "&::-webkit-scrollbar": { width: "8px" },
+                                                                    "&::-webkit-scrollbar-track": { background: "rgb(255,255,255,0)" },
+                                                                    "&::-webkit-scrollbar-thumb": { background: "rgb(255,255,255,0)", borderRadius: "4px" },
                                                                 }}
                                                             >
+                                                                    {ActiveCap && (
+                                                                        <IconButton
+                                                                            onClick={(e) => { e.stopPropagation(); setActiveCap(false); setHideT(false); }}
+                                                                            sx={{ position: 'absolute', top: 12, right: 12, color: 'white', zIndex: 100000 }}
+                                                                        >
+                                                                            <CloseIcon />
+                                                                        </IconButton>
+                                                                    )}
+                                                                    <span
+                                                                        onClick={(e) => {
+                                                                            e.stopPropagation();
+                                                                            GotoProfile(feeds[index].sender, verticalActiveIndex - 1);
+                                                                        }}
+                                                                        style={{ cursor: 'pointer', textDecoration: 'underline' }}
+                                                                    >
+                                                                        {`@${feeds[index].username}`}
+                                                                    </span>
+                                                                    <span style={{ visibility: 'hidden' }}>
+                                                                        ......
+                                                                    </span>
 
-                                                                <span style={{
-                                                                    background:
-                                                                        darkModeReducer ?
-
-                                                                            'linear-gradient(to bottom, rgba(70, 70, 70, 0) 0%, rgba(70, 70, 70, 0.7) 50%, rgba(70, 70, 70, 0) 100%)'
-                                                                            :
-                                                                            'linear-gradient(to bottom, rgba(90, 90, 100, 0) 0%, rgba(90, 90, 100, 0.7) 50%, rgba(90, 90, 100, 0) 100%)',
-                                                                }}>  {feeds[index].caption}  </span>
+                                                                    <span style={{
+                                                                        display: type === 3 ? 'inline' : 'inline',
+                                                                    }}>
+                                                                        {` ${feeds[index].caption}`}
+                                                                    </span>
                                                             </Typography>
                                                         </Box>
-
 
 
                                                         {/* 12%: Profile Pic */}
                                                         <Box
                                                             sx={{
-
-                                                                display: 'flex',
                                                                 justifyContent: 'center',
                                                                 alignItems: 'center',
-
-                                                                bottom: matchMobile ?
-                                                                    isNineTwelve ? '56vh' : '50vh' : '51vh',
+                                                                display: "none",
+                                                                bottom: matchMobile ? '40px' : '45px',
                                                                 position: 'absolute',
                                                                 width: 'auto',
-                                                                left: matchMobile ? '84vw' :
-
-                                                                    isNineTwelve ? '23.5vw' : '26vw',
-                                                                transform: 'translate(0%, 10%)',
-                                                                transition: 'transform 7s ease-in-out',
+                                                                right: matchMobile ? '2vw' : 'calc(50% - 230px)',
                                                                 height: '0px',
-
+                                                                zIndex: 1000,
                                                             }}
                                                         >
-                                                            <img
+                                                            {/* Wrapper to position the heart on top of the image */}
+                                                            <Box sx={{ position: 'relative', display: 'inline-block' }}>
+                                                                <img
+                                                                    onClick={() => {
+                                                                        setZoom1x(true);
+                                                                        setTimeout(() => setZoom1x(false), 300);
+                                                                        GotoProfile(feeds[index].sender, verticalActiveIndex - 1);
+                                                                    }}
+                                                                    src={loggedUser ? `${feeds[index].profile_image}` : ""}
+                                                                    alt={loggedUser ? `Goto ${feeds[index].username}'s profile` : ""}
+                                                                    onMouseEnter={() => setZoom1x(true)}
+                                                                    onMouseOver={() => setZoom1x(true)}
+                                                                    onMouseLeave={() => setZoom1x(false)}
+                                                                    onTouchStart={() => setZoom1x(true)}
+                                                                    onTouchEnd={() => setZoom1x(false)}
+                                                                    className={`toggle-image ${Zoom1x ? "bounce" : ""}`}
+                                                                    style={{
+                                                                        cursor: 'pointer',
+                                                                        borderRadius: '50%',
+                                                                        width: matchMobile ? 58 : 68,
+                                                                        height: 'auto',
+                                                                        visibility: ActiveCap ? 'hidden' : 'visible',
+                                                                        objectFit: 'cover',
+                                                                        boxShadow: darkModeReducer
+                                                                            ? '0 0 10px rgba(255, 255, 255, 0.5)'
+                                                                            : '0 0 10px rgba(0, 0, 0, 0.5)',
+                                                                    }}
+                                                                />
 
-                                                                onClick={() => {
-
-
-                                                                    setZoom1x(true);
-                                                                    setTimeout(() => setZoom1x(false), 300);
-
-                                                                    GotoProfile(feeds[index].sender, verticalActiveIndex - 1);
-
-
-                                                                }}
-                                                                src={
-                                                                    loggedUser
-                                                                        ? `${feeds[index].profile_image}`
-                                                                        : ""
-                                                                }
-                                                                alt={
-
-                                                                    loggedUser
-                                                                        ? `Goto ${feeds[index].username}'s profile`
-                                                                        : ""
-                                                                }
-                                                                onMouseEnter={() => setZoom1x(true)}
-                                                                onMouseOver={() => setZoom1x(true)}
-                                                                onMouseLeave={() => setZoom1x(false)}
-
-                                                                onTouchStart={() => setZoom1x(true)}
-                                                                onTouchEnd={() => setZoom1x(false)}
-                                                                className={`toggle-image ${Zoom1x ? "bounce" : ""}`}
-                                                                style={{
-                                                                    cursor: 'pointer',
-                                                                    borderRadius: '50%',
-                                                                    width: matchMobile ? 58 : 68,
-                                                                    height: 'auto',
-                                                                    visibility: ActiveCap ? 'hidden' : 'visible',
-                                                                    objectFit: 'cover',
-                                                                    boxShadow: darkModeReducer
-                                                                        ? '0 0 10px rgba(255, 255, 255, 0.5)'  // light shadow for dark mode
-                                                                        : '0 0 10px rgba(0, 0, 0, 0.5)'
+                                                                {/* Heart overlay */}
+                                                                <Box
+                                                                    className={`toggle-image ${ZoomHeartx ? "bounce" : ""}`}
+                                                                    onMouseEnter={() => setZoomHeartx(true)}
+                                                                    onMouseOver={() => setZoomHeartx(true)}
+                                                                    onMouseLeave={() => setZoomHeartx(false)}
+                                                                    onTouchStart={() => setZoomHeartx(true)}
+                                                                    onTouchEnd={() => setZoomHeartx(false)}
+                                                                    onClick={() => {
 
 
-                                                                }}
-                                                            />
+                                                                        addLike(feeds[index].id, loggedUser ? loggedUser.id : 0);
+                                                                        // bounce the heart like your other controls
+                                                                        setZoomHeartx(true);
+                                                                        setTimeout(() => setZoomHeartx(false), 300);
+
+                                                                        const next = !liked;
+                                                                        setLiked(next);
+                                                                        if (next) {
+                                                                            setAnim(true);
+                                                                            setTimeout(() => setAnim(false), 950); // total of both anims
+                                                                        }
+                                                                    }}
+                                                                    sx={{
+                                                                        position: 'absolute',
+                                                                        bottom: matchMobile ? '95px' : '105px',
+                                                                        left: '50%',
+                                                                        transform: 'translateX(-50%)',
+                                                                        width: matchMobile ? '45px' : '55px',
+                                                                        height: matchMobile ? '45px' : '55px',
+                                                                        borderRadius: '50%',
+                                                                        display: ActiveCap ? 'none' : 'flex',
+                                                                        alignItems: 'center',
+                                                                        justifyContent: 'center',
+                                                                        zIndex: 2,
+                                                                        bgcolor: darkModeReducer ? "rgba(0,0,0,0.35)" : "rgb(250,250,250,0.3)",
+                                                                        backdropFilter: "blur(1px)",
+                                                                        "&:hover": {
+                                                                            bgcolor: darkModeReducer ? "rgba(100,100,100,0.3)" : "rgba(250,250,250,0.3)",
+                                                                        },
+                                                                        boxShadow: darkModeReducer
+                                                                            ? '0 0 6px rgba(255,255,255,0.6)'
+                                                                            : '0 0 6px rgba(0,0,0,0.4)',
+                                                                        // run pop-in then shake when anim is true (i.e., on like)
+                                                                        animation: anim
+                                                                            ? `${popIn} 600ms ease-out, ${shake} 2000ms cubic-bezier(.34,1.56,.64,1) 600ms`
+                                                                            : 'none',
+                                                                        cursor: 'pointer',
+                                                                    }}
+                                                                >
+                                                                    {/* Heart icon with per-item bounce */}
+                                                                    {likedArray[index]?.liked ? (
+                                                                        <Favorite
+                                                                            sx={{ fontSize: matchMobile ? 26 : 30, color: darkModeReducer ? "#E8BAFA" : "#0099cc" }}
+                                                                        />
+                                                                    ) : (
+                                                                        <Favorite
+
+                                                                            sx={{ fontSize: 30, opacity: 0.6 }}
+                                                                        />
+                                                                        // If you prefer an outline when not liked, swap the line above for:
+                                                                        // <FavoriteBorder className={`toggle-image ${ZoomHeartx ? "bounce" : ""}`} sx={{ fontSize: 30 }} />
+                                                                    )}
+
+                                                                    {/* Likes count panel â€” its own zoom state & handlers */}
+                                                                    <Box
+                                                                        onMouseEnter={(e) => { e.stopPropagation(); setZoomCountx(true); }}
+                                                                        onMouseOver={(e) => { e.stopPropagation(); setZoomCountx(true); }}
+                                                                        onMouseLeave={(e) => { e.stopPropagation(); setZoomCountx(false); setZoomHeartx(false) }}
+                                                                        onTouchStart={(e) => { e.stopPropagation(); setZoomCountx(true); }}
+                                                                        onTouchEnd={(e) => { e.stopPropagation(); setZoomCountx(false); setZoomHeartx(false) }}
+                                                                        onClick={(e) => {
+                                                                            // bounce count without toggling like
+                                                                            e.stopPropagation();
+                                                                            const feedtypeforhorizontal = type;
+                                                                            const feedLastIdx = feeds[index] ? feeds[index].id : 0;
+                                                                            //alert(feedLastIdx);
+
+
+                                                                            OpenLikes(
+                                                                                feeds[index].id,
+                                                                                searchData,
+                                                                                MyPageId,
+                                                                                feedLastIdx,
+                                                                                feedtypeforhorizontal
+                                                                            );
+
+
+                                                                            setZoomCountx(true);
+                                                                            setTimeout(() => setZoomCountx(false), 300);
+                                                                        }}
+                                                                        sx={{
+                                                                            position: 'absolute',
+                                                                            bottom: 'calc(-8px + 0.7vh)',
+                                                                            left: '50%',
+                                                                            transform: 'translateX(-50%)',
+                                                                            zIndex: 3,
+                                                                            minWidth: 28,
+                                                                            textAlign: 'center',
+                                                                            // allow its own hover/touch events
+                                                                            pointerEvents: 'auto',
+                                                                            // (optional) GotoProfile  subtle bg for readability; comment out if you don't want it
+                                                                            // bgcolor: 'rgba(0,0,0,0.55)',
+                                                                        }}
+                                                                    >
+                                                                        <span
+                                                                            className={`toggle-image ${ZoomCountx ? "bounce2" : ""}`}
+                                                                            style={{
+                                                                                fontSize: matchMobile ? 9.5 : 10.5,
+                                                                                fontWeight: 900,
+                                                                                color: '#fff',
+                                                                                textShadow: '0 1px 2px rgba(0,0,0,0.9), 0 0 3px rgba(0,0,0,0.7)',
+                                                                                lineHeight: 1,
+                                                                                display: 'inline-block',
+                                                                            }}
+                                                                        >
+                                                                            {///likesCount
+                                                                            }
+                                                                            {
+                                                                                likeCountArray[index]?.count === 0 ? '' :
+                                                                                    likeCountArray[index]?.count}
+                                                                        </span>
+                                                                    </Box>
+                                                                </Box>
+
+
+                                                            </Box>
                                                         </Box>
+
                                                     </Box>
                                                 )}
 
@@ -2674,10 +3800,10 @@ const FullScreenStories: React.FC<FullScreenStoriesProps> = ({
                                                 position: "fixed",
                                                 top: 0,
                                                 right: 0,
-                                                display: matchMobile ? 'none' : 'block',
+                                                display: matchMobile ? 'none' : 'none',
 
                                                 width: matchMobile ? '100vw' : isMenuOpen ? "80vw" : '100vw',
-                                                height: "100vh", // use 100vh so the container fits snugly
+                                                height: matchMobile ? "100dvh" : "100dvh", // use 100dvh so the container fits snugly
                                                 /// backgroundColor: darkModeReducer ? 'rgb(30,30,30,0.95)' : 'rgb(210,210,210,0.95)',
                                                 zIndex: 0,
 
@@ -2696,6 +3822,7 @@ const FullScreenStories: React.FC<FullScreenStoriesProps> = ({
                                                 }}
                                                 sx={{
                                                     position: 'absolute',
+
                                                     top: '50%',
                                                     left: '50%',
                                                     transform: 'translate(-50%, -50%)',
@@ -2715,25 +3842,367 @@ const FullScreenStories: React.FC<FullScreenStoriesProps> = ({
                                         )
                                         }
 
-                                        {verticalActiveIndex === index && type === 3 ?
-
-                                            closeInteraction ? null :
-                                                <Sandbox
-                                                    setcloseInteractionx={setcloseInteraction}
-                                                    closeInteractionx={closeInteraction}
-
-                                                    item={item}
-                                                    type={1}
-                                                    videoURL={item.mainint!}
-                                                    CloudvideoURL={item.mainint!}
-                                                /> :
-
-                                            null}
 
 
+                                        {index === verticalActiveIndex ?
 
+                                            <Box
+
+                                                onMouseEnter={() => setZoom3x(true)}
+                                                onMouseOver={() => setZoom3x(true)}
+                                                onMouseLeave={() => setZoom3x(false)}
+
+                                                onTouchStart={() => setZoom3x(true)}
+                                                onTouchEnd={() => setZoom3x(false)}
+
+                                                onClick={() => {
+
+                                                    setZoom3x(true);
+                                                    setTimeout(() => setZoom3x(false), 300);
+
+
+                                                    if (MuteReducer) {
+
+                                                        dispatch(deactivateFullscreenMute());
+                                                    } else {
+
+                                                        dispatch(activateFullscreenMute());
+                                                    }
+
+                                                }}
+
+                                                sx={{
+                                                    height: "0vh",
+                                                        position: "absolute",
+                                                        display: "none",
+                                                        bottom: matchMobile ? "245px" : "255px",
+                                                        right: matchMobile ? "2vw" : "calc(50% - 230px)",
+                                                        width: "auto",
+                                                        alignItems: "center",
+                                                        zIndex: 1000,
+                                                    }}
+                                            >
+                                                {/* unified icon + label  video button */}
+                                                <Box
+                                                    className={`toggle-image ${Zoom3x ? "bounce" : ""}`}
+                                                    onClick={() => {
+                                                    }}
+                                                    sx={{
+                                                        opacity: 0.85,
+                                                        alignItems: "center",
+                                                        gap: 0,          // keep icon centred when collapsed start delete
+                                                        width: 55,  // pill width â†’ circle width
+                                                        height: 55,
+                                                        px: 0,         // same padding you used on the label
+                                                        py: 0.4,
+                                                        borderRadius: "50%",
+                                                        bgcolor: darkModeReducer
+                                                            ? "rgba(0,0,0,0.35)"
+                                                            : "rgb(250,250,250,0.3)",
+                                                        backdropFilter: "blur(1px)",
+                                                        boxShadow: 3,
+
+                                                        display: hideVidCap[verticalActiveIndex] ? "none" : MuteReducer ? "inline-flex" :
+                                                            hidevol ? 'none' : 'inline-flex',
+
+
+                                                        cursor: "pointer",
+                                                        "&:hover": {
+                                                            bgcolor: darkModeReducer
+                                                                ? "rgba(100,100,100,0.3)"
+                                                                : "rgba(250,250,250,0.3)",
+                                                        },
+
+                                                        visibility: 'visible',
+                                                        transition: "width 250ms ease, border-radius 250ms ease",
+                                                    }}
+                                                >
+                                                    {/* camera icon */}
+
+                                                    {MuteReducer ?
+
+                                                        <VolumeOffIcon
+                                                            sx={{
+                                                                fontSize: matchMobile ? "1.8rem" : "1.7rem",
+                                                                color: darkModeReducer ? "#fff" : "#000",
+                                                                textAlign: 'center',
+                                                                margin: 'auto',
+                                                            }}
+                                                        /> :
+
+                                                        <VolumeUpIcon
+
+                                                            sx={{
+                                                                fontSize: matchMobile ? "1.8rem" : "1.7rem",
+                                                                color: darkModeReducer ? "#fff" : "#000",
+                                                                textAlign: 'center',
+                                                                margin: 'auto',
+
+                                                            }}
+                                                        />}
+
+
+                                                    {/* sliding label â€” collapses to 0 px width */}
+
+                                                </Box>
+
+
+                                            </Box>
+                                            : null}
+
+
+                                        {
+
+                                            index === verticalActiveIndex ?
+
+                                                <Box
+
+                                                    onMouseEnter={() => setZoom2x(true)}
+                                                    onMouseOver={() => setZoom2x(true)}
+                                                    onMouseLeave={() => setZoom2x(false)}
+
+                                                    onTouchStart={() => setZoom2x(true)}
+                                                    onTouchEnd={() => setZoom2x(false)}
+
+                                                    onClick={() => {
+
+
+                                                    }}
+                                                    sx={{
+                                                        position: "absolute",
+                                                        display: "none",
+                                                        bottom: matchMobile ? "180px" : "190px",
+                                                        right: matchMobile ? "2vw" : "calc(50% - 230px)",
+                                                        width: "auto",
+                                                        alignItems: "center",
+                                                        zIndex: 1000,
+                                                    }}
+                                                >
+                                                    {/* unified icon + label button */}
+                                                    <Box
+                                                        className={`toggle-image ${Zoom2x ? "bounce" : ""}`}
+                                                        onClick={() => {
+                                                            setDeleted(false);
+                                                            setShowDel(2);
+
+
+                                                        }}
+                                                        sx={{
+                                                            opacity: 0.85,
+                                                            alignItems: "center",
+                                                            gap: 0,          // keep icon centred when collapsed
+                                                            width: 55,  // pill width â†’ circle width video
+                                                            height: 55,
+                                                            px: 0,         // same padding you used on the label
+                                                            py: 0.4,
+                                                            borderRadius: "50%",
+                                                            bgcolor: darkModeReducer
+                                                                ? "rgba(0,0,0,0.35)"
+                                                                : "rgb(250,250,250,0.3)",
+                                                            backdropFilter: "blur(1px)",
+                                                            boxShadow: 3,
+
+                                                            display: hideVidCap[verticalActiveIndex] ? "none" : "inline-flex",
+
+                                                            cursor: "pointer",
+                                                            "&:hover": {
+                                                                bgcolor: darkModeReducer
+                                                                    ? "rgba(100,100,100,0.3)"
+                                                                    : "rgba(250,250,250,0.3)",
+                                                            },
+
+                                                            transition: "width 250ms ease, border-radius 250ms ease",
+                                                        }}
+                                                    >
+                                                        {/* camera icon */}
+                                                        {item.mode === 2 && !playvid ? <AdjustIcon
+                                                            sx={{
+                                                                fontSize: matchMobile ? "1.8rem" : "1.7rem",
+                                                                color: darkModeReducer ? "#fff" : "#000",
+                                                                textAlign: 'center',
+                                                                margin: 'auto',
+                                                            }}
+                                                        /> : <MoreVertIcon
+                                                            sx={{
+                                                                fontSize: matchMobile ? "1.8rem" : "1.7rem",
+                                                                color: darkModeReducer ? "#fff" : "#000",
+                                                                textAlign: 'center',
+                                                                margin: 'auto',
+                                                            }}
+                                                        />}
+
+
+                                                        {/* sliding label â€” collapses to 0 px width */}
+
+                                                    </Box>
+
+
+                                                </Box>
+
+                                                : null}
+
+
+                                        {showDel === 1 && index === verticalActiveIndex ? <Box
+                                            sx={{
+                                                position: "fixed",
+                                                inset: 0,
+                                                width: "100vw",
+                                                height: matchMobile ? "100dvh" : "100dvh",
+                                                bgcolor: "rgba(0,0,0,0.15)",
+                                                display: "flex",
+                                                alignItems: "center",
+                                                justifyContent: "center",
+                                                zIndex: 1300,
+                                            }}
+                                        // onClick={onCancel}
+                                        >
+                                            {/* Prevent inner clicks from closing */}
+                                            <Box
+                                                onClick={(e) => e.stopPropagation()}
+                                                sx={{
+                                                    width: 280,
+                                                    bgcolor: "#f9f9f9",
+                                                    color: Deleted ? 'blue' : '#000000',
+                                                    borderRadius: 4,
+                                                    p: 3,
+                                                    boxShadow: 24,
+                                                    textAlign: "center",
+                                                    fontFamily: "-apple-system, BlinkMacSystemFont, \"San Francisco\", \"Segoe UI\", Roboto, Helvetica, Arial, sans-serif",
+                                                }}
+                                            >
+                                                <Typography variant="h6" gutterBottom>
+                                                    {Deleted ? '  Deleted' : '  Delete this item?'}
+                                                </Typography>
+                                                <Typography variant="body2" color="textSecondary" sx={{ mb: 3 }}>
+                                                    {Deleted ? '' : 'This action canâ€™t be undone.'}
+                                                </Typography>
+
+                                                <Stack direction="row" spacing={2} justifyContent="center">
+
+                                                    {Deleted ?
+                                                        <Button
+                                                            variant="outlined"
+                                                            color="inherit"
+                                                            size="large"
+                                                            fullWidth
+                                                            sx={{ borderRadius: 3, textTransform: "none", fontSize: "1rem" }}
+                                                            onClick={() => {
+
+                                                                setShowDel(0);
+
+                                                            }}
+                                                        >
+                                                            Close
+                                                        </Button> :
+
+                                                        <>
+                                                            <Button
+                                                                variant="contained"
+                                                                color="error"
+                                                                size="large"
+                                                                fullWidth
+                                                                sx={{ borderRadius: 3, textTransform: "none", fontSize: "1rem" }}
+                                                                onClick={async () => {
+                                                                    try {
+                                                                        // 1ï¸âƒ£ delete all S3 objects in parallel
+                                                                        await Promise.all([
+                                                                            deleteFeedImages(feeds[index]),
+                                                                            deleteFeedImagesHd(feeds[index]),
+                                                                            deleteFeedVideo(feeds[index]),
+                                                                            startDeleteVid(videoArray[verticalActiveIndex]),
+                                                                            startDelete(feeds[index].item1),
+                                                                            startDeleteAudio(feeds[index].captionAudio),
+                                                                            deleteFeedAudio(feeds[index]),
+                                                                            startDelete(feeds[index].kontext),
+
+
+                                                                        ]);
+
+                                                                        // 2ï¸âƒ£ now that S3 is clean, delete the DB row
+                                                                        await startDeleteDB(feeds[index].id);   // <= or whatever your post id field is
+
+
+                                                                    } catch (err) {
+                                                                        console.error("Delete failed:", err);
+
+                                                                    }
+                                                                }}
+
+                                                            >
+                                                                Yes
+                                                            </Button>
+                                                            <Button
+                                                                variant="outlined"
+                                                                color="inherit"
+                                                                size="large"
+                                                                fullWidth
+                                                                sx={{ borderRadius: 3, textTransform: "none", fontSize: "1rem" }}
+                                                                onClick={() => {
+
+                                                                    setShowDel(2);
+
+                                                                }}
+                                                            >
+                                                                No
+                                                            </Button>
+                                                        </>
+                                                    }
+                                                </Stack>
+                                            </Box>
+                                        </Box> : null}
+
+
+
+
+                                        {
+                                            showDel === 2 && index === verticalActiveIndex ?
+                                                <Plan
+                                                    ty={1}
+                                                    isMenuOpen={isMenuOpen}
+                                                    feeds={feeds}
+                                                    verticalActiveIndex={verticalActiveIndex}
+                                                    setZoom2x={setZoom2x}
+                                                    setShowDel={setShowDel} />
+                                                : null
+                                        }
+
+
+
+                                        <Box
+                                            onClick={(e: any) => {
+                                                /// e.stopPropagation();
+                                                //  setplayvid(true);
+                                                const video = videoRefs.current[index];
+
+
+
+                                                if (video) {
+                                                    video.play();
+
+                                                }
+                                                /// alert('kk');
+                                                setplayvid(true);
+                                            }}
+                                            sx={{
+                                                position: 'absolute',
+                                                top: '50%',
+                                                left: '50%',
+                                                transform: 'translate(-50%, -50%)',
+                                                zIndex: 2,
+                                                color: '#fff',
+                                                fontSize: audioPlayingx[verticalActiveIndex] ? '5rem' : '4rem',
+                                                opacity: 0.8,
+                                                cursor: 'pointer',
+                                                display: !playvid ? 'block' : 'none',
+                                                // Use drop-shadow for an SVG icon
+                                                filter: 'drop-shadow(0 3px 6px rgba(0, 0, 0, 0.15))',
+                                            }}
+                                        >
+                                            {audioPlayingx[verticalActiveIndex] ? <AudiotrackIcon fontSize="inherit" /> : <PlayArrowIcon fontSize="inherit" />}
+                                        </Box>
 
                                         <img
+                                            ref={verticalActiveIndex === index ? imgRef : null}
                                             src={item.item1}
                                             alt={item.caption}
 
@@ -2747,12 +4216,50 @@ const FullScreenStories: React.FC<FullScreenStoriesProps> = ({
                                                 top: "50%",             // Position top center
                                                 left: "50%",            // Position left center
                                                 transform: "translate(-50%, -50%)", // Offset the element by half of its own dimensions
-                                                width: matchMobile ? "100%" : "auto",
+                                                width: matchMobile ? "100%" : item.ratio === 3 ? "100%" : 'auto',
                                                 height: "100%",
-                                                objectFit: matchMobile ? "cover" : "contain",
+                                                objectFit: "contain",
                                                 zIndex: 1,
+                                                pointerEvents: playvid && item.xv1 ? 'none' : 'auto',
                                             }}
                                         />
+
+                                        {verticalActiveIndex === index && type !== 3 && !videoArray[verticalActiveIndex] &&
+                                            item.xv1 ?
+                                            <VideoPlayer
+                                                loop={false}
+                                                onEnded={() => {
+                                                    if (index < feeds.length - 1) {
+                                                        const nextEl = fullscreenRefsX.current[index + 1];
+                                                        if (nextEl) nextEl.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                                                    }
+                                                }}
+                                                singleMode={true}
+                                                // --- Identity ---
+                                                index={index}
+                                                src={item.xv1}  // Updated to match your 2nd video source
+                                                isActive={index === verticalActiveIndex}
+
+                                                // --- State Passing ---
+                                                isUIHidden={!!hideVidCap[verticalActiveIndex]}
+                                                setUIHidden={(val) => setCapFlag(index, val)}
+
+                                                // --- Ref Handling ---
+                                                onRefAssign={(el) => (videoRefs.current[index] = el)}
+
+                                                // --- Styling Logic ---
+                                                matchMobile={matchMobile}
+                                                isNineTwelve={isNineTwelve}
+                                                isMenuOpen={isMenuOpen}
+                                                item={item}
+                                                playvid={playvid} // This handles the display: block/none logic internally
+
+                                                // --- Audio & Theme ---
+                                                muted={MuteReducer}
+                                                darkMode={darkModeReducer}
+                                            />
+                                            : null}
+
 
 
                                         {!activetext && (
@@ -2760,12 +4267,43 @@ const FullScreenStories: React.FC<FullScreenStoriesProps> = ({
                                                 ///onClick={() => { /* your onClick logic here */ }}
                                                 sx={{
                                                     position: 'absolute',
-                                                    bottom: matchMobile ? 0 : 0,
+
+                                                    bottom: matchMobile ? item.ratio === 1 ?
+
+                                                        item.model === 'Gpt Image' ? height / 15 :
+                                                            height / 200 :
+
+                                                        height / 20
+
+                                                        :
+
+                                                        item.ratio === 3 ?
+                                                            item.model === 'Gpt Image' ? height / 100 :
+                                                                isMenuOpen ? height / 20 : height / 30 :
+                                                            height / 100,
+
+
+                                                    width: matchMobile ? '100%' :
+                                                        item.ratio === 1 ? '56.25dvh' :
+                                                        item.ratio === 2 ? '100%' :
+                                                        item.ratio === 3 ?
+                                                            item.model === 'Gpt Image' ?
+                                                                isMenuOpen ? width / 1.1 : width / 1.5 :
+                                                                isMenuOpen ? width / 1.02 : width / 1.2 :
+                                                            width,
+
+
+
                                                     left: matchMobile ? '0px' : '50%',
                                                     transform: matchMobile ? 'none' : 'translateX(-50%)',
-                                                    width: matchMobile ? '100%' : '28vw',
+
+
+
+
+
                                                     boxSizing: 'border-box',
-                                                    display: verticalActiveIndex === index ? 'flex' : 'none',
+                                                    display: verticalActiveIndex === index ?
+                                                        hideVidCap[verticalActiveIndex] ? 'none' : 'flex' : 'none',
                                                     alignItems: 'flex-end',
                                                     justifyContent: 'space-between',
 
@@ -2781,7 +4319,7 @@ const FullScreenStories: React.FC<FullScreenStoriesProps> = ({
                                                     sx={{
                                                         width: matchMobile ? '87%' : '86%',
                                                         color: 'rgba(255, 255, 255, 1)', // visible white
-                                                        textShadow: '0px 0px 3px rgba(0,0,0,0.1)',
+                                                        textShadow: '0px 1px 3px rgba(0,0,0,0.9), 0px 0px 6px rgba(0,0,0,0.7)',
                                                         display: 'flex',
                                                         flexDirection: 'column',
                                                         justifyContent: 'space-between',
@@ -2796,14 +4334,15 @@ const FullScreenStories: React.FC<FullScreenStoriesProps> = ({
                                                         onClick={() => {
 
 
-                                                            GotoProfile(feeds[index].sender, verticalActiveIndex - 1);
+                                                            ///GotoProfile(feeds[index].sender, verticalActiveIndex - 1);
                                                         }}
                                                         variant="subtitle2"
                                                         sx={{
                                                             cursor: 'pointer',
                                                             fontWeight: 'bold',
                                                             mb: 1,
-                                                            fontSize: matchMobile ? '1.2rem' : '1.3rem',
+                                                            fontSize: matchMobile ? '0.95rem' : '1.3rem',
+
 
                                                         }}
                                                     >
@@ -2814,30 +4353,78 @@ const FullScreenStories: React.FC<FullScreenStoriesProps> = ({
                                                                     'linear-gradient(to bottom, rgba(70, 70, 70, 0) 0%, rgba(70, 70, 70, 0.7) 50%, rgba(70, 70, 70, 0) 100%)'
                                                                     :
                                                                     'linear-gradient(to bottom, rgba(90, 90, 100, 0) 0%, rgba(90, 90, 100, 0.7) 50%, rgba(90, 90, 100, 0) 100%)',
-                                                        }}>  {`@${feeds[index].username}`}  </span>
+                                                        }}>
+                                                            <FollowPanel
+                                                                setShowEmotions={false}
+                                                                setfollowType={0}
+
+                                                                typex={false}
+                                                                type={1}
+                                                                userProfile={feeds[index].sender}
+                                                                loggedUser={loggedUser}
+                                                                connected={connected}
+                                                                setConnected={setconnected}
+
+                                                                counts={30}
+                                                                followersReducer={0}
+                                                                followingReducer={0}
+                                                                refresh={() => { }}
+                                                                onFollowersClick={() => console.log("open followers list")}
+                                                                onFollowToggle={(next) => console.log("follow ->", next)}
+                                                            />   </span>
                                                     </Typography>
 
+                                                    {ActiveCap && (
+                                                        <Box
+                                                            onClick={(e) => { e.stopPropagation(); setActiveCap(false); setHideT(false); }}
+                                                            sx={{ position: 'fixed', top: 0, left: 0, right: 0, bottom: 0, zIndex: 99998 }}
+                                                        />
+                                                    )}
                                                     <Typography
                                                         variant="body2"
-                                                        sx={{
-                                                            fontSize: matchMobile ? '1.2rem' : '1.3rem',
+                                                        onClick={(e) => {
+                                                            e.stopPropagation();
+                                                            if (ActiveCap) return;
+                                                            if (type === 3) setHideT(true);
+                                                            setActiveCap(true);
+                                                        }}
+                                                        sx={ActiveCap ? {
+                                                            position: 'fixed',
+                                                            bottom: 0,
+                                                            left: 0,
+                                                            width: '100%',
+                                                            height: '70vh',
+                                                            bgcolor: 'rgba(0, 0, 0, 0.75)',
+                                                            backdropFilter: 'blur(20px)',
+                                                            zIndex: 99999,
+                                                            padding: matchMobile ? '60px 5vw 4vh' : '60px 3vw 4vh',
+                                                            borderTopLeftRadius: '24px',
+                                                            borderTopRightRadius: '24px',
+                                                            color: '#fff',
+                                                            fontWeight: 'bold',
+                                                            fontSize: matchMobile ? '1.1rem' : '1.4rem',
+                                                            lineHeight: 1.6,
+                                                            overflowY: 'auto',
                                                             whiteSpace: 'normal',
                                                             wordBreak: 'break-word',
-                                                            maxHeight: matchMobile ? '12vh' : '14vh',
+                                                            display: 'block',
+                                                            boxSizing: 'border-box',
+                                                            boxShadow: '0 -4px 30px rgba(0,0,0,0.5)',
+                                                            transition: 'all 0.3s ease-in-out',
+                                                            "&::-webkit-scrollbar": { width: "8px" },
+                                                            "&::-webkit-scrollbar-track": { background: "rgb(255,255,255,0)" },
+                                                            "&::-webkit-scrollbar-thumb": { background: "rgba(255,255,255,0.3)", borderRadius: "4px" },
+                                                        } : {
+                                                            fontSize: matchMobile ? '0.95rem' : '1.3rem',
+                                                            whiteSpace: 'normal',
+                                                            wordBreak: 'break-word',
+                                                            maxHeight: '7vh',
+                                                            display: 'block',
                                                             overflowY: 'auto',
-                                                            "&::-webkit-scrollbar": {
-                                                                width: "8px",
-                                                            },
-                                                            "&::-webkit-scrollbar-track": {
-                                                                background: "rgb(255,255,255,0)",
-                                                            },
-                                                            "&::-webkit-scrollbar-thumb": {
-                                                                background: "rgb(255,255,255,0)",
-                                                                borderRadius: "4px",
-                                                            },
-                                                            "&::-webkit-scrollbar-thumb:hover": {
-                                                                background: "rgb(255,255,255,0)",
-                                                            },
+                                                            transition: 'all 0.3s ease-in-out',
+                                                            "&::-webkit-scrollbar": { width: "8px" },
+                                                            "&::-webkit-scrollbar-track": { background: "rgb(255,255,255,0)" },
+                                                            "&::-webkit-scrollbar-thumb": { background: "rgb(255,255,255,0)", borderRadius: "4px" },
                                                         }}
                                                     >
 
@@ -2849,7 +4436,35 @@ const FullScreenStories: React.FC<FullScreenStoriesProps> = ({
                                                                     'linear-gradient(to bottom, rgba(70, 70, 70, 0) 0%, rgba(70, 70, 70, 0.7) 50%, rgba(70, 70, 70, 0) 100%)'
                                                                     :
                                                                     'linear-gradient(to bottom, rgba(90, 90, 100, 0) 0%, rgba(90, 90, 100, 0.7) 50%, rgba(90, 90, 100, 0) 100%)',
-                                                        }}>  {feeds[index].caption}  </span>
+                                                        }}>
+
+                                                            {ActiveCap && (
+                                                                <IconButton
+                                                                    onClick={(e) => { e.stopPropagation(); setActiveCap(false); setHideT(false); }}
+                                                                    sx={{ position: 'absolute', top: 12, right: 12, color: 'white', zIndex: 100000 }}
+                                                                >
+                                                                    <CloseIcon />
+                                                                </IconButton>
+                                                            )}
+                                                            <span
+                                                                onClick={(e) => {
+                                                                    e.stopPropagation();
+                                                                    GotoProfile(feeds[index].sender, verticalActiveIndex - 1);
+                                                                }}
+                                                                style={{ cursor: 'pointer', textDecoration: 'underline' }}
+                                                            >
+                                                                {`@${feeds[index].username}`}
+                                                            </span>
+                                                            <span style={{ visibility: 'hidden' }}>
+                                                                ......
+                                                            </span>
+
+                                                            <span>
+                                                                {` ${feeds[index].caption}`}
+                                                            </span>
+
+
+                                                        </span>
                                                     </Typography>
                                                 </Box>
 
@@ -2857,20 +4472,15 @@ const FullScreenStories: React.FC<FullScreenStoriesProps> = ({
                                                 <Box
                                                     sx={{
 
-                                                        display: 'flex',
                                                         justifyContent: 'center',
                                                         alignItems: 'center',
-
-                                                        bottom: matchMobile ?
-                                                            isNineTwelve ? '56vh' : '50vh' : '51vh',
+                                                        display: "none",
+                                                        bottom: matchMobile ? '40px' : '45px',
                                                         position: 'absolute',
                                                         width: 'auto',
-                                                        left: matchMobile ? '84vw' :
-
-                                                            isNineTwelve ? '23.5vw' : '26vw',
-                                                        transform: 'translate(0%, 10%)',
-                                                        transition: 'transform 7s ease-in-out',
+                                                        right: matchMobile ? '2vw' : 'calc(50% - 230px)',
                                                         height: '0px',
+                                                        zIndex: 1000,
                                                     }}
                                                 >
                                                     <img
@@ -2917,9 +4527,139 @@ const FullScreenStories: React.FC<FullScreenStoriesProps> = ({
 
                                                         }}
                                                     />
+
+                                                    {/* Heart overlay */}
+                                                    <Box
+                                                        className={`toggle-image ${ZoomHeartx ? "bounce" : ""}`}
+                                                        onMouseEnter={() => setZoomHeartx(true)}
+                                                        onMouseOver={() => setZoomHeartx(true)}
+                                                        onMouseLeave={() => setZoomHeartx(false)}
+                                                        onTouchStart={() => setZoomHeartx(true)}
+                                                        onTouchEnd={() => setZoomHeartx(false)}
+                                                        onClick={() => {
+
+
+                                                            addLike(feeds[index].id, loggedUser ? loggedUser.id : 0);
+                                                            // bounce the heart like your other controls
+                                                            setZoomHeartx(true);
+                                                            setTimeout(() => setZoomHeartx(false), 300);
+
+                                                            const next = !liked;
+                                                            setLiked(next);
+                                                            if (next) {
+                                                                setAnim(true);
+                                                                setTimeout(() => setAnim(false), 950); // total of both anims
+                                                            }
+                                                        }}
+                                                        sx={{
+                                                            position: 'absolute',
+                                                            bottom: matchMobile ? '95px' : '105px',
+                                                            left: '50%',
+                                                            transform: 'translateX(-50%)',
+                                                            width: matchMobile ? '45px' : '55px',
+                                                            height: matchMobile ? '45px' : '55px',
+                                                            borderRadius: '50%',
+                                                            display: ActiveCap ? 'none' : 'flex',
+                                                            alignItems: 'center',
+                                                            justifyContent: 'center',
+                                                            zIndex: 2,
+                                                            bgcolor: darkModeReducer ? "rgba(0,0,0,0.35)" : "rgb(250,250,250,0.3)",
+                                                            backdropFilter: "blur(1px)",
+                                                            "&:hover": {
+                                                                bgcolor: darkModeReducer ? "rgba(100,100,100,0.3)" : "rgba(250,250,250,0.3)",
+                                                            },
+                                                            boxShadow: darkModeReducer
+                                                                ? '0 0 6px rgba(255,255,255,0.6)'
+                                                                : '0 0 6px rgba(0,0,0,0.4)',
+                                                            animation: anim
+                                                                ? `${popIn} 600ms ease-out, ${shake} 2000ms cubic-bezier(.34,1.56,.64,1) 600ms`
+                                                                : 'none',
+                                                            cursor: 'pointer',
+                                                        }}
+                                                    >
+                                                        {/* Heart icon with per-item bounce */}
+                                                        {likedArray[index]?.liked ? (
+                                                            <Favorite
+                                                                sx={{ fontSize: matchMobile ? 26 : 30, color: darkModeReducer ? "#E8BAFA" : "#0099cc" }}
+                                                            />
+                                                        ) : (
+                                                            <Favorite
+
+                                                                sx={{ fontSize: 30, opacity: 0.6 }}
+                                                            />
+                                                            // If you prefer an outline when not liked, swap the line above for:
+                                                            // <FavoriteBorder className={`toggle-image ${ZoomHeartx ? "bounce" : ""}`} sx={{ fontSize: 30 }} />
+                                                        )}
+
+                                                        {/* Likes count panel â€” its own zoom state & handlers */}
+                                                        <Box
+                                                            onMouseEnter={(e) => { e.stopPropagation(); setZoomCountx(true); }}
+                                                            onMouseOver={(e) => { e.stopPropagation(); setZoomCountx(true); }}
+                                                            onMouseLeave={(e) => { e.stopPropagation(); setZoomCountx(false); setZoomHeartx(false) }}
+                                                            onTouchStart={(e) => { e.stopPropagation(); setZoomCountx(true); }}
+                                                            onTouchEnd={(e) => { e.stopPropagation(); setZoomCountx(false); setZoomHeartx(false) }}
+                                                            onClick={(e) => {
+                                                                // bounce count without toggling like
+                                                                e.stopPropagation();
+                                                                const feedtypeforhorizontal = type;
+                                                                const feedLastIdx = feeds[index] ? feeds[index].id : 0;
+                                                                //alert(feedLastIdx);
+
+
+                                                                OpenLikes(
+                                                                    feeds[index].id,
+                                                                    searchData,
+                                                                    MyPageId,
+                                                                    feedLastIdx,
+                                                                    feedtypeforhorizontal
+                                                                );
+
+
+                                                                setZoomCountx(true);
+                                                                setTimeout(() => setZoomCountx(false), 300);
+                                                            }}
+                                                            sx={{
+                                                                position: 'absolute',
+                                                                bottom: 'calc(-8px + 0.7vh)',
+                                                                left: '50%',
+                                                                transform: 'translateX(-50%)',
+                                                                zIndex: 3,
+                                                                minWidth: 28,
+                                                                textAlign: 'center',
+                                                                // allow its own hover/touch events
+                                                                pointerEvents: 'auto',
+                                                                // (optional) GotoProfile  subtle bg for readability; comment out if you don't want it
+                                                                // bgcolor: 'rgba(0,0,0,0.55)',
+                                                            }}
+                                                        >
+                                                            <span
+                                                                className={`toggle-image ${ZoomCountx ? "bounce2" : ""}`}
+                                                                style={{
+                                                                    fontSize: matchMobile ? 9.5 : 10.5,
+                                                                    fontWeight: 900,
+                                                                    color: '#fff',
+                                                                    textShadow: '0 1px 2px rgba(0,0,0,0.9), 0 0 3px rgba(0,0,0,0.7)',
+                                                                    lineHeight: 1,
+                                                                    display: 'inline-block',
+                                                                }}
+                                                            >
+                                                                {///likesCount
+                                                                }
+                                                                {
+                                                                    likeCountArray[index]?.count === 0 ? '' :
+                                                                        likeCountArray[index]?.count}
+                                                            </span>
+                                                        </Box>
+                                                    </Box>
                                                 </Box>
                                             </Box>
+
+
+
                                         )}
+
+
+
                                     </Box>
                                 ) : (
                                     // Fallback if neither story images nor item1 exist.
@@ -2937,6 +4677,244 @@ const FullScreenStories: React.FC<FullScreenStoriesProps> = ({
                                         </Typography>
                                     </Box>
                                 )}
+{/* UNIFIED SIDEBAR (Replaces scattered icons) */}
+<Box
+    sx={{
+        position: 'absolute',
+        right: matchMobile ? '2vw' : (item.ratio === 1 ? 'calc(50% - 28.125dvh - 65px)' : item.ratio === 2 ? 'calc(50% - 50dvh - 65px)' : '2vw'),
+        bottom: matchMobile ? '20%' : 'auto',
+        top: matchMobile ? 'auto' : '50%',
+        transform: matchMobile ? 'none' : 'translateY(-50%)',
+        display: ActiveCap || HideT || activetext || activeStory ? 'none' : 'flex',
+        flexDirection: 'column',
+        gap: matchMobile ? 2.5 : 3,
+        alignItems: 'center',
+        zIndex: 1000,
+        pointerEvents: 'none', // let clicks pass through the gap
+        '& > *': { pointerEvents: 'auto' } // enable clicks on the buttons
+    }}
+>
+
+    {/* Volume Button */}
+    {hideVidCap[verticalActiveIndex] || (MuteReducer ? false : hidevol) ? null : (
+        <Box
+            className={`toggle-image ${Zoom3x ? "bounce" : ""}`}
+            onMouseEnter={() => setZoom3x(true)}
+            onMouseOver={() => setZoom3x(true)}
+            onMouseLeave={() => setZoom3x(false)}
+            onTouchStart={() => setZoom3x(true)}
+            onTouchEnd={() => setZoom3x(false)}
+            onClick={() => {
+                setZoom3x(true);
+                setTimeout(() => setZoom3x(false), 300);
+                if (MuteReducer) {
+                    dispatch(deactivateFullscreenMute());
+                } else {
+                    dispatch(activateFullscreenMute());
+                }
+            }}
+            sx={{
+                opacity: 0.85,
+                display: "flex",
+                alignItems: "center",
+                justifyContent: "center",
+                width: matchMobile ? 45 : 55,
+                height: matchMobile ? 45 : 55,
+                borderRadius: "50%",
+                transition: "all 250ms ease",
+                bgcolor: darkModeReducer ? "rgba(0,0,0,0.35)" : "rgb(250,250,250,0.3)",
+                backdropFilter: "blur(1px)",
+                boxShadow: 3,
+                cursor: "pointer",
+                "&:hover": {
+                    bgcolor: darkModeReducer ? "rgba(100,100,100,0.3)" : "rgba(250,250,250,0.3)",
+                },
+                visibility: 'visible',
+            }}
+        >
+            {MuteReducer ? (
+                <VolumeOffIcon sx={{ fontSize: matchMobile ? "1.8rem" : "1.7rem", color: darkModeReducer ? "#fff" : "#000" }} />
+            ) : (
+                <VolumeUpIcon sx={{ fontSize: matchMobile ? "1.8rem" : "1.7rem", color: darkModeReducer ? "#fff" : "#000" }} />
+            )}
+        </Box>
+    )}
+
+    {/* Menu Button */}
+    {index === verticalActiveIndex && !hideVidCap[verticalActiveIndex] ? (
+        <Box
+            className={`toggle-image ${Zoom2x ? "bounce" : ""}`}
+            onMouseEnter={() => setZoom2x(true)}
+            onMouseOver={() => setZoom2x(true)}
+            onMouseLeave={() => setZoom2x(false)}
+            onTouchStart={() => setZoom2x(true)}
+            onTouchEnd={() => setZoom2x(false)}
+            onClick={() => {
+                setZoom2x(true);
+                setTimeout(() => setZoom2x(false), 300);
+                setDeleted(false);
+                setShowDel(2);
+            }}
+            sx={{
+                opacity: 0.85,
+                display: "flex",
+                alignItems: "center",
+                justifyContent: "center",
+                width: matchMobile ? 45 : 55,
+                height: matchMobile ? 45 : 55,
+                borderRadius: "50%",
+                transition: "all 250ms ease",
+                bgcolor: darkModeReducer ? "rgba(0,0,0,0.35)" : "rgb(250,250,250,0.3)",
+                backdropFilter: "blur(1px)",
+                boxShadow: 3,
+                cursor: "pointer",
+                "&:hover": {
+                    bgcolor: darkModeReducer ? "rgba(100,100,100,0.3)" : "rgba(250,250,250,0.3)",
+                },
+            }}
+        >
+            {item.mode === 2 && !playvid ? (
+                <AdjustIcon sx={{ fontSize: matchMobile ? "1.8rem" : "1.7rem", color: darkModeReducer ? "#fff" : "#000" }} />
+            ) : (
+                <MoreVertIcon sx={{ fontSize: matchMobile ? "1.8rem" : "1.7rem", color: darkModeReducer ? "#fff" : "#000" }} />
+            )}
+        </Box>
+    ) : null}
+
+    {/* Heart/Like Button */}
+    {!ActiveCap ? (
+        <Box
+            className={`toggle-image ${ZoomHeartx ? "bounce" : ""}`}
+            onMouseEnter={() => setZoomHeartx(true)}
+            onMouseOver={() => setZoomHeartx(true)}
+            onMouseLeave={() => setZoomHeartx(false)}
+            onTouchStart={() => setZoomHeartx(true)}
+            onTouchEnd={() => setZoomHeartx(false)}
+            onClick={(e) => {
+                if (likedArray[index]?.liked) {
+                    // Already liked, so open the likes view
+                    e.stopPropagation();
+                    const feedtypeforhorizontal = type;
+                    const feedLastIdx = feeds[index] ? feeds[index].id : 0;
+                    OpenLikes(feeds[index].id, searchData, MyPageId, feedLastIdx, feedtypeforhorizontal);
+                    setZoomCountx(true);
+                    setTimeout(() => setZoomCountx(false), 300);
+                } else {
+                    // Not liked, send a like
+                    addLike(feeds[index].id, loggedUser ? loggedUser.id : 0);
+                    setZoomHeartx(true);
+                    setTimeout(() => setZoomHeartx(false), 300);
+                    const next = !liked;
+                    setLiked(next);
+                    if (next) {
+                        setAnim(true);
+                        setTimeout(() => setAnim(false), 950);
+                    }
+                }
+            }}
+            sx={{
+                position: 'relative',
+                width: matchMobile ? '45px' : '55px',
+                height: matchMobile ? '45px' : '55px',
+                borderRadius: '50%',
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'center',
+                bgcolor: darkModeReducer ? "rgba(0,0,0,0.35)" : "rgb(250,250,250,0.3)",
+                transition: "all 250ms ease",
+                backdropFilter: "blur(1px)",
+                "&:hover": {
+                    bgcolor: darkModeReducer ? "rgba(100,100,100,0.3)" : "rgba(250,250,250,0.3)",
+                },
+                boxShadow: darkModeReducer ? '0 0 6px rgba(255,255,255,0.6)' : '0 0 6px rgba(0,0,0,0.4)',
+                animation: anim ? `${popIn} 600ms ease-out, ${shake} 2000ms cubic-bezier(.34,1.56,.64,1) 600ms` : 'none',
+                cursor: 'pointer',
+            }}
+        >
+            {likedArray[index]?.liked ? (
+                <Favorite sx={{ fontSize: matchMobile ? 26 : 30, color: darkModeReducer ? "#E8BAFA" : "#0099cc" }} />
+            ) : (
+                <Favorite sx={{ fontSize: 30, opacity: 0.6 }} />
+            )}
+
+            {/* Likes count panel */}
+            <Box
+                onMouseEnter={(e) => { e.stopPropagation(); setZoomCountx(true); }}
+                onMouseOver={(e) => { e.stopPropagation(); setZoomCountx(true); }}
+                onMouseLeave={(e) => { e.stopPropagation(); setZoomCountx(false); setZoomHeartx(false) }}
+                onTouchStart={(e) => { e.stopPropagation(); setZoomCountx(true); }}
+                onTouchEnd={(e) => { e.stopPropagation(); setZoomCountx(false); setZoomHeartx(false) }}
+                onClick={(e) => {
+                    e.stopPropagation();
+                    const feedtypeforhorizontal = type;
+                    const feedLastIdx = feeds[index] ? feeds[index].id : 0;
+                    OpenLikes(feeds[index].id, searchData, MyPageId, feedLastIdx, feedtypeforhorizontal);
+                    setZoomCountx(true);
+                    setTimeout(() => setZoomCountx(false), 300);
+                }}
+                sx={{
+                    display: likedArray[index]?.liked ? 'block' : 'none',
+                    position: 'absolute',
+                    bottom: 'calc(-8px + 0.7vh)',
+                    left: '50%',
+                    transform: 'translateX(-50%)',
+                    zIndex: 3,
+                    textAlign: 'center',
+                    pointerEvents: 'auto',
+                }}
+            >
+                <span
+                    className={`toggle-image ${ZoomCountx ? "bounce2" : ""}`}
+                    style={{
+                        fontSize: matchMobile ? 9.5 : 10.5,
+                        fontWeight: 900,
+                        color: '#fff',
+                        textShadow: '0 1px 2px rgba(0,0,0,0.9), 0 0 3px rgba(0,0,0,0.7)',
+                        lineHeight: 1,
+                        display: 'inline-block',
+                    }}
+                >
+                    {likeCountArray[index]?.count === 0 ? '' : likeCountArray[index]?.count}
+                </span>
+            </Box>
+        </Box>
+    ) : null}
+
+    {/* Profile Pic */}
+        <Box
+            sx={{
+                display: 'flex',
+                justifyContent: 'center',
+                alignItems: 'center',
+            }}
+        >
+            <img
+                onClick={() => {
+                    setZoom1x(true);
+                    setTimeout(() => setZoom1x(false), 300);
+                    GotoProfile(feeds[index].sender, verticalActiveIndex - 1);
+                }}
+                onMouseEnter={() => setZoom1x(true)}
+                onMouseOver={() => setZoom1x(true)}
+                onMouseLeave={() => setZoom1x(false)}
+                onTouchStart={() => setZoom1x(true)}
+                onTouchEnd={() => setZoom1x(false)}
+                src={loggedUser ? `${feeds[index].profile_image}` : ""}
+                alt={loggedUser ? `Goto ${feeds[index].username}'s profile` : ""}
+                className={`toggle-image ${Zoom1x ? "bounce" : ""}`}
+                style={{
+                    cursor: 'pointer',
+                    borderRadius: '50%',
+                    width: matchMobile ? 45 : 55,
+                    height: matchMobile ? 45 : 55,
+                    objectFit: 'cover',
+                    boxShadow: darkModeReducer ? '0 0 10px rgba(255, 255, 255, 0.5)' : '0 0 10px rgba(0, 0, 0, 0.5)'
+                }}
+            />
+        </Box>
+
+</Box>
+
                         </Box>
                     );
                 })}

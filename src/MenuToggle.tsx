@@ -1,4 +1,4 @@
-import { useEffect, useState, useRef } from "react";
+﻿import { useEffect, useState, useRef } from "react";
 import { useSelector } from "react-redux";
 import { RootState } from "./store"; // adjust the import to your store location
 
@@ -37,11 +37,11 @@ const MenuToggle = ({
 
   const darkModeReducer = useSelector((state: RootState) => state.settings.darkMode);
 
-  /* …inside your component’s render … */
+  /* â€¦inside your componentâ€™s render â€¦ */
   return (
-    <div style={{ display: isCropOpen ? 'none' : matchMobile ? 'none' : 'block' }}>
+    <div style={{ display: matchMobile ? 'none' : 'inline', position: 'fixed', top: '20vh', zIndex: 200 }}>
       {/* Only render after first mount and when the toggle should be visible */}
-      {!isInitialLoad && showmenuToggle && (
+      {showmenuToggle && (
         <div
 
           style={{
@@ -118,6 +118,23 @@ const MenuToggle = ({
         @media (max-width: 768px) {
           .bounce { animation-duration: 0.36s; }
         }
+
+        /* -------- bounce2: scales to 2x -------- */
+@keyframes bounce-animation-2x {
+  0%   { transform: scale(1); }
+  50%  { transform: scale(3.9); }   /* peak at 2x */
+  100% { transform: scale(3.5); } /* settle same as bounce */
+}
+.bounce2 {
+  animation: bounce-animation-2x 0.35s cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
+}
+
+/* Slightly longer on small screens */
+@media (max-width: 768px) {
+  .bounce2 { animation-duration: 0.36s; }
+}
+
+
 
         /* -------- responsive sizing (same breakpoints) -------- */
         @media (min-width: 768px) {  /* Tablet */

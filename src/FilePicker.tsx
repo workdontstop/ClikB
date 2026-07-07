@@ -1,4 +1,4 @@
-import React, {
+﻿import React, {
     useState,
     useRef,
     useEffect,
@@ -34,7 +34,7 @@ interface FilePickerProps {
     /**
      * Instead of doing resizing logic here, we'll call this parent's
      * function for ANY file changes or existing image selection.
-     * 
+     *
      * Example usage in parent:
      *   const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => { ... }
      */
@@ -50,7 +50,9 @@ interface FilePickerProps {
         onFileChange: (e: React.ChangeEvent<HTMLInputElement>) => void
     ) => void;
     Once: any;
-    setOnce: any
+    setOnce: any;
+    compact?: boolean;
+    showPreviewThumb?: boolean;
 }
 
 const FilePicker: React.FC<FilePickerProps> = ({
@@ -68,6 +70,8 @@ const FilePicker: React.FC<FilePickerProps> = ({
     startEdit,
     Once,
     setOnce,
+    compact = false,
+    showPreviewThumb = true,
 }) => {
     const [showPicker, setShowPicker] = useState(false);
     const fileInputRef = useRef<HTMLInputElement | null>(null);
@@ -176,7 +180,7 @@ const FilePicker: React.FC<FilePickerProps> = ({
 
     // 3) On user picks a file => calls parent's handleFileChange
     const onFileInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-        handleFileChange(e); // The parent does the 1080×1920 resize
+        handleFileChange(e); // The parent does the 1080Ã—1920 resize
         setShowPicker(false); // close popup
     };
 
@@ -196,46 +200,64 @@ const FilePicker: React.FC<FilePickerProps> = ({
             {/* Thumbnail Box */}
             <Box
                 sx={{
-                    position: "fixed",
-                    top: matchMobile ? '21%' : "20%",
-                    left: "0.9%",
-                    transform: "translateY(-50%)",
-                    width: { xs: "26%", sm: "10%" },
+                    position: compact ? "relative" : "absolute",
+                    top: compact ? "auto" : "12px",
+                    left: "auto",
+                    right: compact ? "auto" : "12px",
+                    transform: "none",
+                    width: compact ? 34 : 40,
+                    height: compact ? 34 : 40,
                     zIndex: 3000,
-                    display: show ? "block" : "none",
+                    display: show ? (compact ? "inline-flex" : "block") : "none",
                     cursor: "pointer",
+                    alignItems: "center",
+                    justifyContent: "center",
                 }}
                 onClick={handleClickBasePicker}
             >
-                <img
-                    src={currentBaseImage}
-                    alt="Base Image"
-                    style={{
-                        width: matchMobile ? '90%' : "100%",
-                        height: "auto",
-                        borderRadius: "4%",
-                        objectFit: "cover",
-                        display: currentBaseImage ? "block" : "none",
-                    }}
-                />
-                <IconButton
-                    onClick={(e) => {
-                        e.stopPropagation();
-                        handleClickBasePicker();
-                    }}
-                    sx={{
-                        position: "absolute",
-                        top: matchMobile ? 8 : 8,
-                        left: 5,
-                        color: "#fff",
-                        backgroundColor: "rgba(0, 0, 0, 0.4)",
-                        "&:hover": {
-                            backgroundColor: "rgba(0, 0, 0, 0.6)",
-                        },
-                    }}
-                >
-                    <ImageIcon style={{ fontSize: "2rem" }} />
-                </IconButton>
+                {showPreviewThumb && currentBaseImage ? (
+                    <img
+                        src={currentBaseImage}
+                        alt="Base Image"
+                        style={{
+                            width: compact ? 34 : 40,
+                            height: compact ? 34 : 40,
+                            borderRadius: "50%",
+                            objectFit: "cover",
+                            border: compact ? "1px solid rgba(255, 255, 255, 0.4)" : "2px solid rgba(255, 255, 255, 0.4)",
+                            boxShadow: "0 4px 12px rgba(0,0,0,0.3)",
+                            display: "block",
+                        }}
+                    />
+                ) : (
+                    <IconButton
+                        onClick={(e) => {
+                            e.stopPropagation();
+                            handleClickBasePicker();
+                        }}
+                        sx={{
+                            position: "absolute",
+                            top: 0,
+                            left: 0,
+                            color: "#fff",
+                            background: darkMode
+                                ? "linear-gradient(135deg, rgba(20,20,20,0.7) 0%, rgba(10,10,10,0.5) 100%)"
+                                : (compact ? "linear-gradient(180deg, #27c7a6 0%, #12b68d 100%)" : "rgba(0, 0, 0, 0.4)"),
+                            border: compact ? "1px solid rgba(255,255,255,0.08)" : "none",
+                            borderRadius: "50%",
+                            backdropFilter: compact ? "blur(18px) saturate(180%)" : "blur(10px)",
+                            width: "100%",
+                            height: "100%",
+                            "&:hover": {
+                                background: darkMode
+                                    ? "linear-gradient(135deg, rgba(40,40,40,0.8) 0%, rgba(20,20,20,0.6) 100%)"
+                                    : (compact ? "linear-gradient(180deg, #32d4b2 0%, #16c497 100%)" : "rgba(0, 0, 0, 0.6)"),
+                            },
+                        }}
+                    >
+                        <ImageIcon style={{ fontSize: compact ? "1rem" : "1.3rem" }} />
+                    </IconButton>
+                )}
             </Box>
 
             {/* Popup */}

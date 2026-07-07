@@ -1,367 +1,272 @@
-// BottomMenu.tsx
-import React, { useCallback, useEffect, useMemo, useState } from "react";
+﻿// BottomMenu.tsx
+import React, { useMemo, useState, useLayoutEffect, useEffect } from "react";
 import {
     Box,
     BottomNavigation,
     BottomNavigationAction,
-    useTheme,
     alpha,
 } from "@mui/material";
 import PhotoIcon from "@mui/icons-material/Photo";
 import TouchAppIcon from "@mui/icons-material/TouchApp";
 import PersonIcon from "@mui/icons-material/Person";
 import WeekendIcon from "@mui/icons-material/Weekend";
+
+
 import WidgetsIcon from "@mui/icons-material/Widgets";
+
+import AddCircleIcon from '@mui/icons-material/AddCircle';
+
+import HorizontalSplitIcon from '@mui/icons-material/HorizontalSplit';
+import MenuIcon from '@mui/icons-material/Menu';
+
+import SearchIcon from "@mui/icons-material/Search";
+import AutoAwesomeIcon from '@mui/icons-material/AutoAwesome';
 import { useNavigate, useLocation } from "react-router-dom";
 import { useSelector } from "react-redux";
 import { RootState } from "./store";
 import { matchMobile } from "./DetectDevice";
 
-import ClikbaeIcon from './s.png'; // your transparent PNG icon
+import ClikbaeIcon from "./s.png";
+import ClikbaeIcon2 from "./s2.png";
+import { usePWA } from "./PWAContext";
+import RocketLaunchIcon from '@mui/icons-material/RocketLaunch';
 
 const BottomMenu: React.FC<any> = ({
     activeIndex,
     setActiveIndex,
     isFullscreen,
     isMenuOpen,
+    MenuOpenb,
+
+    setMenuOpenb,
     setIsMenuOpen,
-    openMenuPc,
-    MenuOpenb
+    setminimisePrompt
 }) => {
-    const theme = useTheme();
+    const [showMagicBubble, setShowMagicBubble] = useState(false); // New state for Magic Mirror bubble
     const navigate = useNavigate();
     const location = useLocation();
     const { userId } = location.state || {};
     const loggedUser = useSelector((s: RootState) => s.profile.loggedUser);
-    const dark = useSelector((s: RootState) => s.settings.darkMode);
+    const darkModeReducer = useSelector((s: RootState) => s.settings.darkMode);
     const isMobile = matchMobile;
 
-    const darkModeReducer = useSelector((state: RootState) => state.settings.darkMode);
-
+    const { installPwa, isPwaMode, isInstallable } = usePWA();
+    const [showLaunchMenu, setShowLaunchMenu] = useState(false);
 
     const menuItems = [
-        { label: "Memes", icon: <PhotoIcon /> },
-        { label: "Interactions", icon: <TouchAppIcon /> },
+        { label: "Cinema", icon: <WeekendIcon /> },
+        { label: "Shorts", icon: <PhotoIcon /> },
+        { label: "Games", icon: <TouchAppIcon /> },
         { label: "My Page", icon: <PersonIcon /> },
-        { label: "Stories", icon: <WeekendIcon /> },
         { label: "Menu", icon: <WidgetsIcon /> },
-    ];
+    ] as const;
 
-    // slider↔bottom index maps
-    const SLIDER_TO_BOTTOM = [2, 1, 3, 0, 4] as const;
-    const BOTTOM_TO_SLIDER = useMemo(() => {
-        const arr: number[] = [];
-        SLIDER_TO_BOTTOM.forEach((b, s) => (arr[b] = s));
-        return arr;
-    }, []);
-    const current = SLIDER_TO_BOTTOM[activeIndex] ?? 0;
+    const current = (() => {
+        const path = location.pathname.toLowerCase();
+        if (path.includes('/kickit')) return 0;
+        if (path.includes('/images')) return 1;
+        if (path.includes('/clikit')) return 2;
+        if (path.includes('/pages')) return 3;
+        return -1;
+    })();
 
-    const handleChange = (_: any, newValue: number) => {
-        if (newValue === 4) {
-            isMobile ? setIsMenuOpen(!isMenuOpen) : openMenuPc();
-            return;
+    const handleChange = (_: any, newBottomIdx: number) => {
+        const pathMap: Record<string, string> = {
+            Cinema: "/kickit",
+            Shorts: "/images",
+            Games: "/clikit",
+            "My Page": "/pages",
+        };
+        const selectedLabel = menuItems[newBottomIdx].label;
+        if (pathMap[selectedLabel]) {
+            navigate(pathMap[selectedLabel], {
+                state: { userId: loggedUser?.id },
+            });
         }
-        const sliderIdx = BOTTOM_TO_SLIDER[newValue] ?? 0;
-        let delay = isFullscreen ? 1000 : 20;
-        if (isFullscreen) window.history.back();
-        setTimeout(() => {
-            setActiveIndex(sliderIdx);
-            const clicked = menuItems[newValue].label;
-            const pathMap: Record<string, string> = {
-                Memes: "/images",
-                Interactions: "/clikit",
-                "My Page": "/pages",
-                Stories: "/",
-                Settings: "/settings",
-            };
-            setTimeout(
-                () => navigate(pathMap[clicked], { state: { userId: loggedUser?.id } }),
-                100
-            );
-        }, delay);
     };
 
-    const backdrop = {
-        backgroundColor: darkModeReducer ? 'rgb(5,5,5,0.25)' : "rgb(205,205,205,0.25)",
-        backdropFilter: darkModeReducer ? matchMobile ? "blur(18px)" : "blur(30px)" : matchMobile ? "blur(12px)" : "blur(18px)",
-
-        borderTop: `1px solid ${alpha(dark ? "#fff" : "#000", 0.15)}`,
-    };
-
-    // gradient style for both icon and label when active
-    const gradientClip = {
-        background: darkModeReducer ? "conic-gradient(#ffffff,#FFffff)" : "conic-gradient(#000000,#000000)",
-        WebkitBackgroundClip: "text",
-        WebkitTextFillColor: "transparent",
-
-    };
-
-
-    const gradientClipx = {
-        // background: "conic-gradient(#ffffff,#FF4B9D)",
-        color: darkModeReducer ? '#ffffff' : '#000000'
-    };
-
-    const activeColor = "#ffbe0b";
-
-    /// const iconActiveColors = ["#ffbe0b", "#0aff99", "#9b5de5", "#ffbe0b"];
-    const iconActiveColors = ["#F6BB56"];
-
-
+    /* ---------------------------------------------------
+     * 6) show / hide brand overlay (unchanged)
+     * -------------------------------------------------- */
     const [Menux, setMenux] = useState(false);
-
     useEffect(() => {
-        if (matchMobile) {
+        const isOpen = matchMobile ? isMenuOpen : MenuOpenb;
+        setMenux(isOpen);
 
-            if (isMenuOpen) {
-
-                setMenux(true)
-            } else {
-                setMenux(false)
-
-            }
+        if (isOpen && !isPwaMode) {
+            setShowLaunchMenu(true);
+            const timer = setTimeout(() => {
+                setShowLaunchMenu(false);
+            }, 4000); // 4 seconds
+            return () => clearTimeout(timer);
         } else {
-
-            if (MenuOpenb) {
-
-
-                setMenux(true)
-            } else {
-                setMenux(false)
-
-            }
+            setShowLaunchMenu(false);
         }
+    }, [isMenuOpen, MenuOpenb, isPwaMode]);
 
+    const handleLaunchMenuClick = async (e: any) => {
+        if (isPwaMode) return;
+        e.stopPropagation(); // prevent menu close if needed? or let it happen.
+        await installPwa();
+        setShowLaunchMenu(false);
+    };
 
-    }, [MenuOpenb, isMenuOpen]);
+    /* ---------------------------------------------------
+     * 7) styles (unchanged)
+     * -------------------------------------------------- */
+    const backdrop = {
+        backgroundColor: darkModeReducer ? "rgba(25,25,25,0.25)" : "rgba(255,255,255,0.25)",
+        backdropFilter: "blur(24px) saturate(120%)",
+        borderTop: `1px solid ${alpha(darkModeReducer ? "#fff" : "#000", 0.15)}`,
+        transition: "background-color 0.3s ease",
+    };
+    const iconActiveColor = darkModeReducer ? "#E8BAFA" : "#0099cc";
+
+    /* ---------------------------------------------------
+     * 8) render (UI identical)
+     * -------------------------------------------------- */
     return (
-        <Box
-            sx={{
-                position: "fixed",
-                bottom: 0,
-                width: "100%",
-                zIndex: 1300,
-                ...backdrop,
-            }}
-        >
+        <Box sx={{ position: "fixed", bottom: 0, width: "100%", zIndex: 20, ...backdrop }}>
             <BottomNavigation
                 value={current}
-                onChange={handleChange}
                 showLabels
-                sx={{
-                    px: 2,
-                    height: isMobile ? 64 : 64,
-                    bgcolor: "transparent",
-                    boxShadow: "none",
-                }}
+                sx={{ px: 2, height: 64, bgcolor: "transparent", boxShadow: "none" }}
             >
                 {menuItems.map((item, idx) => {
-                    const isProfile = item.label === "My Page";
                     const isActive = current === idx;
+                    const isProfile = item.label === "My Page";
+                    const isFullyActive = isProfile && loggedUser ? isActive && (userId === 0 || userId === loggedUser.id) : isActive;
 
-                    const iconColor = isActive
-                        ? iconActiveColors[
-                        Math.floor(Math.random() * iconActiveColors.length)
-                        ]
-                        : undefined;
+                    const activeColor = darkModeReducer ? "#E8BAFA" : "#0099cc";
+                    const activePillBg = darkModeReducer ? 'rgba(232, 186, 250, 0.15)' : 'rgba(0, 153, 204, 0.15)';
 
-
-                    // ring & container sized 20% up (32→38px)
-                    const ringSize = 38;
-                    const ringStyle =
-                        isProfile && loggedUser
-                            ? {
-                                width: ringSize,
-                                height: ringSize,
-                                p: ringSize * 0.5 / ringSize, // ~0.5
-                                borderRadius: "50%",
-                                background: isActive ? "conic-gradient(#F6BB56,#F6BB56)" : '',
-
-                                overflow: "hidden",
-                                display: "flex",
-                                alignItems: "center",
-                                justifyContent: "center",
-                            }
-                            : {};
-
-                    const ringStylex =
-                        isProfile && loggedUser
-                            ? {
-                                width: ringSize,
-                                height: ringSize,
-                                p: ringSize * 0.5 / ringSize, // ~0.5
-                                borderRadius: "50%",
-                                // background: isActive ? "conic-gradient(#ffffff,#FF4B9D)" : '',
-
-                                overflow: "hidden",
-                                display: "flex",
-                                alignItems: "center",
-                                justifyContent: "center",
-                            }
-                            : {};
-
-
-
-                    return (
-
-
-                        (Menux) ? (
-                            <Box
-                                sx={{
-                                    position: "fixed",
-                                    bottom: 0,
-                                    width: "100%",
-                                    zIndex: 1300,
-                                    display: "flex",
-                                    justifyContent: "center",
-                                    alignItems: "center",
-                                    py: 1.5,
-
-                                    backgroundColor: 'rgb(0, 0, 0, 0)',
-                                    /// borderTop: `1px solid ${alpha(dark ? "#fff" : "#000", 0.15)}`,
-                                    opacity: 0.8,
-
-                                }}
-                            >
-                                <a
-                                    href="https://www.clikb.com/privacy-policy"
+                    return Menux ? (
+                        /* brand overlay (first button only) */
+                        <Box
+                            key={`brand-${idx}`}
+                            sx={{
+                                position: "fixed", bottom: 0, width: "100%", zIndex: 1300,
+                                display: idx === 0 ? "flex" : "none",
+                                justifyContent: "center", alignItems: "center",
+                                height: 64, backgroundColor: "transparent", opacity: 0.8,
+                            }}
+                        >
+                            {showLaunchMenu && !isPwaMode && isInstallable ? (
+                                <div
+                                    onClick={handleLaunchMenuClick}
                                     style={{
-                                        display: "inline-flex",
-                                        alignItems: "center",
-                                        textDecoration: "none",
-                                        color: dark ? "#eee" : "#111",
+                                        display: "inline-flex", alignItems: "center",
+                                        textDecoration: "none", color: darkModeReducer ? "#000" : "#fff",
+                                        cursor: "pointer",
+                                        background: activeColor,
+                                        padding: '5px 15px',
+                                        borderRadius: '20px',
+                                        boxShadow: '0 4px 15px rgba(0,0,0,0.3)'
                                     }}
                                 >
-                                    {/* icon */}
-                                    <img
-
-
-                                        src={ClikbaeIcon}
-                                        alt="ClikBae icon"
-                                        style={{
-                                            width: isMobile ? "2.5rem" : "2.5rem",
-                                            height: isMobile ? "2.5rem" : "2.5rem",
-                                            marginRight: "0.5rem",
-                                            position: "relative",
-                                            top: "1px",
-
-                                        }}
-                                    />
-                                    {/* word-mark + TM */}
-                                    <span style={{ display: "flex", alignItems: "flex-start" }}>
-                                        <span
-                                            style={{
-                                                fontSize: isMobile ? "1.25rem" : "1.5rem",
-                                                fontWeight: 800,
-                                                lineHeight: 1,
-                                            }}
-                                        >
-                                            Clik
-                                        </span>
-                                        <span
-                                            style={{
-                                                fontSize: isMobile ? "1.25rem" : "1.5rem",
-                                                fontWeight: 800,
-                                                lineHeight: 1,
-                                                opacity: 0.8,
-                                                marginLeft: "0.1rem",
-                                            }}
-                                        >
-                                            B
-                                        </span>
-                                        <sup
-                                            style={{
-                                                position: "relative",
-                                                top: "2px",
-                                                fontSize: "0.75rem",
-                                                marginLeft: "0.2rem",
-                                            }}
-                                        >
-                                            ™
-                                        </sup>
+                                    <span style={{ fontSize: "1.0rem", fontWeight: 800 }}>Launch App</span>
+                                    <RocketLaunchIcon sx={{ fontSize: "1.2rem", marginLeft: "0.5rem", color: darkModeReducer ? "#000" : "#fff" }} />
+                                </div>
+                            ) : (
+                                <div
+                                    onClick={isPwaMode || !isInstallable ? undefined : handleLaunchMenuClick}
+                                    style={{
+                                        display: "inline-flex", alignItems: "center",
+                                        textDecoration: "none",
+                                        color: darkModeReducer ? '#000' : '#fff',
+                                        opacity: 1,
+                                        background: activeColor,
+                                        padding: '6px 16px',
+                                        borderRadius: '20px',
+                                        transition: 'all 0.3s ease',
+                                        boxShadow: '0 4px 15px rgba(0,0,0,0.2)',
+                                        cursor: isPwaMode || !isInstallable ? 'default' : 'pointer'
+                                    }}
+                                >
+                                    <img src={darkModeReducer ? ClikbaeIcon2 : ClikbaeIcon}
+                                        alt="ClikBae" style={{
+                                            width: "2.5rem", height: "2.5rem",
+                                            marginRight: "0.5rem", position: "relative", top: "1px"
+                                        }} />
+                                    <span style={{ display: "flex", alignItems: "baseline" }}>
+                                        <span style={{ fontSize: "1.25rem", fontWeight: 800, lineHeight: 1 }}>ClikB</span>
                                     </span>
-                                </a>
-                            </Box>
-                        )
-                            :
-                            <BottomNavigationAction
-                                key={idx}
-                                label={item.label}
-
-                                disableRipple           // already removed the focus-ripple
-                                disableTouchRipple      // <-- ❶ removes the blue flash on click
-                                sx={{
-                                    color: darkModeReducer ? '#ffffff' : '#000000',
-
-                                    "&:focus, &.Mui-focusVisible": { outline: 'none', },
-                                    opacity: isActive ? 0.8 : 1,
-                                    // ---- active-state rules you already had ----
-                                    "&.Mui-selected svg": { fill: isActive ? iconColor : '' },
-
-
-
-
-                                    // label styles + 2 px spacing
-                                    "& .MuiBottomNavigationAction-label": {
-                                        fontSize: matchMobile ? 10 : 12,
-
-                                        lineHeight: 1.2,
-                                        marginTop: '2px',          // <-- ❷ 2-px gap between icon & text
-                                    },
-
-                                    // optional extra safety: no ripple element at all
-                                    "& .MuiTouchRipple-root": { display: 'none' },
-
-                                    "&.Mui-selected": {
-                                        color: loggedUser ? userId === loggedUser.id ? '#F6BB56' :
-
-                                            darkModeReducer ? '#ffffff' : '#000000' : null,                               // text + icon
-                                        "& .MuiBottomNavigationAction-label": {
-                                            color: loggedUser ? userId === loggedUser.id ? '#F6BB56' :
-
-                                                darkModeReducer ? '#ffffff' : '#000000' : null,                              // label specifically
-                                        },
-                                        "& svg": {
-                                            fill: loggedUser ? userId === loggedUser.id ? '#F6BB56' :
-
-                                                darkModeReducer ? '#ffffff' : '#000000' : null,
-                                        },                   // icon stroke if needed
-                                    },
-                                }}
-                                icon={
-                                    isProfile ? (
-                                        <Box
-                                            sx={
-                                                loggedUser && isProfile
-                                                    ? isActive
-                                                        ? userId > 0
-                                                            ? userId === loggedUser.id
-                                                                ? ringStyle
-                                                                : ringStylex
-                                                            : ringStyle
-                                                        : ringStylex
-                                                    : ringStylex
-                                            }
-                                        >
-                                            <img
-                                                src={loggedUser?.image || ''}
-                                                alt="Me"
-                                                style={{
-                                                    width: '120%',
-                                                    height: '120%',
-                                                    borderRadius: '50%',
-                                                    objectFit: 'cover',
-                                                }}
-                                            />
-                                        </Box>
-                                    ) : (
-                                        <Box sx={{ display: 'inline-flex', }}>
-                                            {React.cloneElement(item.icon, { sx: { fontSize: 38 } })}
-                                        </Box>
-                                    )
+                                </div>
+                            )}
+                        </Box>
+                    ) : (
+                        <BottomNavigationAction
+                            onClick={(e: any) => {
+                                if (item.label === "Menu") {
+                                    if (matchMobile) { setIsMenuOpen(true); }
+                                    else { setMenuOpenb(true); }
+                                } else {
+                                    handleChange(e, idx);
                                 }
-                            />
-
+                            }}
+                            key={idx}
+                            label={item.label}
+                            disableRipple
+                            disableTouchRipple
+                            sx={{
+                                color: darkModeReducer ? "#ffffff" : "#000000",
+                                minWidth: 'auto',
+                                padding: '6px 0',
+                                "&:focus,&.Mui-focusVisible": { outline: "none" },
+                                "& .MuiBottomNavigationAction-label": {
+                                    fontSize: isMobile ? '10px' : '12px',
+                                    fontWeight: isFullyActive ? 800 : 600,
+                                    marginTop: "4px",
+                                    transition: 'all 0.2s ease',
+                                },
+                                "&.Mui-selected": {
+                                    color: darkModeReducer ? "#ffffff" : "#000000",
+                                    "& .MuiBottomNavigationAction-label": {
+                                        fontSize: isMobile ? '11px' : '13px',
+                                    }
+                                },
+                                "& .MuiTouchRipple-root": { display: "none" },
+                            }}
+                            icon={
+                                <Box
+                                    sx={{
+                                        display: 'flex',
+                                        alignItems: 'center',
+                                        justifyContent: 'center',
+                                        width: isMobile ? 52 : 60,
+                                        height: 32,
+                                        borderRadius: '16px',
+                                        backgroundColor: isFullyActive ? activePillBg : 'transparent',
+                                        transition: 'all 0.25s cubic-bezier(0.4, 0, 0.2, 1)',
+                                        transform: isFullyActive ? 'scale(1.1)' : 'scale(1)',
+                                    }}
+                                >
+                                    {isProfile && loggedUser ? (
+                                        <img
+                                            src={loggedUser.image || ''}
+                                            alt="Me"
+                                            style={{
+                                                width: 26,
+                                                height: 26,
+                                                borderRadius: '50%',
+                                                objectFit: 'cover',
+                                                border: isFullyActive ? `2px solid ${activeColor}` : '2px solid transparent',
+                                                boxSizing: 'border-box'
+                                            }}
+                                        />
+                                    ) : (
+                                        React.cloneElement(item.icon, {
+                                            sx: {
+                                                fontSize: isMobile ? 24 : 26,
+                                                color: isFullyActive ? activeColor : (darkModeReducer ? "#ffffff" : "#000000"),
+                                                transition: 'color 0.2s ease',
+                                                filter: isFullyActive && darkModeReducer ? 'drop-shadow(0px 1px 3px rgba(0,0,0,0.5))' : 'none'
+                                            }
+                                        })
+                                    )}
+                                </Box>
+                            }
+                        />
                     );
                 })}
             </BottomNavigation>
