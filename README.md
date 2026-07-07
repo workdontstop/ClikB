@@ -132,15 +132,6 @@ Voice/STT/TTS backend routes:
 - Data and product: MySQL, JWT auth, Stripe checkout/webhooks, social feed/profile/follow/like tables.
 - Delivery: Dockerfile present for container builds, with runtime secrets expected from environment variables or a secret manager.
 
-## Screenshots
-
-Add current product screenshots here before sharing the repo on a CV. Existing UI assets in this repo:
-
-![Shorts UI](src/assets/shorts_ui.png)
-
-![Cinema UI](src/assets/cinema_ui.png)
-
-![Games UI](src/assets/games_ui.png)
 
 ## Local Setup
 
