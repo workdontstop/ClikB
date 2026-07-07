@@ -1,4 +1,4 @@
-import React, {
+﻿import React, {
   FC,
   memo,
   useEffect,
@@ -30,10 +30,15 @@ import ProfileInfo from "./ProfileInfo";
 import { useLocation } from 'react-router-dom';
 import { Height, Padding } from "@mui/icons-material";
 
+import FeedLayout from './FeedLayout';
+
+
+import FeedLayoutHorizontal from './FeedLayoutHorizontal';
+
+
 
 
 const CLIK_URL = import.meta.env.VITE_CLIK_URL;
-
 
 interface FeedItem {
   id: number;
@@ -43,7 +48,7 @@ interface FeedItem {
   sender: number;
 
   // Existing fields
-  x1?: string;
+  x1: string;
   xt1?: string;
   x2?: string;
   xt2?: string;
@@ -59,6 +64,8 @@ interface FeedItem {
   xt7?: string;
   x8?: string;
   xt8?: string;
+  x9?: string;
+  xt9?: string;
   item1?: string; // For type 1 items
 
   // New fields
@@ -72,7 +79,8 @@ interface FeedItem {
   xa6?: string;
   xa7?: string;
   xa8?: string;
-  videoUrl?: String;
+  xa9?: string;
+  videoUrl: String;
 
   xh1?: string;
   xh2?: string;
@@ -82,6 +90,7 @@ interface FeedItem {
   xh6?: string;
   xh7?: string;
   xh8?: string;
+  xh9?: string;
 
   xv1?: string;
   xv2?: string;
@@ -91,8 +100,7 @@ interface FeedItem {
   xv6?: string;
   xv7?: string;
   xv8?: string;
-
-
+  xv9?: string;
 
   mainint?: string;
   int1?: any;
@@ -105,6 +113,42 @@ interface FeedItem {
   intx2?: any;
   inty2?: any;
   mode?: any;
+
+  nobgmvideo?: string;
+
+  kontext?: string;
+  prompt?: string;
+
+  ratio?: number;
+  model?: string;
+
+
+  main?: string;                  // main video URL
+  inttype?: number;
+  subl?: string;                  // left sub-video URL
+  subr?: string;                  // right sub-video URL
+
+  // touch hotspots (normalized 0..1)
+  touchl?: "left";                // label (optional if you store it)
+  touchlx?: number;               // left hotspot x
+  touchly?: number;               // left hotspot y
+  touchlr?: number;               // left hotspot radius
+
+  touchr?: "right";               // label
+  touchrx?: number;               // right hotspot x
+  touchry?: number;               // right hotspot y
+  touchrr?: number;
+
+
+  mainaud?: string;
+  sub1aud?: string;
+  sub2aud?: string;
+
+  favCount?: number;
+
+  intbg?: number;
+
+
 
 }
 
@@ -126,6 +170,7 @@ interface FeedgateProps {
   type: number;
   setIsFullscreen: React.Dispatch<React.SetStateAction<boolean>>;
   isFullscreen: boolean;
+  showEmotions: boolean
 }
 
 const Feedgate: FC<any> = memo(({
@@ -149,28 +194,46 @@ const Feedgate: FC<any> = memo(({
   minimiseProfile,
   isCropOpen,
   setIsCropOpen,
-  x,
-  minimisePrompt
+  minimisePrompt,
+  vertical,
+  feedtypeForHorizontalBackNavigate,
+  searchData,
+  showEmotions,
+
+  setfollowType,
+
+  setLikesPostid,
+  setLikes,
+  setShowEmotions,
+
+  setsearchDataNav,
+  setMyPageIdNav,
+  setfeedLastIdNav,
+  setfeedScrollPosNav
 }) => {
-  const loggedUser = useSelector((state: RootState) => state.profile.loggedUser);
+
+
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
   const audioElementRef = useRef<HTMLAudioElement | null>(null);
-  const iconTimeoutRefa = useRef<NodeJS.Timeout | null>(null);
-  const iconTimeoutRefax = useRef<NodeJS.Timeout | null>(null);
+  const iconTimeoutRefa = useRef<any>(null);
+  const iconTimeoutRefax = useRef<any>(null);
 
-  const iconTimeoutRef = useRef<NodeJS.Timeout | null>(null);
-  const iconTimeoutRefx = useRef<NodeJS.Timeout | null>(null);
-  const iconTimeoutRefx2 = useRef<NodeJS.Timeout | null>(null);
-  const iconTimeoutRefxl = useRef<NodeJS.Timeout | null>(null);
-  const iconTimeoutRefxlm = useRef<NodeJS.Timeout | null>(null);
+  const iconTimeoutRef = useRef<any>(null);
+  const iconTimeoutRefx = useRef<any>(null);
+  const iconTimeoutRefx2 = useRef<any>(null);
+  const iconTimeoutRefxl = useRef<any>(null);
+  const iconTimeoutRefxlm = useRef<any>(null);
+  const iconTimeoutRefxlmx = useRef<any>(null);
 
   const [Zoom1x, setZoom1x] = useState(false);
 
   const darkModeReducer = useSelector(
     (state: RootState) => state.settings.darkMode
   );
+
+  const loggedUser = useSelector((state: RootState) => state.profile.loggedUser);
 
   // Component State
   const [loading, setLoading] = useState(false);
@@ -180,6 +243,35 @@ const Feedgate: FC<any> = memo(({
   const [Viewing, setViewing] = useState(-1);
 
   const bottomSentinelRef = useRef<HTMLDivElement | null>(null);
+
+  const useDocumentFeedScroll = matchMobile && vertical;
+
+  const getFeedScrollTop = useCallback(() => {
+    if (useDocumentFeedScroll) {
+      return window.scrollY || document.documentElement.scrollTop || document.body.scrollTop || 0;
+    }
+
+    return feedContainerRef.current?.scrollTop ?? 0;
+  }, [feedContainerRef, useDocumentFeedScroll]);
+
+  const scrollVerticalItemIntoView = useCallback(
+    (itemEl: HTMLElement, topPadding = 10, behavior: ScrollBehavior | "instant" = "auto") => {
+      if (useDocumentFeedScroll) {
+        const top = itemEl.getBoundingClientRect().top + window.scrollY - topPadding;
+        window.scrollTo({ top, behavior: behavior as ScrollBehavior });
+        return;
+      }
+
+      const feedContainer = feedContainerRef.current;
+      if (!feedContainer) return;
+
+      const containerRect = feedContainer.getBoundingClientRect();
+      const itemRect = itemEl.getBoundingClientRect();
+      const scrollOffset = itemRect.top - containerRect.top + feedContainer.scrollTop;
+      feedContainer.scrollTo({ top: scrollOffset - topPadding, behavior: behavior as ScrollBehavior });
+    },
+    [feedContainerRef, useDocumentFeedScroll]
+  );
 
   // Fullscreen states
   const [activeIndex, setActiveIndex] = useState<number | null>(null);
@@ -201,6 +293,7 @@ const Feedgate: FC<any> = memo(({
 
   // State for user profile info
   const [userProfile, setUserProfile] = useState({
+    id: 0,
     profilePic: "",
     profilePicThumb: "",
     billboard: "",
@@ -264,38 +357,74 @@ const Feedgate: FC<any> = memo(({
         values: {
           id: MyPageId ? MyPageId : 0,
           id2: MyPageId ? MyPageId : 0,
+          id3: loggedUser ? loggedUser.id : 0,
+
         },
       };
 
       let response: any;
-      if (type === 1) {
-        response = await axios.post<FeedResponse>(`${CLIK_URL}/getFeed`, reqData);
-      } else if (type === 2) {
-        response = await axios.post<FeedResponse>(
-          `${CLIK_URL}/getFeedStory`,
-          reqData
-        );
+
+      if (searchData && !vertical) {
+
+        ///window.back();
+        const reqDatak = {
+          values: {
+            id: loggedUser ? loggedUser.id : 0,
+            id2: loggedUser ? loggedUser.id : 0,
+            searchData,
+            typex: type === 1 ? 0 : 1,
+          },
+        };
+
+        response = await axios.post<FeedResponse>(`${CLIK_URL}/getSearch`, reqDatak);
+
+
+      } else {
+
+        if (type === 1) {
+          response = await axios.post<FeedResponse>(`${CLIK_URL}/getFeed`, reqData);
+          // console.log('feed params:', { viewerIdForFav: reqData });
+
+        } else if (type === 2) {
+          response = await axios.post<FeedResponse>(
+            `${CLIK_URL}/getFeedStory`,
+            reqData
+          );
+        }
+
+        else if (type === 3) {
+          response = await axios.post<FeedResponse>(
+            `${CLIK_URL}/getFeedsclik`,
+            reqData
+          );
+        }
+
+        else if (type === 4) {
+          response = await axios.post<FeedResponse>(
+            `${CLIK_URL}/getFeedsFeeds`,
+            reqData
+          );
+        }
+        else if (type === 10) {
+          response = await axios.post<FeedResponse>(
+            `${CLIK_URL}/getProfile`,
+            reqData2
+          );
+        }
       }
 
-      else if (type === 3) {
-        response = await axios.post<FeedResponse>(
-          `${CLIK_URL}/getFeedClik`,
-          reqData
-        );
-      }
-      else if (type === 10) {
-        response = await axios.post<FeedResponse>(
-          `${CLIK_URL}/getProfile`,
-          reqData2
-        );
-      }
+
       // ... else if ?
 
       const data = response.data.payload || [];
+
+      console.log(data);
       if (data.length === 0) {
         setHasMore(false);
       }
+      console.log(data)
       setFeeds(data);
+
       setFetchCount(1);
     } catch (err: any) {
       console.error("Error fetching initial feeds:", err);
@@ -304,7 +433,7 @@ const Feedgate: FC<any> = memo(({
       setLoading(false);
       setcallFeeds(false);
     }
-  }, [loggedUser, setcallFeeds, setFeeds, type, MyPageId]);
+  }, [loggedUser, setcallFeeds, setFeeds, type, MyPageId, searchData, vertical]);
 
   // 2. Pagination: fetchFeedsPagination
   // ADDED an optional parameter to override the lastId
@@ -356,6 +485,7 @@ const Feedgate: FC<any> = memo(({
           values: {
             id: MyPageId ? MyPageId : 0,
             id2: MyPageId ? MyPageId : 0,
+            id3: loggedUser ? loggedUser.id : 0,
             lastId: lastIdValue,
             overrideLastId: overrideLastId,
           },
@@ -363,26 +493,91 @@ const Feedgate: FC<any> = memo(({
 
         console.log("Fetching more feeds. Type:", type);
         console.log("Request data:", reqData);
+        /// vertical
 
         let response: any;
-        if (type === 1) {
+
+
+        if (searchData && !vertical) {
+
+          const reqDatak = {
+            values: {
+              id: loggedUser ? loggedUser.id : 0,
+              id2: loggedUser ? loggedUser.id : 0,
+              lastId: lastIdValue,
+              override: overrideLastId,
+
+              searchData,
+              typex: type === 1 ? 0 : 1,
+            },
+          };
+
 
 
           response = await axios.post<FeedResponse>(
-            `${CLIK_URL}/getFeedMore`,
-            reqData
+            `${CLIK_URL}/getSearchMore`,
+            reqDatak
           );
-        } else if (type === 2) {
-          response = await axios.post<FeedResponse>(
-            `${CLIK_URL}/getFeedMoreStory`,
-            reqData
-          );
-        } else if (type === 10) {
 
-          response = await axios.post<FeedResponse>(
-            `${CLIK_URL}/getProfileMore`,
-            reqData2
-          );
+          setViewUserId(loggedUser ? loggedUser.id : 0);
+
+        }
+
+        else {
+
+          if (type === 1) {
+
+
+            response = await axios.post<FeedResponse>(
+              `${CLIK_URL}/getFeedMore`,
+              reqData
+            );
+
+
+            setViewUserId(loggedUser ? loggedUser.id : 0);
+
+          } else if (type === 2) {
+            response = await axios.post<FeedResponse>(
+              `${CLIK_URL}/getFeedMoreStory`,
+              reqData
+            );
+
+
+            setViewUserId(loggedUser ? loggedUser.id : 0);
+          }
+
+          else if (type === 3) {
+            response = await axios.post<FeedResponse>(
+              `${CLIK_URL}/getFeedClikmore`,
+              reqData
+            );
+
+
+            setViewUserId(loggedUser ? loggedUser.id : 0);
+          }
+
+          else if (type === 4) {
+            response = await axios.post<FeedResponse>(
+              `${CLIK_URL}/getFeedsMoreFeeds`,
+              reqData
+            );
+
+
+            setViewUserId(loggedUser ? loggedUser.id : 0);
+          }
+
+          else if (type === 10) {
+
+            response = await axios.post<FeedResponse>(
+              `${CLIK_URL}/getProfileMore`,
+              reqData2
+
+
+            );
+
+            setViewUserId(MyPageId);
+          }
+
         }
         // else ?
 
@@ -393,34 +588,16 @@ const Feedgate: FC<any> = memo(({
 
           setHasMore(false);
         } else {
+
           setFeeds((prev: FeedItem[]) => {
-            const combined = [...prev, ...newData];
-            //alert(fetchCount);
-            if (fetchCount >= 3) {
-              setFetchCount(0);
-
-              const feedContainer = feedContainerRef.current;
-
-              setTimeout(() => {
-                feedContainer.scrollTo({
-                  top: 0,
-                  behavior: "instant",
-                });
-              }, 1000)
-
-
-
-              setVideoArray([]);
-              setCaptionVisibility([]);
-
-              return combined.slice(-25);
-
-
-
-            }
-            return combined;
+            return [...prev, ...newData];
           });
-          setFetchCount((prev) => prev + 1);
+
+          if (fetchCount >= 3) {
+            setFetchCount(0);
+          } else {
+            setFetchCount((prev) => prev + 1);
+          }
         }
       } catch (err: any) {
         console.error("Error fetching more feeds:", err);
@@ -440,40 +617,40 @@ const Feedgate: FC<any> = memo(({
       type,
       MyPageId,
       CLIK_URL,
-      matchMobile
+      matchMobile,
+      searchData,
+      vertical
     ]
   );
+
+
+
+  const location = useLocation();
+
 
   // useEffect: initial load, but skip if routelastId != 0
   useLayoutEffect(() => {
     if (callFeeds) {
-      if (iconTimeoutRef.current) {
-        clearTimeout(iconTimeoutRef.current);
+      // Always clear old data before loading
+      setFeeds([]);
+      setFetchCount(0);
+
+      // If routelastId is nonzero, skip fetchFeeds, use pagination with override
+      if (routelastId && routelastId !== 0) {
+        setcallFeeds(false);
+        fetchFeedsPagination(routelastId);
+      } else {
+        setHasMore(true);
+        // Normal initial load
+        fetchFeeds();
       }
-      iconTimeoutRef.current = setTimeout(() => {
-        // Always clear old data before loading
-        setFeeds([]);
-        setFetchCount(0);
-
-
-        // If routelastId is nonzero, skip fetchFeeds, use pagination with override
-        if (routelastId && routelastId !== 0) {
-
-          /// alert(routelastId);
-          setcallFeeds(false);
-          //alert(routelastId);
-          fetchFeedsPagination(routelastId);
-
-        } else {
-          setHasMore(true);
-          // Normal initial load
-          fetchFeeds();
-        }
-      }, 700);
     }
   }, [
     callFeeds,
-    routelastId
+    routelastId,
+    loggedUser,
+    location.pathname
+
   ]);
 
   // Keep track of lastId
@@ -489,8 +666,6 @@ const Feedgate: FC<any> = memo(({
   const [callonce, setcallonce] = useState(false);
 
 
-  const location = useLocation();
-
 
 
   useEffect(() => {
@@ -504,50 +679,120 @@ const Feedgate: FC<any> = memo(({
   }, [location.pathname]);
 
 
-  const FullscreenRoute = location.state && location.state.fullscreen === true;
+
+
+
+  const [FullscreenRoute, setFullscreenRoute] = useState<boolean>(!!location.state?.fullscreen);
+  const [emotionRoute, setEmotionRoute] = useState<boolean>(!!location.state?.follow);
+  const [lastId, setlastId] = useState<boolean>(!!location.state?.routelastId);
+  const [routeUrl, setRouteUrl] = useState<string>(`${location.pathname}${location.search}${location.hash}`);
+  const [viewUserId, setViewUserId] = useState<string | number | null>(MyPageId);
+
+  // Optional: keep the previous URL too (handy for ESC/back)
+
+
+
+  const prevUrlRef = useRef<string | null>(null);
 
   useEffect(() => {
-    if (feeds && feeds.length > 0) {
-      if (iconTimeoutRefxlm.current) {
-        clearTimeout(iconTimeoutRefxlm.current);
-      }
-      iconTimeoutRefxlm.current = setTimeout(() => {
+    // store previous before updating current
+    prevUrlRef.current = routeUrl;
 
+    // update current URL + state fields whenever location changes
+    setRouteUrl(`${location.pathname}${location.search}${location.hash}`);
+    setFullscreenRoute(!!location.state?.fullscreen);
+    setEmotionRoute(!!location.state?.follow);
+    setlastId(!!location.state?.routelastId);
+    setViewUserId(MyPageId);
+
+  }, [location.pathname, MyPageId]);
+
+
+
+
+
+  useEffect(() => {
+
+    if (iconTimeoutRefxlm.current) {
+      clearTimeout(iconTimeoutRefxlm.current);
+    }
+
+    if (iconTimeoutRefxlmx.current) {
+      clearTimeout(iconTimeoutRefxlmx.current);
+    }
+    iconTimeoutRefxlm.current = setTimeout(() => {
+
+      if (feeds && feeds.length > 0) {
 
         if (!callonce) {
 
 
-          setcallonce(true);
+
+
           if (FullscreenRoute) {
 
-            setTimeout(() => {
+            if (iconTimeoutRefxlmx.current) {
+              clearTimeout(iconTimeoutRefxlmx.current);
+            }
+            iconTimeoutRefxlmx.current = setTimeout(() => {
+
+
               /// alert(routelastId);
-              handleOpenFullscreen(0, true);
-            }, 1500)
+
+              if (vertical) {
+
+                setcallonce(true);
+                handleOpenFullscreen(0, true);
+              } else {
+
+                if (feedtypeForHorizontalBackNavigate === type) {
+                  setcallonce(true);
+                  handleOpenFullscreen(0, true);
+
+                }
+              }
+
+            }, 600)
 
           }
-
-        } else {
-
-
         }
 
-      }, 100)
-    }
 
-  }, [FullscreenRoute, feeds,]);
+      } else {
+
+
+      }
+
+
+    }, 200)
+
+
+  }, [FullscreenRoute, feeds, callFeeds, vertical, feedtypeForHorizontalBackNavigate, type, location, emotionRoute, lastId]);
 
 
   // Intersection Observer for pagination
+  // 4s window
+  const COOLDOWN_MS = 3000;
+
+  const [locked, setLocked] = useState(false);
+  // mirror in a ref so the observer callback always sees latest value
+  const lockedRef = useRef(false);
+  useEffect(() => { lockedRef.current = locked; }, [locked]);
+
   useEffect(() => {
     const observer = new IntersectionObserver(
       (entries) => {
         const [entry] = entries;
-        if (entry.isIntersecting) {
-          fetchFeedsPagination();
-        }
+        if (!entry?.isIntersecting) return;
+
+        // just return if locked
+        if (lockedRef.current) return;
+
+        // call once, then lock
+        fetchFeedsPagination();
+        setLocked(true);
       },
-      { threshold: 0.1 }
+      { threshold: matchMobile ? 0.05 : 0.02 }
     );
 
     const sentinel = bottomSentinelRef.current;
@@ -556,13 +801,22 @@ const Feedgate: FC<any> = memo(({
     return () => {
       if (sentinel) observer.unobserve(sentinel);
     };
-  }, [fetchFeedsPagination]);
+  }, [fetchFeedsPagination, matchMobile]); // observer unchanged
+
+  // separate timer to reset the lock after each call
+  useEffect(() => {
+    if (!locked) return;
+    const id = setTimeout(() => setLocked(false), COOLDOWN_MS);
+    return () => clearTimeout(id);
+  }, [locked]);
+
 
 
 
   // IntersectionObserver for caption visibility
   useEffect(() => {
-    const xx = matchMobile ? feeds.length === 1 ? 0.2 : 0.6 : isMenuOpen ? 0.6 : 0.6;
+
+    const xx = matchMobile ? 1 : isMenuOpen ? 0.8 : 0.98;
     const observer = new IntersectionObserver(
       (entries) => {
         entries.forEach((entry) => {
@@ -593,7 +847,7 @@ const Feedgate: FC<any> = memo(({
               timeoutRefs.current[idx] = setTimeout(() => {
                 setCaptionVisibility((prev) => ({ ...prev, [idx]: false }));
                 timeoutRefs.current[idx] = null;
-              }, 25000);
+              }, 40000);
             } else {
               if (timeoutRefsxp.current[idx]) {
                 clearTimeout(timeoutRefsxp.current[idx] as number);
@@ -632,10 +886,7 @@ const Feedgate: FC<any> = memo(({
 
   useEffect(() => {
     const handleScroll = () => {
-      if (!feedContainerRef.current) return;
-
-      // Detecting scroll position using the ref
-      const scrollTop = feedContainerRef.current.scrollTop;
+      const scrollTop = getFeedScrollTop();
 
       console.log("Scroll Top:", scrollTop);
 
@@ -665,18 +916,14 @@ const Feedgate: FC<any> = memo(({
       }
     };
 
-    // Attaching the scroll listener to the container ref
-    const container = feedContainerRef.current;
-    if (container) {
-      container.addEventListener("scroll", handleScroll);
-    }
+    // Attaching the scroll listener to the active feed scroll target
+    const scrollTarget = useDocumentFeedScroll ? window : feedContainerRef.current;
+    scrollTarget?.addEventListener("scroll", handleScroll, { passive: true });
 
     return () => {
-      if (container) {
-        container.removeEventListener("scroll", handleScroll);
-      }
+      scrollTarget?.removeEventListener("scroll", handleScroll);
     };
-  }, [minimiseProfile, feeds, callFeeds]);
+  }, [minimiseProfile, feeds, callFeeds, getFeedScrollTop, useDocumentFeedScroll]);
 
 
   const closePop = () => {
@@ -801,18 +1048,9 @@ const Feedgate: FC<any> = memo(({
             clearTimeout(iconTimeoutRefxl.current);
           }
           iconTimeoutRefxl.current = setTimeout(() => {
-            const feedContainer = feedContainerRef.current;
             const itemEl = itemRefs.current[Viewing];
-            if (feedContainer && itemEl) {
-              const containerRect = feedContainer.getBoundingClientRect();
-              const itemRect = itemEl.getBoundingClientRect();
-              const scrollOffset =
-                itemRect.top - containerRect.top + feedContainer.scrollTop;
-
-              feedContainer.scrollTo({
-                top: scrollOffset - 10,
-                behavior: "instant",
-              });
+            if (itemEl) {
+              scrollVerticalItemIntoView(itemEl, 10, "instant");
             }
           }, 1500);
         }
@@ -822,21 +1060,31 @@ const Feedgate: FC<any> = memo(({
 
   useEffect(() => {
     if (closingIndex != null) {
-      const feedContainer = feedContainerRef.current;
-      const itemEl = itemRefs.current[closingIndex];
-      if (feedContainer && itemEl) {
-        const containerRect = feedContainer.getBoundingClientRect();
-        const itemRect = itemEl.getBoundingClientRect();
-        const scrollOffset =
-          itemRect.top - containerRect.top + feedContainer.scrollTop;
-        feedContainer.scrollTo({
-          top: scrollOffset - 10,
-          behavior: "instant",
-        });
+      if (vertical) {
+        const itemEl = itemRefs.current[closingIndex];
+        if (itemEl) {
+          scrollVerticalItemIntoView(itemEl, 10, "instant");
+        }
+        setClosingIndex(null);
+      } else {
+        const feedContainer = feedContainerRef.current;
+        const itemEl = itemRefs.current[closingIndex];
+        if (feedContainer && itemEl) {
+          const containerRect = feedContainer.getBoundingClientRect();
+          const itemRect = itemEl.getBoundingClientRect();
+          const scrollOffset =
+            itemRect.left - containerRect.left + feedContainer.scrollLeft;
+          feedContainer.scrollTo({
+            left: scrollOffset - 10,
+            behavior: "instant",
+          });
+        }
+        setClosingIndex(null);
       }
-      setClosingIndex(null);
+
+
     }
-  }, [closingIndex]);
+  }, [closingIndex, vertical, scrollVerticalItemIntoView]);
 
   // Open Fullscreen
   const handleOpenFullscreen = useCallback(
@@ -862,7 +1110,7 @@ const Feedgate: FC<any> = memo(({
                 });
               }
             }, 200);
-    
+
             */
 
         if (not) {
@@ -887,8 +1135,10 @@ const Feedgate: FC<any> = memo(({
             setIsFullscreen(true);
           }
 
+
         } else {
           if (not) { } else {
+
 
             if (iconTimeoutRefx.current) {
               clearTimeout(iconTimeoutRefx.current);
@@ -896,19 +1146,34 @@ const Feedgate: FC<any> = memo(({
             iconTimeoutRefx.current = setTimeout(() => {
               ///  alert('jj');
               // Get the current state (if any)
-              const currentState = location.state || {};
+              ///const currentState = location.state || {};
 
               // Merge the current state with the fullscreen flag
-              const newState = { ...currentState, fullscreen: true };
+              /// const newState = { ...currentState, fullscreen: true };
 
-              // Navigate to the same URL with the updated state
-              navigate(window.location.pathname, { state: newState });
+
+              ///navigate(window.location.pathname, { state: newState });
+
+
+              const routeState2 = {
+                userId: viewUserId,
+                fullscreen: true,
+                follow: false,
+              };
+
+              console.log('sssssssssssssssssssssssssssssssssssssss', routeState2)
+
+
+
+              navigate(routeUrl, { state: routeState2, });
 
             }, 20);
 
+
+
           }
 
-
+          // alert(index)
 
           dispatch(setShowmenuToggle(false));
           setActiveIndexHold(index);
@@ -917,7 +1182,7 @@ const Feedgate: FC<any> = memo(({
         }
       }
     },
-    [isMenuOpen, MenuOpenb]
+    [isMenuOpen, MenuOpenb, viewUserId, routeUrl]
   );
 
   // Audio / Video stuff...
@@ -1060,6 +1325,67 @@ const Feedgate: FC<any> = memo(({
   }, [feeds]);
 
 
+  // states
+  const [likedArray, setLikedArray] = useState<Array<{ postId: number; liked: boolean }>>([]);
+  const [likeCountArray, setLikeCountArray] = useState<Array<{ postId: number; count: number }>>([]);
+
+  // helper
+  const toBool = (v: any) => v === 1 || v === "1" || v === true || v === "true";
+
+  useEffect(() => {
+    if (!Array.isArray(feeds)) return;
+
+    // --- LIKED ARRAY ---
+    setLikedArray(prev => {
+      // fresh page: rebuild entirely
+      if (fetchCount === 0) {
+        return feeds.map((f: any) => ({
+          postId: Number(f?.id),
+          liked: toBool(f?.EmoIn),
+        }));
+      }
+
+      // append-only when loading more
+      const prevLen = prev.length;
+      const feedLen = feeds.length;
+
+      if (feedLen > prevLen) {
+        const appended = feeds.slice(prevLen).map((f: any) => ({
+          postId: Number(f?.id),
+          liked: toBool(f?.EmoIn),
+        }));
+        return prev.concat(appended);
+      }
+
+      // same length or shorter -> keep what we have
+      return prev;
+    });
+
+    // --- LIKE COUNT ARRAY ---
+    setLikeCountArray(prev => {
+      if (fetchCount === 0) {
+        return feeds.map((f: any) => ({
+          postId: Number(f?.id),
+          count: Number(f?.lovely ?? 0) || 0,
+        }));
+      }
+
+      const prevLen = prev.length;
+      const feedLen = feeds.length;
+
+      if (feedLen > prevLen) {
+        const appended = feeds.slice(prevLen).map((f: any) => ({
+          postId: Number(f?.id),
+          count: Number(f?.lovely ?? 0) || 0,
+        }));
+        return prev.concat(appended);
+      }
+
+      return prev;
+    });
+  }, [feeds, fetchCount]);
+
+
 
   useEffect(() => {
     if (!feeds || feeds.length === 0) return;
@@ -1169,410 +1495,165 @@ const Feedgate: FC<any> = memo(({
     <>
 
 
-      {/* Main Feed Layout */}
-      <Box
-        width="100%"
-        p={matchMobile ? (isMenuOpen ? 1 : 0) : 2}
-        style={{ padding: 0 }}
-      >
+      {vertical ?
+        <FeedLayout
+          setsearchDataNav={setsearchDataNav}
+          setMyPageIdNav={setMyPageIdNav}
+          setfeedLastIdNav={setfeedLastIdNav}
+          setfeedScrollPosNav={setfeedScrollPosNav}
 
 
+          setShowEmotions={setShowEmotions}
+          setLikesPostid={setLikesPostid}
+          setLikes={setLikes}
+
+          likedArray={likedArray}
+          likeCountArray={likeCountArray}
+          setLikedArray={setLikedArray}
+          setLikeCountArray={setLikeCountArray}
 
 
+          MyPageId={MyPageId}
 
-        <audio
-          ref={audioElementRef}
-          style={{ display: "none" }}
+          setfollowType={setfollowType}
+
+          showEmotions={showEmotions}
+          searchData={''}
+          /* pass the same variables / refs / callbacks your old code used */
+          matchMobile={matchMobile}
+          isMenuOpen={isMenuOpen}
+          audioElementRef={audioElementRef}
+          loading={loading}
+          error={error}
+          feeds={feeds}
+          feedContainerRef={feedContainerRef}
+          darkModeReducer={darkModeReducer}
+          type={type}
+
+          userProfile={userProfile}
+          setUserProfile={setUserProfile}
+          setminimiseProfile={setminimiseProfile}
+          minimiseProfile={minimiseProfile}
+          isCropOpen={isCropOpen}
+          setIsCropOpen={setIsCropOpen}
+          loggedUser={loggedUser}
+          MenuOpenb={MenuOpenb}
+          setMenuOpenb={setMenuOpenb}
+          Zoom1x={Zoom1x}
+          setZoom1x={setZoom1x}
+          itemRefs={itemRefs}
+          minimisePrompt={minimisePrompt}
+          itemLoadArray={itemLoadArray}
+          setitemLoadArray={setitemLoadArray}
+          captionVisibility={captionVisibility}
+          halt={halt}
+          bottomSentinelRef={bottomSentinelRef}
+          delayMore={delayMore}
+          isFullscreen={isFullscreen}
+          storyVidArray={storyVidArray}
+          setStoryVidArray={setStoryVidArray}
+          closePop={closePop}
+          LastId={LastId}
+          setLastId={setLastId}
+          setVideoArray={setVideoArray}
+          videoArray={videoArray}
+          AudioArray={AudioArray}
+          setAudioArray={setAudioArray}
+          generatedAudios={generatedAudios}
+          setGeneratedAudios={setGeneratedAudios}
+          fullScreenContainerRef={fullScreenContainerRef}
+          setHorizontalActiveIndex={setHorizontalActiveIndex}
+          horizontalActiveIndex={horizontalActiveIndex}
+          verticalActiveIndex={verticalActiveIndex}
+          setverticalActiveIndex={setverticalActiveIndex}
+          audioPlaying={audioPlaying}
+          setAudioPlaying={setAudioPlaying}
+          fullscreenRefsX={fullscreenRefsX}
+          activeIndex={activeIndex}
+          setActiveIndex={setActiveIndex}
+          setIsFullscreen={setIsFullscreen}
+          handleOpenFullscreen={handleOpenFullscreen}
         />
+        : <FeedLayoutHorizontal
 
-        {loading && (
-          <Box
-            display="flex"
-            alignItems="center"
-            justifyContent="center"
-            my={4}
-            style={{ display: "none" }}
-          >
-            <CircularProgress size={48} />
-          </Box>
-        )}
-
-        {error && (
-          <Box mt={2} textAlign="center" style={{ display: "none" }}>
-            <Typography variant="body1" color="error">
-              {error}
-            </Typography>
-          </Box>
-        )}
-
-        {feeds.length > 0 && (
-          <Box
-            className={darkModeReducer ? "contentdarkcolor" : "contentcolor"}
-            ref={feedContainerRef}
-            sx={{
-              maxHeight: "100vh",
-              overflowY: "auto",
-              overflowX: "hidden",
-              scrollBehavior: "smooth",
-              WebkitOverflowScrolling: "touch",
-              overscrollBehavior: "contain",
-              boxSizing: "border-box",
-              width: "100%",
-              padding: matchMobile
-                ? isMenuOpen
-                  ? "0px"
-                  : "0px"
-                : isMenuOpen
-                  ? "16px"
-                  : "1vh",
-              "&::-webkit-scrollbar": {
-                width: "8px",
-              },
-              "&::-webkit-scrollbar-track": {
-                background: "#f1f1f1",
-              },
-              "&::-webkit-scrollbar-thumb": {
-                background: "#888",
-                borderRadius: "4px",
-              },
-              "&::-webkit-scrollbar-thumb:hover": {
-                background: "#555",
-              },
-            }}
-          >
+          setsearchDataNav={setsearchDataNav}
+          setMyPageIdNav={setMyPageIdNav}
+          setfeedLastIdNav={setfeedLastIdNav}
+          setfeedScrollPosNav={setfeedScrollPosNav}
 
 
+          setShowEmotions={setShowEmotions}
+          setLikesPostid={setLikesPostid}
+          setLikes={setLikes}
 
-            {
+          likedArray={likedArray}
+          likeCountArray={likeCountArray}
 
-              matchMobile && type === 10 || !isMenuOpen && type === 10 ?
-                <>   <ProfileInfo
-                  userProfile={userProfile}
-                  setUserProfile={setUserProfile}
-                  setminimise={setminimiseProfile}
-                  minimise={minimiseProfile}
-                  isCropOpen={isCropOpen}
-                  setIsCropOpen={setIsCropOpen}
-                  feeds={feeds}
-                  loggedUser={loggedUser} isMenuOpen={isMenuOpen} x={x}
-                  MenuOpenb={MenuOpenb}
-                  setMenuOpenb={setMenuOpenb}
-                />
+          setLikedArray={setLikedArray}
+          setLikeCountArray={setLikeCountArray}
 
+          MyPageId={0}
+          showEmotions={showEmotions}
+          /* pass the same variables / refs / callbacks your old code used */
+          searchData={searchData}
+          vertical={vertical}
+          fetchFeedsPagination={fetchFeedsPagination}
+          matchMobile={matchMobile}
+          isMenuOpen={isMenuOpen}
+          audioElementRef={audioElementRef}
+          loading={loading}
+          error={error}
+          feeds={feeds}
+          feedContainerRef={feedContainerRef}
+          darkModeReducer={darkModeReducer}
+          type={type}
 
-                  <img
-
-                    onMouseEnter={() => setZoom1x(true)}
-                    onMouseOver={() => setZoom1x(true)}
-                    onMouseLeave={() => setZoom1x(false)}
-
-                    onTouchStart={() => setZoom1x(true)}
-                    onTouchEnd={() => setZoom1x(false)}
-                    onClick={
-
-                      () => {
-
-                        setZoom1x(true);
-                        setTimeout(() => setZoom1x(false), 300);
-                        const feedContainer = feedContainerRef.current;
-
-
-                        feedContainer.scrollTo({
-                          top: 0,
-                          behavior: "instant",
-                        });
-
-
-                        setminimiseProfile(false);
-                      }
-
-
-                    }
-
-
-                    /*
-                  
-                    data-src={ }
-                  
-                  src={
-                    userProfile.profilePicThumb
-                      ? `${userProfile.profilePicThumb}`
-                      : `${userProfile.profilePic}`
-                  }*/
-
-                    src={
-                      userProfile.profilePic
-                        ? `${userProfile.profilePic}`
-                        : ""
-                    }
-                    alt={
-
-                      userProfile.username
-                        ? `${userProfile.username}'s profile`
-                        : "Profile"
-                    }
-                    style={{
-                      position: 'fixed',
-                      top: matchMobile ? '5vh' : '9vh',
-                      left: matchMobile ? '0vw' : '2.5vw',
-                      transform:
-                        matchMobile ? minimiseProfile ? Zoom1x ? 'scale(1.3)' : 'scale(0.8)' : 'scale(0)' :
-
-                          minimiseProfile ? Zoom1x ? 'scale(1.3)' : 'scale(0.9)' : 'scale(0)',
-                      marginLeft: minimiseProfile ? matchMobile ? '2vw' : '0px' : matchMobile ? '2vw' : '0px',
-                      cursor: "pointer",
-                      transition: isMenuOpen
-                        ? "transform 0.2s ease-in-out"
-                        : "transform 0.2s ease-in-out",
-                      borderRadius: "50%",
-                      width: "80px",
-                      height: "80px",
-                      zIndex: 2000,
-
-                      marginTop: matchMobile ? minimiseProfile ? '-5vh' : '' : minimiseProfile ? '-8vh' : ''
-                    }}
-                    className="profile-image"
-                  />
-
-                </> : null
-
-            }
-            <Grid
-              container
-              spacing={matchMobile ? type === 10 ? 0.3 : 1.1 :
-                isMenuOpen ? 2 : 4}
-
-              sx={{
-                margin: 0,
-                // <-- here, use "pl" (paddingLeft) with the same logic
-                p: matchMobile ? (type === 10 ? 0 : 1.5) : isMenuOpen ? 0 : 4,
-              }}
-
-            >
-
-
-
-
-              <AnimatePresence>
-                {feeds.map((item: FeedItem, idx: number) => {
-                  const storyImages =
-                    type === 2 || type === 10 || type === 1
-                      ? [item.x1, item.x2, item.x3, item.x4, item.x5, item.x6,
-                      item.x7, item.x8,].filter(Boolean)
-                      : [];
-
-                  const feedx = feeds[idx];
-                  /// console.log('jjjjjjjjjjj', feedx.mode)
-
-                  return (
-                    <Grid
-                      ref={(el) => {
-                        if (el) itemRefs.current[idx] = el;
-                      }}
-                      data-index={idx}
-                      key={`${item.id}${idx}`}
-                      size={{
-                        xs: feeds.length === 1 ? 12 : type === 10 ? 4 : 6,
-                        sm: isMenuOpen ? feeds.length === 1 ? 6 : 6 : 4,
-                        md: isMenuOpen ? feeds.length === 1 ? 3 : 3 : 2
-                      }}
-                      component={motion.div}
-                      style={{ padding: feeds.length === 1 && matchMobile ? '10vw' : '0px' }}
-                      layout
-                      initial={{ opacity: 0, y: 20 }}
-                      animate={{ opacity: 1, y: 0 }}
-                      exit={{ opacity: 0, y: 20 }}
-                      transition={{
-                        duration: matchMobile ? 0.6 : 0.6,
-                        ease: "easeInOut",
-                      }}
-                    >
-                      <Card
-                        sx={{
-                          position: "relative",
-                          borderRadius: matchMobile ?
-                            type === 10 ? 0 : 2
-                            : 2,
-                          overflow: "hidden",
-                          boxShadow: 3,
-                          transition: "transform 0.3s, box-shadow 0.3s",
-                          minHeight: 100,
-                          "&:hover": {
-                            transform: "scale(1.02)",
-                            boxShadow: 6,
-                          },
-                        }}
-                      >
-                        {/* Story Mode */}
-                        <StoryAutoScroller
-                          minimisePrompt={minimisePrompt}
-                          itemLoadArray={itemLoadArray}
-                          setitemLoadArray={setitemLoadArray}
-                          videoUrl={item.videoUrl}
-                          videoUrlItem={item.xv2}
-                          videoUrlItem2={item.xv3}
-                          MenuOpenb={MenuOpenb}
-                          idx={idx}
-                          captionVisibility={captionVisibility}
-                          isMenuOpen={isMenuOpen}
-                          image={item.item1}
-                          images={storyImages}
-                          caption={item.caption}
-                          onClick={() => handleOpenFullscreen(idx, false)}
-                          type={type}
-                        />
-
-                        {/* Caption – only show if captionVisibility[idx] is true */}
-                        {captionVisibility[idx] && (
-                          <Box
-                            sx={{
-                              position: "absolute",
-                              bottom: matchMobile ? '0vh' : '0vh',
-                              left: 0,
-                              width: "100%",
-
-                              color: "#fff",
-                              padding: "0px",
-                              paddingLeft: "1vw",
-                              paddingBottom: matchMobile ? "2.5vh" : "3vh",
-                              p: isMenuOpen ? 1 : matchMobile ? 1 : 1,
-                              boxSizing: "border-box",
-                              visibility: halt ? "hidden" : "visible",
-                              display:
-                                matchMobile && isMenuOpen
-                                  ? "none"
-                                  : type === 2 ? "none" :
-                                    feedx.mode === 1 ? 'none' : 'block',
-                            }}
-                          >
-                            <Typography
-                              variant="body1"
-                              sx={{
-                                fontFamily: '"Roboto", sans-serif',
-                                fontSize: matchMobile
-                                  ? isMenuOpen
-                                    ? "0.75rem"
-                                    : "1.3rem"
-                                  : isMenuOpen
-                                    ? "1.6rem"
-                                    : "1.8rem",
-                                width: "100%",
-                                opacity: 1,
-                                textAlign: "left",
-
-
-                                /* → Remove any whiteSpace: "nowrap" or textOverflow here. */
-                                /* Keep wordWrap/breaking so super-long words still wrap. */
-                                wordBreak: "break-word",
-                                textShadow: "2px 2px 4px rgba(0, 0, 0, 1)",
-                                margin: "0 auto",
-                                padding: "0px",
-                                fontWeight: matchMobile ? 400 : 400,
-
-                                /* ─── START: multiline clamp rules ─── */
-                                display: "-webkit-box",
-                                WebkitBoxOrient: "vertical",
-                                WebkitLineClamp: 2,
-                                overflow: "hidden",
-                                /* ───  END:   multiline clamp rules ─── */
-                              }}
-                            >
-                              <span style={{
-                                background:
-                                  darkModeReducer ?
-
-                                    'linear-gradient(to bottom, rgba(70, 70, 70, 0) 0%, rgba(70, 70, 70, 0.7) 50%, rgba(70, 70, 70, 0) 100%)'
-                                    :
-                                    'linear-gradient(to bottom, rgba(90, 90, 100, 0) 0%, rgba(90, 90, 100, 0.7) 50%, rgba(90, 90, 100, 0) 100%)',
-                              }}>
-
-                                <>
-
-                                  {isMenuOpen
-                                    ? item.caption.length > 40
-                                      ? `${item.caption.slice(0, 40)}...`
-                                      : item.caption
-                                    : matchMobile
-                                      ? item.caption.length > 30
-                                        ? `${item.caption.slice(0, 30)}...`
-                                        : item.caption
-                                      : item.caption.length > 40
-                                        ? `${item.caption.slice(0, 40)}...`
-                                        : item.caption}
-                                </>
-                              </span>
-                            </Typography>
-
-
-
-                          </Box>
-                        )}
-                      </Card>
-                    </Grid>
-                  );
-                })}
-              </AnimatePresence>
-            </Grid>
-            {/* Sentinel triggers pagination type === 10*/}
-            <div
-              ref={bottomSentinelRef}
-              style={{
-                backgroundColor: 'red',
-                height: matchMobile ? "55vh" :
-                  isMenuOpen ? '30vh' :
-                    '60vh',
-
-
-                background: "transparent", display: delayMore ? 'none' : 'block'
-              }}
-            />
-          </Box >
-        )}
-
-        {
-          !loading && feeds.length === 0 && !error && (
-            <Box mt={2} textAlign="center" style={{ marginTop: '10vh' }}  >
-              <Typography variant="body1">No feeds available.</Typography>
-            </Box>
-          )
-        }
-      </Box >
-
-      {/* Fullscreen overlay */}
-      {
-        isFullscreen ? (
-          <FullScreenStories
-            storyVidArray={storyVidArray}
-            setStoryVidArray={setStoryVidArray}
-            closePop={closePop}
-            type={type}
-            isMenuOpen={isMenuOpen}
-            feedContainerRef={feedContainerRef}
-            LastId={LastId}
-            setLastId={setLastId}
-            setVideoArray={setVideoArray}
-            videoArray={videoArray}
-            audioElementRef={audioElementRef}
-            AudioArray={AudioArray}
-            setAudioArray={setAudioArray}
-            generatedAudios={generatedAudios}
-            setGeneratedAudios={setGeneratedAudios}
-            fullScreenContainerRef={fullScreenContainerRef}
-            setHorizontalActiveIndex={setHorizontalActiveIndex}
-            horizontalActiveIndex={horizontalActiveIndex}
-            verticalActiveIndex={verticalActiveIndex}
-            setverticalActiveIndex={setverticalActiveIndex}
-            audioPlaying={audioPlaying}
-            setAudioPlaying={setAudioPlaying}
-            fullscreenRefsX={fullscreenRefsX}
-            feeds={feeds}
-            activeIndex={activeIndex}
-            setActiveIndex={setActiveIndex}
-            setIsFullscreen={setIsFullscreen}
-            IsFullscreen={isFullscreen}
-          />
-        ) : null
+          userProfile={userProfile}
+          setUserProfile={setUserProfile}
+          setminimiseProfile={setminimiseProfile}
+          minimiseProfile={minimiseProfile}
+          isCropOpen={isCropOpen}
+          setIsCropOpen={setIsCropOpen}
+          loggedUser={loggedUser}
+          MenuOpenb={MenuOpenb}
+          setMenuOpenb={setMenuOpenb}
+          Zoom1x={Zoom1x}
+          setZoom1x={setZoom1x}
+          itemRefs={itemRefs}
+          minimisePrompt={minimisePrompt}
+          itemLoadArray={itemLoadArray}
+          setitemLoadArray={setitemLoadArray}
+          captionVisibility={captionVisibility}
+          halt={halt}
+          bottomSentinelRef={bottomSentinelRef}
+          delayMore={delayMore}
+          isFullscreen={isFullscreen}
+          storyVidArray={storyVidArray}
+          setStoryVidArray={setStoryVidArray}
+          closePop={closePop}
+          LastId={LastId}
+          setLastId={setLastId}
+          setVideoArray={setVideoArray}
+          videoArray={videoArray}
+          AudioArray={AudioArray}
+          setAudioArray={setAudioArray}
+          generatedAudios={generatedAudios}
+          setGeneratedAudios={setGeneratedAudios}
+          fullScreenContainerRef={fullScreenContainerRef}
+          setHorizontalActiveIndex={setHorizontalActiveIndex}
+          horizontalActiveIndex={horizontalActiveIndex}
+          verticalActiveIndex={verticalActiveIndex}
+          setverticalActiveIndex={setverticalActiveIndex}
+          audioPlaying={audioPlaying}
+          setAudioPlaying={setAudioPlaying}
+          fullscreenRefsX={fullscreenRefsX}
+          activeIndex={activeIndex}
+          setActiveIndex={setActiveIndex}
+          setIsFullscreen={setIsFullscreen}
+          handleOpenFullscreen={handleOpenFullscreen}
+        />
       }
+
     </>
   );
 });

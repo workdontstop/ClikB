@@ -1,4 +1,4 @@
-import React, { useState, useCallback, useEffect, FC } from "react";
+﻿import React, { useState, useCallback, useEffect, FC } from "react";
 import PromptInput from "./PromptInput";
 import PingLoader from "./ping";
 import Feedgate from "./FeedsGate";
@@ -6,7 +6,7 @@ import IconButton from "@mui/material/IconButton";
 import SearchIcon from '@mui/icons-material/Search';
 import { useSelector } from "react-redux";
 import { RootState } from "./store"; // adjust the import to your store location
-
+import TogglePromptButton from './TogglePromptButton';
 
 import CameraEnhanceIcon from '@mui/icons-material/CameraEnhance';
 
@@ -58,12 +58,19 @@ const Mypage: FC<any> = ({
     MenuOpenb,
     setMenuOpenb,
 
-
-    x,
-
     isCropOpen,
     setIsCropOpen,
-    setHideBottom
+    setHideBottom,
+    showEmotions,
+    setShowEmotions,
+    setfollowType,
+    setLikesPostid,
+    setLikes,
+
+    setsearchDataNav,
+    setMyPageIdNav,
+    setfeedLastIdNav,
+    setfeedScrollPosNav
 }) => {
 
     const darkModeReducer = useSelector((state: RootState) => state.settings.darkMode);
@@ -88,6 +95,7 @@ const Mypage: FC<any> = ({
 
 
     useEffect(() => {
+        setminimisePrompt(true);
         setcallFeeds(true);
         ///alert(routelastId);
         setHideBottom(false);
@@ -96,69 +104,46 @@ const Mypage: FC<any> = ({
 
     return (
         <>
-            {minimisePrompt ? <Box
-                sx={{
 
+            <TogglePromptButton
+                LastId={LastId}
+                feedContainerRef={feedContainerRef}
+                isFullscreen={isFullscreen}
+                textActive={false}
+                setMenuOpenb={setMenuOpenb}
+                setIsMenuOpen={setIsMenuOpen}
+                MenuOpenb={MenuOpenb}
+                type={10}
+                minimisePrompt={minimisePrompt}
+                setminimisePrompt={setminimisePrompt}
 
-                    width: matchMobile ? '20%' : "100%",
-                    textAlign: "center",
-
-                    left: matchMobile ? "40%" :
-                        '-27vw',
-
-
-                    // Optional: If you want a subtle background to separate it
-                    //// backgroundColor: darkModeReducer ? "#121212" : "#ffffff",
-                    height: matchMobile ? '5.15vh' : '2vh', // vertical padding
-                    zIndex: 1000,
-                    fontWeight: 'bold',
-                    fontFamily: "Arial, Helvetica, sans-serif",
-                    position: 'fixed',
-                    top: matchMobile ? "1vh" :
-                        '3vh',
-                    display: 'none'
-
-                }}
-            >
-
-
-
-                <IconButton
-                    onClick={() => setminimisePrompt(false)}
-                    sx={{
-                        // make it circular
-                        borderRadius: "50%",
-                        // size tweaks
-                        width: matchMobile ? 43 : 43,
-                        height: matchMobile ? 43 : 43,
-                        // colours & states
-                        bgcolor: darkModeReducer ? 'rgb(100,100,100,1)' : 'rgb(250,250,250,1)',
-                        "&:hover": { bgcolor: darkModeReducer ? 'rgb(100,100,100,0.3)' : 'rgb(250,250,250,0.3)' },
-                        // keep the same behaviours you already had
-                        opacity: 0.7,
-                        display: matchMobile && isMenuOpen ? "none" : "inline‑flex",
-                        m: "auto",          // centre horizontally
-                        boxShadow: 3,       // soft elevation
-
-                    }}
-                >
-                    <CameraEnhanceIcon
-                        sx={{
-                            fontSize: matchMobile ? "1.6rem" : "1.3rem",
-                            color: darkModeReducer ? 'white' : "black",
-                        }}
-                    />
-                </IconButton>
-
-
-            </Box > : null}
-
-
+                matchMobile={matchMobile}
+                allowUploadText={false}
+                isMenuOpen={isMenuOpen}
+                darkModeReducer={darkModeReducer}
+            />
 
 
 
             {/* 3) Feedgate */}
             <Feedgate
+
+                setsearchDataNav={setsearchDataNav}
+                setMyPageIdNav={setMyPageIdNav}
+                setfeedLastIdNav={setfeedLastIdNav}
+                setfeedScrollPosNav={setfeedScrollPosNav}
+
+                setShowEmotions={setShowEmotions}
+                setLikesPostid={setLikesPostid}
+                setLikes={setLikes}
+
+
+                setfollowType={setfollowType}
+
+                showEmotions={showEmotions}
+                searchData={''}
+                vertical={true}
+                minimisePrompt={minimisePrompt}
                 setminimiseProfile={setminimiseProfile}
                 minimiseProfile={minimiseProfile}
                 MenuOpenb={MenuOpenb}
@@ -179,7 +164,7 @@ const Mypage: FC<any> = ({
                 setFeeds={setFeeds}
                 isCropOpen={isCropOpen}
                 setIsCropOpen={setIsCropOpen}
-                x={x}
+
             />
 
         </>
@@ -192,5 +177,3 @@ const Mypage: FC<any> = ({
 
 
 export default Mypage;
-
-

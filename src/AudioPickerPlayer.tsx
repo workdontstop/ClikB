@@ -1,6 +1,6 @@
-import React, { useCallback, useEffect, useRef, useState } from "react";
+﻿import React, { useCallback, useEffect, useRef, useState } from "react";
 import { Slider, Stack, useMediaQuery, useTheme } from "@mui/material";
-// import { matchMobile } from "./your‑vars"  ← user will add the real import
+// import { matchMobile } from "./yourâ€‘vars"  â† user will add the real import
 
 import { matchMobile } from "./DetectDevice";
 
@@ -23,12 +23,12 @@ import { setLoggedUser } from "./profileSlice";
 
 
 
-/* ──────────────────────────────────────────────────────
- * AudioPickerPlayer – <audio> element + hidden‑thumb trim slider
+/* â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
+ * AudioPickerPlayer â€“ <audio> element + hiddenâ€‘thumb trim slider
  * --------------------------------------------------------------------------
- * • Thumbs + timestamp labels are visually hidden.
- * • Slider rail/thickness grows on mobile (`matchMobile`).
- * • Trim window fixed at exactly 15 s (or full audio if shorter).
+ * â€¢ Thumbs + timestamp labels are visually hidden.
+ * â€¢ Slider rail/thickness grows on mobile (`matchMobile`).
+ * â€¢ Trim window fixed at exactly 15â€¯s (or full audio if shorter).
  * --------------------------------------------------------------------------
  */
 
@@ -40,13 +40,13 @@ export interface AudioPickerPlayerProps {
     onTrimChange?: (start: number, end: number) => void;
     AudioName: any;
     setGotmp3: any;
-    callMusic: any
+    callMusic: any;
+    onAudioReady?: (audioUrl: string, audioName: any) => void;
+
 }
 
-const CLIP_LENGTH = 20;
-
-
 const CLIK_URL = import.meta.env.VITE_CLIK_URL;
+const MIN_TRIM_SECONDS = 10;
 
 const AudioPickerPlayer: React.FC<AudioPickerPlayerProps> = ({
     src,
@@ -55,7 +55,8 @@ const AudioPickerPlayer: React.FC<AudioPickerPlayerProps> = ({
     onTrimChange,
     AudioName,
     setGotmp3,
-    callMusic
+    callMusic,
+    onAudioReady
 }) => {
     const theme = useTheme();
     const isMobile = useMediaQuery(theme.breakpoints.down("sm"));
@@ -83,7 +84,7 @@ const AudioPickerPlayer: React.FC<AudioPickerPlayerProps> = ({
     );
 
 
-    /* ─────────── sync source */
+    /* â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ sync source */
     useEffect(() => {
         if (!audioRef.current || !src) return;
         audioRef.current.pause();
@@ -91,20 +92,21 @@ const AudioPickerPlayer: React.FC<AudioPickerPlayerProps> = ({
         audioRef.current.load();
     }, [src]);
 
-    /* ─────────── load meta */
+    /* â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ load meta */
     useEffect(() => {
         const el = audioRef.current;
         if (!el) return;
         const meta = () => {
-            const d = el.duration || 0;
+            const d = Number.isFinite(el.duration) ? el.duration : 0;
             setDuration(d);
-            setTrim([0, Math.min(d, CLIP_LENGTH)]);
+            setTrim([0, d]);
+            onTrimChange?.(0, d);
         };
         el.addEventListener("loadedmetadata", meta);
         return () => el.removeEventListener("loadedmetadata", meta);
     }, [src]);
 
-    /* ─────────── clamp playback */
+    /* â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ clamp playback */
     useEffect(() => {
         const el = audioRef.current;
         if (!el) return;
@@ -121,27 +123,15 @@ const AudioPickerPlayer: React.FC<AudioPickerPlayerProps> = ({
         return () => el.removeEventListener("timeupdate", t);
     }, [trim, onEnded]);
 
-    /* ─────────── enforce 15‑s window */
-    const fixWindow = (start: number, end: number, movedStart: boolean): [number, number] => {
-        if (duration < CLIP_LENGTH) return [0, duration];
-        if (end - start === CLIP_LENGTH) return [start, end];
-        if (movedStart) {
-            start = Math.min(start, duration - CLIP_LENGTH);
-            end = start + CLIP_LENGTH;
-        } else {
-            end = Math.max(end, CLIP_LENGTH);
-            if (end > duration) {
-                end = duration;
-                start = duration - CLIP_LENGTH;
-            } else {
-                start = end - CLIP_LENGTH;
-            }
-        }
-        return [start, end];
+    /* â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ allow any trim window */
+    const clampTrimWindow = (start: number, end: number): [number, number] => {
+        const safeStart = Math.max(0, Math.min(start, duration));
+        const safeEnd = Math.max(safeStart, Math.min(end, duration));
+        return [safeStart, safeEnd];
     };
 
 
-    /* ─────────── clamp & loop playback */
+    /* â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ clamp & loop playback */
     useEffect(() => {
         const el = audioRef.current;
         if (!el) return;
@@ -164,12 +154,11 @@ const AudioPickerPlayer: React.FC<AudioPickerPlayerProps> = ({
     }, [trim]);
 
 
-    /* ─────────── slider handlers */
+    /* â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ slider handlers */
     const handleChange = (_: Event, val: number | number[]) => {
         if (!Array.isArray(val)) return;
         const [s, e] = val as number[];
-        const movedStart = Math.abs(trim[0] - s) > Math.abs(trim[1] - e);
-        setTrim(fixWindow(s, e, movedStart));
+        setTrim(clampTrimWindow(s, e));
     };
 
     const handleCommit = () => {
@@ -177,7 +166,7 @@ const AudioPickerPlayer: React.FC<AudioPickerPlayerProps> = ({
         if (audioRef.current) audioRef.current.currentTime = trim[0];
     };
 
-    /* ─────────── sizes */
+    /* â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ sizes */
     // `matchMobile` should be provided by the caller; fallback to 12 if undefined
     // eslint-disable-next-line @typescript-eslint/ban-ts-comment
     // @ts-ignore
@@ -187,7 +176,7 @@ const AudioPickerPlayer: React.FC<AudioPickerPlayerProps> = ({
     const buttonPadding = { px: 3, py: 1.5 };
 
 
-    // 1️⃣ Generate a presigned upload URL for ONE audio blob
+    // 1ï¸âƒ£ Generate a presigned upload URL for ONE audio blob
     const GenerateSignedUrlForSingleAudio = async (audioBlob: Blob) => {
         if (!audioBlob) throw new Error("No audio Blob to generate a signed URL.");
 
@@ -214,17 +203,18 @@ const AudioPickerPlayer: React.FC<AudioPickerPlayerProps> = ({
         return { urlAudio }; // e.g. { urlAudio: "https://..." }
     };
 
-    // 2️⃣ Upload a single (original) audio file to S3 and return its final URL
+    // 2ï¸âƒ£ Upload a single (original) audio file to S3 and return its final URL
     const uploadOriginalAudioToS3 = useCallback(async (localAudioUrl: any): Promise<any> => {
-        var tot = trim[1] - trim[0];
-        // alert(tot);
-        if (tot < 20) {
-
-
-            alert('Audio Too Short Minimum Length: 20secs')
+        const totalTrim = Math.max(0, trim[1] - trim[0]);
+        if (totalTrim <= 0) {
+            alert('Select an audio range first');
+            return null;
         }
 
-        else {
+        if (totalTrim < MIN_TRIM_SECONDS) {
+            alert(`Audio Too Short Minimum Length: ${MIN_TRIM_SECONDS}secs`);
+            return null;
+        }
 
             setisLoading(true);
             setLoadData('Uploading')
@@ -239,29 +229,27 @@ const AudioPickerPlayer: React.FC<AudioPickerPlayerProps> = ({
                 headers: { "Content-Type": audioBlob.type || "audio/mpeg" },
             });
 
-            // Strip query params → final S3 path
+            // Strip query params â†’ final S3 path
             const finalAudioUrl = urlAudio.split("?")[0];
 
 
             setOriginalAudio(finalAudioUrl);
 
-            createTrimmedAudio(finalAudioUrl);
+            await createTrimmedAudio(finalAudioUrl);
             // TODO: optionally persist `postId`, `enhanceCaption`, finalAudioUrl to DB
 
             return finalAudioUrl; // usable S3 path
-
-        }
     }, [trim])
 
 
 
 
-    // 3️⃣ Request MediaConvert (or backend) to cut the clip  
-    //    POST → `${CLIK_URL}/create-trimaudio`
-    // 1️⃣  place this near the top of your component
+    // 3ï¸âƒ£ Request MediaConvert (or backend) to cut the clip
+    //    POST â†’ `${CLIK_URL}/create-trimaudio`
+    // 1ï¸âƒ£  place this near the top of your component
     const [trimmedAudioUrl, setTrimmedAudioUrl] = useState<string | null>(null);
 
-    // 2️⃣  update createTrimmedAudio
+    // 2ï¸âƒ£  update createTrimmedAudio
     const createTrimmedAudio = useCallback(
         async (originalAudio: string) => {
 
@@ -286,13 +274,13 @@ const AudioPickerPlayer: React.FC<AudioPickerPlayerProps> = ({
                 // backend responds { audioUrl: "https://bucket.s3....mp3", ... }
                 const { audioUrl } = res.data as { audioUrl: string };
 
-                // 3️⃣  save it in state
+                // 3ï¸âƒ£  save it in state
                 setTrimmedAudioUrl(audioUrl);
 
                 // alert(audioUrl);
 
 
-                saveToDatabase(audioUrl);
+                await saveToDatabase(audioUrl);
 
                 // optional: also return it
                 return audioUrl;
@@ -336,6 +324,8 @@ const AudioPickerPlayer: React.FC<AudioPickerPlayerProps> = ({
 
 
                 callMusic();
+                onAudioReady?.(Audio, AudioName);
+                setisLoading(false);
 
                 setTimeout(() => {
 
@@ -351,7 +341,7 @@ const AudioPickerPlayer: React.FC<AudioPickerPlayerProps> = ({
                 throw err;
             }
         },
-        [loggedUser, AudioName]
+        [loggedUser, AudioName, callMusic, onAudioReady]
     );
 
 
@@ -420,6 +410,27 @@ const AudioPickerPlayer: React.FC<AudioPickerPlayerProps> = ({
 
 
                 )}
+
+                <Button
+                    variant="outlined"
+                    disabled={duration <= 0}
+                    onClick={() => {
+                        const nextTrim: [number, number] = [0, duration];
+                        setTrim(nextTrim);
+                        onTrimChange?.(nextTrim[0], nextTrim[1]);
+                        if (audioRef.current) audioRef.current.currentTime = 0;
+                    }}
+                    sx={{
+                        color: darkMode ? "#F6BB56" : "#DA8E0B",
+                        borderColor: darkMode ? "#F6BB56" : "#DA8E0B",
+                        ...buttonPadding,
+                        borderRadius: 2,
+                        margin: 'auto',
+                        textTransform: "none",
+                    }}
+                >
+                    Full Song
+                </Button>
 
                 <Button
 

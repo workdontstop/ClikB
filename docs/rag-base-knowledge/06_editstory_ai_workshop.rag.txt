@@ -1,0 +1,208 @@
+﻿[RAG userSnapshotKnowledge] clikb_editstory_ai_workshop Object {
+  topic: "EditStory AI workshop and update controls",
+  metadata: {
+    docId: "clikb_editstory_ai_workshop",
+    sourceType: "clikb-base-rag",
+    sourceName: "06_editstory_ai_workshop.rag.txt",
+    version: 1,
+    vectorIdPrefix: "clikb_editstory_ai_workshop::chunk",
+    chunkIdPattern: "clikb_editstory_ai_workshop::chunk-0001",
+    deleteFilter: {
+      docId: "clikb_editstory_ai_workshop"
+    },
+    searchKeys: ["clikb_editstory_ai_workshop", "06_editstory_ai_workshop.rag.txt", "EditStory AI workshop and update controls"]
+  },
+  routeMatches: ["/images", "/kickit", "/clikit"],
+  pageNames: ["EditStory", "Storybook", "Shorts", "Stories", "Games"],
+  featureNames: ["EditStory", "Update with AI", "Scene Image Prompt", "Video Prompt", "Auto Prompt", "UPDATE SCENE WITH AI", "Enhance", "Safety", "RECREATE", "action images", "EditGeneratedVisualTextOnlyFn", "callRemake", "callRemakeSafety", "callRemakePromptOnly", "fetchAndGenerateImage", "UpdatePostAIImage", "UpdatePostAIVideo", "EditGeneratedVisualTextOnly", "GptRecreate", "GptRecreateSafe", "GptRecreateText", "/EditGeneratedVisualTextOnly", "/GptRemake", "/GptRemakeSafe", "/GptRemakeText", "/UpdatePostAIImage", "/UpdatePostAIVideo", "Open scene editor", "Edit image prompt", "Edit video prompt"],
+  sourceFiles: ["src/EditStory.tsx", "src/Notepad.tsx", "src/Storybook.tsx", "server/src/server.ts", "server/src/GptApi.ts", "server/src/fluxSchnellRoute.ts"],
+  understanding: "EditStory is the post-generation workshop for one scene or B-shot. It lets users change image prompts, video prompts, action images, motion prompts, narration-related text, and saved media. It receives GeneratedText, GeneratedTextx, TextVideo, images/videos, referenceImages, detectedCharacters, nanoImages, active characters, VIP characters, B-shot context, and model settings. Visible edit controls include Update with AI, Scene Image Prompt, Enhance, Safety, RECREATE or UPDATE PROMPT, Video Prompt, Auto Prompt, UPDATE SCENE WITH AI, action prompt fields, and generated action image galleries. Update with AI uses natural language to rewrite selected visual prompts through /GptRemake or /GptRemakeSafe. Update Scene with AI calls /EditGeneratedVisualTextOnly using scene context, story lore, image description, target model, duration, ratio, and image URL. Image/video changes can persist through UpdatePostAIImage and UpdatePostAIVideo.",
+  pipelineStages: [
+    {
+      id: "open_editor",
+      name: "Open scene editor",
+      routeMatches: [
+        "/images",
+        "/kickit",
+        "/clikit"
+      ],
+      pageNames: [
+        "Storybook",
+        "EditStory"
+      ],
+      controlIds: [
+        "enter_edit_story"
+      ],
+      userGoal: "Edit one generated scene or B-shot.",
+      systemResult: "EditStory receives unified scene data, prompts, media, and reference context."
+    },
+    {
+      id: "edit_image_prompt",
+      name: "Edit image prompt",
+      routeMatches: [
+        "/images",
+        "/kickit",
+        "/clikit"
+      ],
+      pageNames: [
+        "EditStory"
+      ],
+      controlIds: [
+        "update_with_ai",
+        "enhance",
+        "recreate"
+      ],
+      userGoal: "Change or improve scene image text.",
+      systemResult: "GptRemake/GptRemakeSafe rewrites prompt and image model routes can regenerate visuals."
+    },
+    {
+      id: "edit_video_prompt",
+      name: "Edit video prompt",
+      routeMatches: [
+        "/images",
+        "/kickit",
+        "/clikit"
+      ],
+      pageNames: [
+        "EditStory"
+      ],
+      controlIds: [
+        "auto_prompt",
+        "update_scene_with_ai"
+      ],
+      userGoal: "Create or modify the motion/video prompt.",
+      systemResult: "Auto prompt or /EditGeneratedVisualTextOnly produces updated TextVideo."
+    }
+  ],
+  uiControls: [
+    {
+      id: "update_with_ai",
+      visibleLabel: "Update with AI",
+      alsoSeenAs: [
+        "UPDATE WITH AI",
+        "Describe change to Gpt"
+      ],
+      controlType: "text field",
+      routeMatches: [
+        "/images",
+        "/kickit",
+        "/clikit"
+      ],
+      pageNames: [
+        "EditStory"
+      ],
+      sourceFile: "src/EditStory.tsx",
+      userIntent: "Tell AI how to change the current prompt/media.",
+      systemAction: "Sends edit instruction to GptRemake/GptRemakeSafe or uses the field to compose action image prompts.",
+      resultingState: "The selected prompt or generated action is modified."
+    },
+    {
+      id: "scene_image_prompt",
+      visibleLabel: "Scene Image Prompt",
+      alsoSeenAs: [
+        "Enter a Prompt To Recreate The Image"
+      ],
+      controlType: "prompt field",
+      routeMatches: [
+        "/images",
+        "/kickit",
+        "/clikit"
+      ],
+      pageNames: [
+        "EditStory"
+      ],
+      sourceFile: "src/EditStory.tsx",
+      userIntent: "Edit the image prompt for the scene.",
+      systemAction: "Opens Notepad writing pad and updates textValue for image recreation.",
+      resultingState: "Scene image prompt can be regenerated or saved."
+    },
+    {
+      id: "auto_prompt",
+      visibleLabel: "Auto Prompt",
+      controlType: "button",
+      routeMatches: [
+        "/images",
+        "/kickit",
+        "/clikit"
+      ],
+      pageNames: [
+        "EditStory"
+      ],
+      sourceFile: "src/EditStory.tsx",
+      userIntent: "Create a video prompt automatically.",
+      systemAction: "Generates TextVideo from current scene context and optionally calls EditGeneratedVisualTextOnly for edits.",
+      resultingState: "Video Prompt field is filled."
+    },
+    {
+      id: "update_scene_with_ai",
+      visibleLabel: "UPDATE SCENE WITH AI",
+      alsoSeenAs: [
+        "Describe change to Gpt and press Enter"
+      ],
+      controlType: "text field/button",
+      routeMatches: [
+        "/images",
+        "/kickit",
+        "/clikit"
+      ],
+      pageNames: [
+        "EditStory"
+      ],
+      sourceFile: "src/EditStory.tsx",
+      userIntent: "Modify the current video prompt using natural language.",
+      systemAction: "Calls /EditGeneratedVisualTextOnly with editvalue, createdvisual, question, imageDescription, targetModel, duration, ratioKey, and imageUrl.",
+      resultingState: "Updated video prompt is stored in TextVideo."
+    }
+  ],
+  snapshotExample: {
+    sourceLog: "[Brainstorm userSnapshot] typed request",
+    route: "/kickit",
+    pageName: "Stories",
+    lastAction: {
+      type: "text",
+      label: "Describe change to Gpt",
+      tagName: "input",
+      route: "/kickit"
+    }
+  },
+  sourceEvidence: [
+    {
+      sourceFile: "src/EditStory.tsx",
+      featureNames: [
+        "EditGeneratedVisualTextOnlyFn",
+        "callRemake",
+        "callRemakeSafety",
+        "callRemakePromptOnly",
+        "fetchAndGenerateImage",
+        "UpdatePostAIImage",
+        "UpdatePostAIVideo"
+      ],
+      notes: "Core workshop and AI edit functions."
+    },
+    {
+      sourceFile: "server/src/GptApi.ts",
+      featureNames: [
+        "EditGeneratedVisualTextOnly",
+        "GptRecreate",
+        "GptRecreateSafe",
+        "GptRecreateText"
+      ],
+      notes: "Backend prompt rewriting logic for EditStory."
+    },
+    {
+      sourceFile: "server/src/server.ts",
+      featureNames: [
+        "/EditGeneratedVisualTextOnly",
+        "/GptRemake",
+        "/GptRemakeSafe",
+        "/GptRemakeText",
+        "/UpdatePostAIImage",
+        "/UpdatePostAIVideo"
+      ],
+      notes: "Registers EditStory-related routes."
+    }
+  ],
+  extra: {
+    assistantUse: "Use this chunk when user asks how to edit a generated scene, what Update with AI does, how Auto Prompt works, or where AI updates are saved."
+  },
+}

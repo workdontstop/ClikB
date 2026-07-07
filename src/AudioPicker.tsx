@@ -1,4 +1,4 @@
-// AudioPicker.tsx
+﻿// AudioPicker.tsx
 import React, {
     useRef,
     useState,
@@ -27,6 +27,9 @@ import { useSelector } from "react-redux";
 import { RootState } from "./store";
 import AudioPickerPlayer from "./AudioPickerPlayer";
 
+import MusicNoteIcon from '@mui/icons-material/MusicNote';
+import RecordVoiceOverIcon from '@mui/icons-material/RecordVoiceOver';
+
 import PlayArrowIcon from "@mui/icons-material/PlayArrow";
 import PauseIcon from "@mui/icons-material/Pause";
 import CheckCircleIcon from "@mui/icons-material/CheckCircle";
@@ -34,9 +37,9 @@ import CloseIcon from "@mui/icons-material/Close";
 
 import { matchMobile } from "./DetectDevice";
 
-/* ────────────────────────────────────────────────────── */
+/* â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */
 /* Types                                                  */
-/* ────────────────────────────────────────────────────── */
+/* â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */
 export type Voice = {
     id: string;
     url: string;
@@ -58,20 +61,22 @@ export interface VoicePickerProps {
     setmusicname: any;
     setmusic: any;
     music: any;
-    type: any
+    type: any;
+
 }
 
 const defaultVoices: Voice[] = [];
 
-/* ────────────────────────────────────────────────────── */
+/* â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */
 /* Component                                              */
-/* ────────────────────────────────────────────────────── */
-const AudioPicker: React.FC<VoicePickerProps> = ({
+/* â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */
+const AudioPicker: React.FC<any> = ({
     showVoicesList,
     selectedVoice,
     onClose,
     onSelectVoice,
     darkMode = false,
+
     voices = defaultVoices,
     setName,
     setMemeMusic,
@@ -79,7 +84,10 @@ const AudioPicker: React.FC<VoicePickerProps> = ({
     setmusicname,
     setmusic,
     music,
-    type
+    type,
+    VideMode,
+    forceMusicMode = false,
+
 }) => {
     const theme = useTheme();
     const fullScreen = useMediaQuery(theme.breakpoints.down("sm"));
@@ -94,7 +102,7 @@ const AudioPicker: React.FC<VoicePickerProps> = ({
 
     const [uploadedMp3, setUploadedMp3] = useState<string | null>(null);
     const [gotMp3, setGotMp3] = useState(false);
-    /* 1️⃣  state: array of objects */
+    /* 1ï¸âƒ£  state: array of objects */
 
 
     type SongItem = { name: string; url: string };
@@ -106,6 +114,8 @@ const AudioPicker: React.FC<VoicePickerProps> = ({
     const darkModeReducer = useSelector(
         (state: RootState) => state.settings.darkMode
     );
+    const pickerMusicMode = forceMusicMode || MemeMusic;
+
 
     /* ------------------------------------------------------------------ */
     /* Playback helpers                                                   */
@@ -115,8 +125,6 @@ const AudioPicker: React.FC<VoicePickerProps> = ({
         (item: SongItem) => {
             const el = audioRef.current;
             if (!el) return;
-
-
 
             if (playingVoice === item.url && audioRef.current) {
                 if (!audioRef.current.paused) {
@@ -129,7 +137,6 @@ const AudioPicker: React.FC<VoicePickerProps> = ({
                 return;
             }
 
-
             // switch to a new song
             el.pause();
             el.src = item.url;
@@ -140,6 +147,7 @@ const AudioPicker: React.FC<VoicePickerProps> = ({
         [playingVoice]
     );
 
+
     useEffect(() => {
         const el = audioRef.current;
         if (!el) return;
@@ -149,16 +157,13 @@ const AudioPicker: React.FC<VoicePickerProps> = ({
     }, []);
 
     useEffect(() => {
-        if (!showVoicesList && audioRef.current) {
-            audioRef.current.pause();
+        if (!showVoicesList) {
             setPlayingVoice(null);
         }
     }, [showVoicesList]);
 
     useEffect(() => {
-        if (uploadedMp3 && audioRef.current) {
-            audioRef.current.src = uploadedMp3;
-            audioRef.current.load();
+        if (!uploadedMp3) {
             setPlayingVoice(null);
         }
     }, [uploadedMp3]);
@@ -167,11 +172,13 @@ const AudioPicker: React.FC<VoicePickerProps> = ({
     /* Upload-file handler                                                */
     /* ------------------------------------------------------------------ */
     const handleMp3Upload = (e: ChangeEvent<HTMLInputElement>) => {
+
+
         const file = e.target.files?.[0];
         if (!file) return;
 
         // store the name so you can display it later
-        setAudioName(file.name);          // ← ✔️ set audio name here
+        setAudioName(file.name);          // â† âœ”ï¸ set audio name here
 
         const reader = new FileReader();
         reader.onload = () => {
@@ -183,13 +190,13 @@ const AudioPicker: React.FC<VoicePickerProps> = ({
         reader.readAsDataURL(file);
     };
     /* ------------------------------------------------------------------ */
-    /* callmusic → update list                                            */
+    /* callmusic â†’ update list                                            */
     /* ------------------------------------------------------------------ */
     const callMusic = useCallback(
         async () => {
 
             setAudioUrls([]);
-            // you can still send the URL—even if the server doesn’t use it
+            // you can still send the URLâ€”even if the server doesnâ€™t use it
             const payload = {};
 
 
@@ -228,7 +235,7 @@ const AudioPicker: React.FC<VoicePickerProps> = ({
 
 
     useEffect(() => {
-        if (MemeMusic && showVoicesList) {
+        if (pickerMusicMode && showVoicesList) {
 
 
 
@@ -236,8 +243,11 @@ const AudioPicker: React.FC<VoicePickerProps> = ({
 
         }
 
-    }, [MemeMusic,
-        showVoicesList])
+    }, [pickerMusicMode, showVoicesList, callMusic])
+
+
+
+
     /* ------------------------------------------------------------------ */
     /* Render                                                             */
     /* ------------------------------------------------------------------ */
@@ -256,8 +266,9 @@ const AudioPicker: React.FC<VoicePickerProps> = ({
             }}
             aria-labelledby="voice-picker-title"
         >
-            {/* ───────── title ───────── */}
+            {/* â”€â”€â”€â”€â”€â”€â”€â”€â”€ title â”€â”€â”€â”€â”€â”€â”€â”€â”€ */}
             <DialogTitle
+
                 id="voice-picker-title"
                 sx={{
                     display: "flex",
@@ -271,6 +282,35 @@ const AudioPicker: React.FC<VoicePickerProps> = ({
                 <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
                     Audio
                 </Typography>
+
+
+                {type === 1 && !forceMusicMode ? <Button
+
+                    onClick={() => {
+                        if (!MemeMusic) {
+
+                            setMemeMusic(true);
+                        } else {
+
+                            setMemeMusic(false)
+                        }
+
+                    }}
+                    component="span"
+                    size="small"
+                    variant="outlined"
+                    startIcon={MemeMusic ? <RecordVoiceOverIcon /> : <MusicNoteIcon />}
+                    sx={{
+                        color: darkModeReducer ? "#ffffff" : "#ffffff",
+                        borderColor: darkModeReducer ? "#ffffff" : "#000000",
+                        textTransform: "none",
+                        fontSize: 14,
+                        paddingRight: '2vw'
+                    }}
+                >
+                    {MemeMusic ? "Narration" : "Music"}
+                </Button> : null}
+
 
                 {/* Upload MP3 */}
                 <Stack direction="row" spacing={1} sx={{ mr: 1 }}>
@@ -308,9 +348,11 @@ const AudioPicker: React.FC<VoicePickerProps> = ({
                 </IconButton>
             </DialogTitle>
 
-            {/* ───────── content ───────── */}
+            {/* â”€â”€â”€â”€â”€â”€â”€â”€â”€ content â”€â”€â”€â”€â”€â”€â”€â”€â”€ */}
             {/* list ------------------------------------------------------------ */}
             <DialogContent dividers sx={{ p: 0, }}>
+
+
 
                 {gotMp3 && (
                     <Box sx={{ width: "100%", p: 1 }}>
@@ -320,12 +362,17 @@ const AudioPicker: React.FC<VoicePickerProps> = ({
                             AudioName={audioName}
                             src={uploadedMp3}
                             onEnded={() => setPlayingVoice(null)}
+                            onAudioReady={(audioUrl: string, name: string) => {
+                                setmusicname(name);
+                                setmusic(audioUrl);
+                                onClose();
+                            }}
                         />
                     </Box>
                 )}
 
                 <List dense disablePadding>
-                    {/* audioUrls: [{ name, url }] — newest → oldest */}
+                    {/* audioUrls: [{ name, url }] â€” newest â†’ oldest */}
 
                     {audioUrls.map(({ name, url }) => {
 
@@ -343,19 +390,16 @@ const AudioPicker: React.FC<VoicePickerProps> = ({
                                         variant={isSelected ? "contained" : "outlined"}
                                         sx={{
                                             minWidth: 110,
-
-                                            backgroundColor: isSelected ? "#F6BB56" : "",
-                                            borderColor: "#F6BB56",
-                                            color: isSelected
-                                                ? "#000"
-                                                : darkModeReducer
-                                                    ? "#F6BB56"
-                                                    : "#DA8E0B",
-                                            "&:hover": { borderColor: "#F6BB56" },
+                                            backgroundColor: isSelected ? (darkModeReducer ? '#E8BAFA' : '#0099cc') : '',
+                                            borderColor: darkModeReducer ? '#E8BAFA' : '#0099cc',
+                                            color: isSelected ? (darkModeReducer ? '#000000' : '#ffffff') : (darkModeReducer ? '#E8BAFA' : '#0099cc'),
+                                            "&:hover": {
+                                                borderColor: darkModeReducer ? '#E8BAFA' : '#0099cc',
+                                            },
                                             "&:active": {
-                                                backgroundColor: "#F6BB56",
-                                                borderColor: "#F6BB56",
-                                                color: "#000",
+                                                backgroundColor: darkModeReducer ? '#E8BAFA' : '#0099cc',
+                                                borderColor: darkModeReducer ? '#E8BAFA' : '#0099cc',
+                                                color: darkModeReducer ? '#000000' : '#ffffff',
                                             },
                                         }}
                                         onClick={() => {
@@ -379,7 +423,7 @@ const AudioPicker: React.FC<VoicePickerProps> = ({
                                         primary={
                                             <Stack direction="row" alignItems="center" spacing={0.5}>
                                                 <Typography variant="button" sx={{ width: '70%' }}>
-                                                    {name.length > 50 ? `${name.slice(0, 50)}…` : name}
+                                                    {name.length > 50 ? `${name.slice(0, 50)}â€¦` : name}
                                                 </Typography>
                                                 {isPlaying ? (
                                                     <PauseIcon fontSize="small" />

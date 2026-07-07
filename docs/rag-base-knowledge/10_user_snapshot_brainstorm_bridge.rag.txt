@@ -1,0 +1,245 @@
+﻿[RAG userSnapshotKnowledge] clikb_user_snapshot_brainstorm_bridge Object {
+  topic: "userSnapshot and Brainstorm app-context bridge",
+  metadata: {
+    docId: "clikb_user_snapshot_brainstorm_bridge",
+    sourceType: "clikb-base-rag",
+    sourceName: "10_user_snapshot_brainstorm_bridge.rag.txt",
+    version: 1,
+    vectorIdPrefix: "clikb_user_snapshot_brainstorm_bridge::chunk",
+    chunkIdPattern: "clikb_user_snapshot_brainstorm_bridge::chunk-0001",
+    deleteFilter: {
+      docId: "clikb_user_snapshot_brainstorm_bridge"
+    },
+    searchKeys: ["clikb_user_snapshot_brainstorm_bridge", "10_user_snapshot_brainstorm_bridge.rag.txt", "userSnapshot and Brainstorm app-context bridge"]
+  },
+  routeMatches: ["/MagicMirror", "/images", "/kickit", "/clikit", "/feeds", "/pages", "/settings"],
+  pageNames: ["Home", "Shorts", "Stories", "Interactions", "Feeds", "Profile", "Settings", "Games"],
+  featureNames: ["userSnapshot", "Brainstorm", "recentActions", "lastAction", "pageName", "route", "snapshot logs", "RAG retrieval", "patchUserSnapshot", "recordUserAction", "getSnapshotPageName", "shared Brainstorm session", "voice brain handler", "GptBrainstorm", "userSnapshot used", "Collect snapshot", "Send snapshot to Brainstorm", "RAG match context", "BrainStorm", "Live Assistant circle", "tracked user action"],
+  sourceFiles: ["src/App.tsx", "src/brainstormSlice.ts", "src/components/BrainstormSessionProvider.tsx", "src/components/PromptConstructor.tsx", "src/components/BrainstormChat.tsx", "src/components/GlobalBrainstormVoice.tsx", "server/src/GptApi.ts"],
+  understanding: "userSnapshot is the bridge that gives Brainstorm eyes on the current app state. App.tsx continuously collects current route, pageName, device type, loggedUserName, UI state, app prompt settings, last action, and recent actions. brainstormSlice stores the snapshot and recent user actions. BrainstormSessionProvider, PromptConstructor, and backend Brainstorm routes pass the current snapshot into Brainstorm calls. Only the current snapshot is sent when Brainstorm is used; the system can keep collecting recent actions continuously, but the prompt should use the latest snapshot at request time. Logs such as [Brainstorm userSnapshot] typed request or visible request show what was sent. Snapshot helps RAG match knowledge chunks to current state: /kickit + Stories retrieves story chunks; Update with AI retrieves EditStory; /feeds + Heart/Like retrieves feed/social; /pages + Followers retrieves profile/social.",
+  pipelineStages: [
+    {
+      id: "collect_snapshot",
+      name: "Collect snapshot",
+      routeMatches: [
+        "/MagicMirror",
+        "/images",
+        "/kickit",
+        "/clikit",
+        "/feeds",
+        "/pages"
+      ],
+      pageNames: [
+        "Home",
+        "Shorts",
+        "Stories",
+        "Feeds",
+        "Profile"
+      ],
+      controlIds: [
+        "global_action_listener"
+      ],
+      userGoal: "Let Brainstorm know where the user is and what they just did.",
+      systemResult: "App patches userSnapshot and records last/recent actions."
+    },
+    {
+      id: "send_snapshot_to_brainstorm",
+      name: "Send snapshot to Brainstorm",
+      routeMatches: [
+        "/MagicMirror",
+        "/images",
+        "/kickit",
+        "/clikit",
+        "/feeds",
+        "/pages"
+      ],
+      pageNames: [
+        "Home",
+        "Shorts",
+        "Stories",
+        "Feeds",
+        "Profile"
+      ],
+      controlIds: [
+        "brainstorm",
+        "global_voice_circle"
+      ],
+      userGoal: "Ask the assistant with app awareness.",
+      systemResult: "Brainstorm request includes the current userSnapshot."
+    },
+    {
+      id: "rag_match_context",
+      name: "RAG match context",
+      routeMatches: [
+        "/MagicMirror",
+        "/images",
+        "/kickit",
+        "/clikit",
+        "/feeds",
+        "/pages"
+      ],
+      pageNames: [
+        "Home",
+        "Shorts",
+        "Stories",
+        "Feeds",
+        "Profile"
+      ],
+      controlIds: [
+        "rag_retrieval"
+      ],
+      userGoal: "Retrieve relevant app knowledge.",
+      systemResult: "RAG can match route/page/action to the correct knowledge chunk."
+    }
+  ],
+  uiControls: [
+    {
+      id: "brainstorm",
+      visibleLabel: "BrainStorm",
+      controlType: "button/chat",
+      routeMatches: [
+        "/MagicMirror",
+        "/images",
+        "/kickit",
+        "/clikit"
+      ],
+      pageNames: [
+        "Home",
+        "Shorts",
+        "Stories",
+        "Games"
+      ],
+      sourceFile: "src/components/PromptConstructor.tsx",
+      userIntent: "Ask the assistant while inside creation UI.",
+      systemAction: "Sends typed request with userSnapshot to shared Brainstorm handler.",
+      resultingState: "Brainstorm answers with awareness of route/page/prompt/actions."
+    },
+    {
+      id: "global_voice_circle",
+      visibleLabel: "Live Assistant circle",
+      controlType: "floating voice button",
+      routeMatches: [
+        "/MagicMirror",
+        "/images",
+        "/kickit",
+        "/clikit",
+        "/feeds",
+        "/pages"
+      ],
+      pageNames: [
+        "Home",
+        "Shorts",
+        "Stories",
+        "Feeds",
+        "Profile"
+      ],
+      sourceFile: "src/components/GlobalBrainstormVoice.tsx",
+      userIntent: "Ask voice assistant from anywhere.",
+      systemAction: "Uses the shared BrainstormSessionProvider voice brain and current userSnapshot.",
+      resultingState: "Voice answer can reference the current app state."
+    },
+    {
+      id: "global_action_listener",
+      visibleLabel: "tracked user action",
+      controlType: "global event capture",
+      routeMatches: [
+        "/MagicMirror",
+        "/images",
+        "/kickit",
+        "/clikit",
+        "/feeds",
+        "/pages"
+      ],
+      pageNames: [
+        "Home",
+        "Shorts",
+        "Stories",
+        "Feeds",
+        "Profile"
+      ],
+      sourceFile: "src/App.tsx",
+      userIntent: "Any click/text/textarea/action contributes app context.",
+      systemAction: "Records action type, label, tagName, route, timestamp into brainstormSlice.",
+      resultingState: "recentActions and lastAction describe what the user was doing."
+    }
+  ],
+  snapshotExample: {
+    sourceLog: "[Brainstorm userSnapshot] typed request",
+    route: "/kickit",
+    pageName: "Stories",
+    device: "mobile",
+    loggedUserName: "Guest",
+    app: {
+      prompt: "",
+      promptLength: 0,
+      artstyle: "Auto",
+      model: "",
+      aspectRatio: 1
+    },
+    ui: {
+      isMenuOpen: false,
+      minimisePrompt: false,
+      isBrainstormChatOpen: true
+    },
+    lastAction: {
+      type: "text",
+      label: "input",
+      target: ":r8h:",
+      tagName: "input",
+      route: "/kickit"
+    },
+    recentActions: [
+      {
+        type: "button",
+        label: "BrainStorm",
+        tagName: "button",
+        route: "/kickit"
+      },
+      {
+        type: "textarea",
+        label: "Prompt Input",
+        tagName: "textarea",
+        route: "/kickit"
+      }
+    ]
+  },
+  sourceEvidence: [
+    {
+      sourceFile: "src/App.tsx",
+      featureNames: [
+        "patchUserSnapshot",
+        "recordUserAction",
+        "getSnapshotPageName"
+      ],
+      notes: "Collects and patches snapshot state globally."
+    },
+    {
+      sourceFile: "src/brainstormSlice.ts",
+      featureNames: [
+        "userSnapshot",
+        "recordUserAction",
+        "patchUserSnapshot"
+      ],
+      notes: "Redux state for snapshot/action history."
+    },
+    {
+      sourceFile: "src/components/BrainstormSessionProvider.tsx",
+      featureNames: [
+        "shared Brainstorm session",
+        "voice brain handler"
+      ],
+      notes: "Shared chat/voice brain receives snapshot context."
+    },
+    {
+      sourceFile: "server/src/GptApi.ts",
+      featureNames: [
+        "GptBrainstorm",
+        "userSnapshot used"
+      ],
+      notes: "Backend accepts and logs userSnapshot for Brainstorm."
+    }
+  ],
+  extra: {
+    assistantUse: "Use this chunk when the assistant needs to interpret snapshot logs, choose the right RAG chunk, or explain what current app state means."
+  },
+}

@@ -1,0 +1,207 @@
+﻿[RAG userSnapshotKnowledge] clikb_backend_route_map_for_app_sections Object {
+  topic: "Backend route map for ClikB app sections",
+  metadata: {
+    docId: "clikb_backend_route_map_for_app_sections",
+    sourceType: "clikb-base-rag",
+    sourceName: "11_backend_route_map_for_app_sections.rag.txt",
+    version: 1,
+    vectorIdPrefix: "clikb_backend_route_map_for_app_sections::chunk",
+    chunkIdPattern: "clikb_backend_route_map_for_app_sections::chunk-0001",
+    deleteFilter: {
+      docId: "clikb_backend_route_map_for_app_sections"
+    },
+    searchKeys: ["clikb_backend_route_map_for_app_sections", "11_backend_route_map_for_app_sections.rag.txt", "Backend route map for ClikB app sections"]
+  },
+  routeMatches: ["/MagicMirror", "/images", "/kickit", "/clikit", "/feeds", "/pages"],
+  pageNames: ["Home", "Shorts", "Stories", "Games", "Feeds", "Profile", "EditStory", "Storybook"],
+  featureNames: ["backend route map", "creation routes", "AI edit routes", "feed routes", "profile routes", "social routes", "image model routes", "registered routes", "GptVisualize", "GptMeme", "GptInt", "GptPlan", "GptExtractCasting", "GptGenerateCastingPrompts", "EditGeneratedVisualTextOnly", "GptRecreate", "image generation endpoints", "reference image generation", "Nano Banana", "frontend calls to planning/agent/image routes", "frontend calls to AI edit/media update routes", "frontend calls to feed/profile fetch routes", "Planning routes", "Agent/reference routes", "Feed/profile/social routes", "Backend route awareness", "Image model routes"],
+  sourceFiles: ["server/src/server.ts", "server/src/GptApi.ts", "server/src/fluxSchnellRoute.ts", "src/PromptInput.tsx", "src/EditStory.tsx", "src/Storybook.tsx", "src/FeedsGate.tsx", "src/ProfileInfo.tsx"],
+  understanding: "ClikB frontend sections are tied to backend routes. Creation planning uses /startStory for Stories/Cinema, /startMemes for Shorts/meme-like visual scenarios, /startInteractions for Games/Interactions, and /startPlan for structured scene planning. Agentic character/environment reference creation uses /extractCasting and /generateCastingPrompts. EditStory AI edits use /GptRemake, /GptRemakeSafe, /GptRemakeText, and /EditGeneratedVisualTextOnly. Saved media updates use /UpdatePostAIImage, /UpdatePostAIVideo, and /UpdatePostBShotTruth. Publishing/saving uses /PostStory and related upload routes. Feed viewing uses /getFeed, /getFeedMore, /getFeedStory, /getFeedMoreStory, /getFeedsclik, /getFeedClikmore, /getFeedsFeeds, /getFeedsMoreFeeds, /getProfile, and /getProfileMore. Social/profile actions use /addlikes, /likesx, /fanList, /fanpeople, /fanStatus, /profileInfo, /UpdateProfilePic, and /UpdateBillboardPic. Image generation routes live in the media/image route layer and include model-specific endpoints for Flux, Imagen, Nano Banana/Bannana, Minimax, GPT Image, and related models.",
+  pipelineStages: [
+    {
+      id: "planning_routes",
+      name: "Planning routes",
+      routeMatches: [
+        "/images",
+        "/kickit",
+        "/clikit"
+      ],
+      pageNames: [
+        "Shorts",
+        "Stories",
+        "Games"
+      ],
+      controlIds: [
+        "prompt_input"
+      ],
+      userGoal: "Turn idea into structured plan.",
+      systemResult: "/startMemes, /startStory, /startInteractions, and /startPlan produce keyPoints/plan."
+    },
+    {
+      id: "agent_routes",
+      name: "Agent/reference routes",
+      routeMatches: [
+        "/images",
+        "/kickit"
+      ],
+      pageNames: [
+        "Shorts",
+        "Stories"
+      ],
+      controlIds: [
+        "create_characters"
+      ],
+      userGoal: "Create consistent references.",
+      systemResult: "/extractCasting and /generateCastingPrompts support reference image generation."
+    },
+    {
+      id: "edit_routes",
+      name: "AI edit routes",
+      routeMatches: [
+        "/images",
+        "/kickit",
+        "/clikit"
+      ],
+      pageNames: [
+        "EditStory"
+      ],
+      controlIds: [
+        "update_with_ai",
+        "update_scene_with_ai"
+      ],
+      userGoal: "Change generated prompts/media.",
+      systemResult: "/GptRemake, /GptRemakeSafe, /GptRemakeText, /EditGeneratedVisualTextOnly, /UpdatePostAIImage, and /UpdatePostAIVideo support edits."
+    },
+    {
+      id: "social_routes",
+      name: "Feed/profile/social routes",
+      routeMatches: [
+        "/feeds",
+        "/pages"
+      ],
+      pageNames: [
+        "Feeds",
+        "Profile"
+      ],
+      controlIds: [
+        "feed_card",
+        "like_button",
+        "followers"
+      ],
+      userGoal: "Browse and interact socially.",
+      systemResult: "Feed/profile/social routes load posts, likes, followers, profile info, and follow status."
+    }
+  ],
+  uiControls: [
+    {
+      id: "route_awareness",
+      visibleLabel: "Backend route awareness",
+      controlType: "RAG knowledge",
+      routeMatches: [
+        "/images",
+        "/kickit",
+        "/clikit",
+        "/feeds",
+        "/pages"
+      ],
+      pageNames: [
+        "Shorts",
+        "Stories",
+        "Games",
+        "Feeds",
+        "Profile"
+      ],
+      sourceFile: "server/src/server.ts",
+      userIntent: "Understand which backend powers the current UI section.",
+      systemAction: "Maps UI labels and app routes to backend endpoints.",
+      resultingState: "Assistant can explain the system accurately without confusing UI labels with route names."
+    },
+    {
+      id: "image_model_routes",
+      visibleLabel: "Image model routes",
+      controlType: "backend model endpoint group",
+      routeMatches: [
+        "/images",
+        "/kickit",
+        "/clikit"
+      ],
+      pageNames: [
+        "Shorts",
+        "Stories",
+        "Games",
+        "EditStory"
+      ],
+      sourceFile: "server/src/fluxSchnellRoute.ts",
+      userIntent: "Generate or regenerate image/reference/action media.",
+      systemAction: "Uses selected model endpoint such as Flux/Imagen/Nano Banana/Bannana/Minimax/GPT Image style routes.",
+      resultingState: "Image media is generated for scenes, references, or edits."
+    }
+  ],
+  snapshotExample: {
+    sourceLog: "[Brainstorm userSnapshot] typed request",
+    route: "/feeds",
+    pageName: "Feeds",
+    lastAction: {
+      type: "button",
+      label: "Heart / Like",
+      tagName: "button",
+      route: "/feeds"
+    }
+  },
+  sourceEvidence: [
+    {
+      sourceFile: "server/src/server.ts",
+      featureNames: [
+        "registered routes"
+      ],
+      notes: "Main route registration file for app/backend map."
+    },
+    {
+      sourceFile: "server/src/GptApi.ts",
+      featureNames: [
+        "GptVisualize",
+        "GptMeme",
+        "GptInt",
+        "GptPlan",
+        "GptExtractCasting",
+        "GptGenerateCastingPrompts",
+        "EditGeneratedVisualTextOnly",
+        "GptRecreate"
+      ],
+      notes: "Main AI planning/editing backend logic."
+    },
+    {
+      sourceFile: "server/src/fluxSchnellRoute.ts",
+      featureNames: [
+        "image generation endpoints",
+        "reference image generation",
+        "Nano Banana"
+      ],
+      notes: "Media/image model endpoint layer."
+    },
+    {
+      sourceFile: "src/PromptInput.tsx",
+      featureNames: [
+        "frontend calls to planning/agent/image routes"
+      ],
+      notes: "Frontend caller for planning and reference generation."
+    },
+    {
+      sourceFile: "src/EditStory.tsx",
+      featureNames: [
+        "frontend calls to AI edit/media update routes"
+      ],
+      notes: "Frontend caller for edit and media update routes."
+    },
+    {
+      sourceFile: "src/FeedsGate.tsx",
+      featureNames: [
+        "frontend calls to feed/profile fetch routes"
+      ],
+      notes: "Frontend caller for feed pagination/data routes."
+    }
+  ],
+  extra: {
+    assistantUse: "Use this chunk when the user asks what backend route powers a feature, or when a retrieved UI chunk needs route-level grounding."
+  },
+}

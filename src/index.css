@@ -1,5 +1,5 @@
-:root {
-  /* ─────────  OLD  ───────── */
+﻿:root {
+  /* â”€â”€â”€â”€â”€â”€â”€â”€â”€  OLD  â”€â”€â”€â”€â”€â”€â”€â”€â”€ */
   font-family: Inter, system-ui, Avenir, Helvetica, Arial, sans-serif;
   line-height: 1.5;
   font-family: Inter, system-ui, Avenir, Helvetica, Arial, sans-serif;
@@ -14,6 +14,10 @@
   text-rendering: optimizeLegibility;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+
+  caret-color: transparent !important;
+  /* kill the dotted/dashed focus outline if you wish */
+  outline: none !important;
 }
 
 a {
@@ -66,3 +70,36 @@ button:focus-visible {
     background-color: #f9f9f9;
   }
 }
+
+/* --------------------------------------------------------------------
+   Hide the blinking caret (and focus outline) on any focused contenteditable  <div>
+   -------------------------------------------------------------------- */
+div:focus {
+  caret-color: transparent !important;
+  outline: none;
+}
+
+/* kill all carets on focused elements */
+*:focus {
+  caret-color: transparent !important;
+  outline: none !important; /* remove focus ring if you also want that gone */
+}
+
+html :focus,
+html [contenteditable]:focus,
+html [tabindex]:focus {
+  /* hide any insertion caret */
+  caret-color: transparent !important;
+  /* kill the dotted/dashed focus outline if you wish */
+  outline: none !important;
+}
+
+/* Hide scrollbar for sleek horizontal scrolling */
+.hide-scrollbar::-webkit-scrollbar {
+  display: none;
+}
+.hide-scrollbar {
+  -ms-overflow-style: none;  /* IE and Edge */
+  scrollbar-width: none;  /* Firefox */
+}
+@keyframes clikSpin { 100% { transform: rotate(360deg); } }

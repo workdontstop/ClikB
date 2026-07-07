@@ -1,4 +1,4 @@
-import React, { useState, useCallback, useEffect, FC } from "react";
+﻿import React, { useState, useCallback, useEffect, FC } from "react";
 import PromptInput from "./PromptInput";
 import PingLoader from "./ping";
 import Feedgate from "./FeedsGate";
@@ -7,7 +7,9 @@ import SearchIcon from '@mui/icons-material/Search';
 import { useSelector } from "react-redux";
 import { RootState } from "./store"; // adjust the import to your store location
 import Thumbnail from "./Thumbnail";
+import TogglePromptButton from './TogglePromptButton';
 
+import axios from "axios"; // Import Axios
 import Slide from "@mui/material/Slide";
 
 import CameraEnhanceIcon from '@mui/icons-material/CameraEnhance';
@@ -73,20 +75,37 @@ const Kickit: FC<any> = ({
     setMenuOpenb,
     allowUploadText,
     setallowUploadText,
-    setHideBottom
+    setHideBottom,
+    GeneratedImage,
+    setGeneratedImage,
+    showEmotions,
+    setLikesPostid,
+    setLikes,
+    setShowEmotions,
+
+    setsearchDataNav,
+    setMyPageIdNav,
+    setfeedLastIdNav,
+    setfeedScrollPosNav,
+    instantCall,
+    setinstantCall
 
 
 
 }) => {
 
+    const CLIK_URL = import.meta.env.VITE_CLIK_URL;
 
     const darkModeReducer = useSelector((state: RootState) => state.settings.darkMode);
 
     const location = useLocation();
 
     const [IsMobileBackActive, setIsMobileBackActive] = useState(false);
+    const [minimiseProfile, setminimiseProfile] = useState(false);
 
-    const { routeScrollPos, routelastId, userId } = location.state || {};
+    const [stopFeeds, setstopFeeds] = useState(false);
+
+    const { routeScrollPos, routelastId, userId, upload } = location.state || {};
     // Now these will be `undefined` if no state was passed
 
     console.log("routeScrollPos:", routeScrollPos);
@@ -95,12 +114,25 @@ const Kickit: FC<any> = ({
 
 
 
+
+
+
     useEffect(() => {
+
         setcallFeeds(true);
+
         setHideBottom(false);
+
     }, [location.pathname]);
 
 
+    useEffect(() => {
+        if (upload) {
+            setstopFeeds(true);
+        } else {
+            setstopFeeds(false);
+        }
+    }, [location.pathname, upload]);
 
 
 
@@ -118,106 +150,29 @@ const Kickit: FC<any> = ({
 
     const [Zoom1x, setZoom1x] = useState(false);
 
+
+
     return (
         <>
 
-            {/* ───────── overlay bar ───────── */}
-            {minimisePrompt && (
-                <Box
+            {/* â”€â”€â”€â”€â”€â”€â”€â”€â”€ overlay bar â”€â”€â”€â”€â”€â”€â”€â”€â”€ */}
+            <TogglePromptButton
+                LastId={LastId}
+                feedContainerRef={feedContainerRef}
+                isFullscreen={isFullscreen}
+                textActive={false}
+                setMenuOpenb={setMenuOpenb}
+                setIsMenuOpen={setIsMenuOpen}
+                MenuOpenb={MenuOpenb}
+                type={2}
+                minimisePrompt={minimisePrompt}
+                setminimisePrompt={setminimisePrompt}
 
-                    onMouseEnter={() => setZoom1x(true)}
-                    onMouseOver={() => setZoom1x(true)}
-                    onMouseLeave={() => setZoom1x(false)}
-
-                    onTouchStart={() => setZoom1x(true)}
-                    onTouchEnd={() => setZoom1x(false)}
-
-                    onClick={() => {
-
-                        setZoom1x(true);
-                        setTimeout(() => setZoom1x(false), 300);
-
-                    }}
-
-                    sx={{
-                        height: "0vh",
-                        position: "fixed",
-                        top: matchMobile ? "6.5vh" : isMenuOpen ? '6vh' : "8.5vh",
-                        left: matchMobile
-                            ? allowUploadText ? "33vw" : "82vw"
-                            : isMenuOpen
-                                ? "21.8vw"
-                                : "3vw",
-                        width: matchMobile ? "100%" : "100%",
-                        display: "flex",
-                        alignItems: "center",
-                        zIndex: 1000,
-                    }}
-                >
-                    {/* unified icon + label button */}
-                    <Box
-                        className={`toggle-image ${Zoom1x ? "bounce" : ""}`}
-                        onClick={() => setminimisePrompt(false)}
-                        sx={{
-
-                            alignItems: "center",
-                            gap: allowUploadText ? 1 : 0,          // keep icon centred when collapsed
-                            width: allowUploadText ? "auto" : 55,  // pill width → circle width
-                            height: 55,
-                            px: allowUploadText ? 1.6 : 0,         // same padding you used on the label
-                            py: 0.4,
-                            borderRadius: allowUploadText ? 1 : "50%",
-                            bgcolor: darkModeReducer
-                                ? "rgba(0,0,0,0.65)"
-                                : "rgb(250,250,250)",
-                            backdropFilter: "blur(4px)",
-                            boxShadow: 3,
-                            opacity: 0.7,
-
-                            cursor: "pointer",
-                            "&:hover": {
-                                bgcolor: darkModeReducer
-                                    ? "rgba(100,100,100,0.3)"
-                                    : "rgba(250,250,250,0.3)",
-                            },
-                            display: matchMobile && isMenuOpen ? "none" : "inline-flex",
-                            transition: "width 250ms ease, border-radius 250ms ease",
-                        }}
-                    >
-                        {/* camera icon */}
-                        <CameraEnhanceIcon
-                            sx={{
-                                fontSize: matchMobile ? "1.8rem" : "1.7rem",
-                                color: darkModeReducer ? "#fff" : "#000",
-                                textAlign: 'center',
-                                margin: 'auto',
-                            }}
-                        />
-
-                        {/* sliding label — collapses to 0 px width */}
-                        <Collapse
-                            orientation="horizontal"
-                            in={allowUploadText}
-                            timeout={{ enter: 300, exit: 250 }}
-                            unmountOnExit
-                        >
-                            <Box
-                                sx={{
-                                    fontSize: matchMobile ? 12 : 14,
-                                    fontWeight: 600,
-                                    color: darkModeReducer ? "#fff" : "#000",
-                                    whiteSpace: "nowrap",
-                                    userSelect: "none",
-                                }}
-                            >
-                                Create Story
-                            </Box>
-                        </Collapse>
-                    </Box>
-                </Box>
-            )}
-
-
+                matchMobile={matchMobile}
+                allowUploadText={allowUploadText}
+                isMenuOpen={isMenuOpen}
+                darkModeReducer={darkModeReducer}
+            />
 
 
 
@@ -226,9 +181,15 @@ const Kickit: FC<any> = ({
 
                 {/* 1) Prompt Input */}
                 <PromptInput
+
+                    stopFeeds={stopFeeds}
+                    setstopFeeds={setstopFeeds}
+                    GeneratedImage={GeneratedImage}
+                    setGeneratedImage={setGeneratedImage}
                     setHideBottom={setHideBottom}
                     IsMobileBackActive={IsMobileBackActive}
                     setIsMobileBackActive={setIsMobileBackActive}
+
                     clikt={clikt}
                     setclikt={setclikt}
 
@@ -249,6 +210,8 @@ const Kickit: FC<any> = ({
                     setcallFeeds={setcallFeeds}
                     setAllowPing={setAllowPing}
                     AllowPing={AllowPing}
+                    instantCall={instantCall}
+                    setinstantCall={setinstantCall}
                 />
 
             </Box >
@@ -268,7 +231,29 @@ const Kickit: FC<any> = ({
 
 
             {/* 3) Feedgate */}
+
+            {stopFeeds ? null :
+                null
+
+            }
+
+
             <Feedgate
+
+                setsearchDataNav={setsearchDataNav}
+                setMyPageIdNav={setMyPageIdNav}
+                setfeedLastIdNav={setfeedLastIdNav}
+                setfeedScrollPosNav={setfeedScrollPosNav}
+
+                setShowEmotions={setShowEmotions}
+                setLikesPostid={setLikesPostid}
+                setLikes={setLikes}
+
+                showEmotions={showEmotions}
+                setminimiseProfile={setminimiseProfile}
+                minimiseProfile={minimiseProfile}
+                searchData={''}
+                vertical={true}
                 minimisePrompt={minimisePrompt}
                 MenuOpenb={MenuOpenb}
                 setMenuOpenb={setMenuOpenb}
@@ -290,8 +275,6 @@ const Kickit: FC<any> = ({
 
 
 
-
-
         </>
     );
 };
@@ -302,5 +285,3 @@ const Kickit: FC<any> = ({
 
 
 export default Kickit;
-
-

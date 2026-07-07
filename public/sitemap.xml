@@ -1,0 +1,60 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+
+  <!-- Homepage: Contains all content and the main search bar -->
+  <url>
+    <loc>https://www.clikB.com/</loc>
+    <changefreq>daily</changefreq>
+    <priority>1.0</priority>
+  </url>
+
+  <!-- Quick Mode: AI image slider for agentic content generation -->
+  <url>
+    <loc>https://www.clikB.com/MagicMirror</loc>
+    <changefreq>daily</changefreq>
+    <priority>0.9</priority>
+  </url>
+
+  <!-- Interactions: AI games creation platform -->
+  <url>
+    <loc>https://www.clikB.com/clikit</loc>
+    <changefreq>daily</changefreq>
+    <priority>0.8</priority>
+  </url>
+
+  <!-- Creates/Memes: AI generated TikTok-style shorts -->
+  <url>
+    <loc>https://www.clikB.com/images</loc>
+    <changefreq>daily</changefreq>
+    <priority>0.8</priority>
+  </url>
+
+  <!-- Stories: AI cinematic short films -->
+  <url>
+    <loc>https://www.clikB.com/kickit</loc>
+    <changefreq>daily</changefreq>
+    <priority>0.8</priority>
+  </url>
+
+  <!-- My Page: User profile for this AI social media app (similar to Sora) -->
+  <url>
+    <loc>https://www.clikB.com/pages</loc>
+    <changefreq>weekly</changefreq>
+    <priority>0.7</priority>
+  </url>
+
+  <!-- All Feeds: All modes and content streams combined into one feed -->
+  <url>
+    <loc>https://www.clikB.com/feeds</loc>
+    <changefreq>hourly</changefreq>
+    <priority>0.9</priority>
+  </url>
+
+  <!-- Settings: Application setup and user configuration -->
+  <url>
+    <loc>https://www.clikB.com/settings</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.5</priority>
+  </url>
+
+</urlset>

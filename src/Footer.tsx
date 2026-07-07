@@ -1,92 +1,143 @@
-// src/components/Footer.jsx
-import React from 'react';
+﻿// src/components/Footer.jsx
+import React, { useEffect, useState } from 'react';
 import { useSelector } from 'react-redux';
 import { RootState } from './store';
 import { matchMobile } from './DetectDevice';
 
 import ClikbaeIcon from './s.png'; // your transparent PNG icon
 
+import ClikbaeIcon2 from './s2.png';
+// import DownloadIcon from '@mui/icons-material/Download';
+import RocketLaunchIcon from '@mui/icons-material/RocketLaunch';
+import { usePWA } from './PWAContext';
 const Footer: React.FC<any> = ({
 
-    x
 }) => {
     const darkMode = useSelector((state: RootState) => state.settings.darkMode);
-    const isMobile = matchMobile;
+
+    const [darkModex, setdarkModex] = useState(false);
+    useEffect(() => {
+
+        setdarkModex(darkMode)
+    }, [darkMode])
+    const isMobile =
+
+        matchMobile;
 
     // Responsive sizing
     const iconSize = isMobile ? '2rem' : '3rem';
     const textSize = isMobile ? '1.5rem' : '1.4rem';
 
+    const isLoggedIn = useSelector((state: RootState) => state.settings.login);
+
+    const { installPwa, isInstallable, isPwaMode } = usePWA();
+    const [showLaunch, setShowLaunch] = useState(true);
+
+    useEffect(() => {
+        // Show launch button only for first 1 minute AND if not in PWA mode
+        if (isPwaMode) {
+            setShowLaunch(false);
+            return;
+        }
+
+        const timer = setTimeout(() => {
+            setShowLaunch(false);
+        }, 4000); // 4 seconds
+
+        return () => clearTimeout(timer);
+    }, [isPwaMode]); // re-run if pwa mode changes (unlikely but safe)
+
+    const handleLaunchClick = async (e: any) => {
+        if (isPwaMode) return; // Do nothing if already in PWA
+
+        e.preventDefault();
+        await installPwa();
+        // optionally hide after clicking? User said "launch or download... then go to BottomMenu"
+        // Let's keep it visible or hide it? "if user clik... then got to BottomMenu look for ClikB icon"
+        // implies we should probably stop showing it here if they installed?
+        // But for now, just trigger install.
+        setShowLaunch(false);
+    };
+
     return (
         <footer
             style={{
-                display: x ? 'flex' : 'none',
+                display: isLoggedIn ? 'flex' : 'flex',
                 justifyContent: 'center',
                 alignItems: 'center',
                 textAlign: 'center',
                 padding: '1rem 1rem 1.5rem',    // extra bottom padding for breathing room
                 marginTop: 'auto',
                 fontFamily: 'Inter, sans-serif', // match global font
-                opacity: darkMode ? '0.8' : '0.8'
+                opacity: darkModex ? '0.5' : '0.8'
             }}
         >
-            <a
-                href="https://www.clikb.com/privacy-policy"
-                style={{
-                    display: 'inline-flex',
-                    alignItems: 'center',
-                    textDecoration: 'none',
-                    color: darkMode ? '#eee' : '#111',
-                }}
-            >
-                {/* Icon */}
-                <img
-                    src={ClikbaeIcon}
-                    alt="ClikBae icon"
+            {showLaunch ? (
+                <a
+                    href="#"
+                    onClick={handleLaunchClick}
                     style={{
-                        width: iconSize,
-                        height: iconSize,
-                        marginRight: '0.5rem',
+                        display: 'inline-flex',
+                        alignItems: 'center',
+                        textDecoration: 'none',
+                        color: darkModex ? '#000' : '#fff', // Contrast text
+                        opacity: 1,
+                        background: darkModex ? '#E8BAFA' : '#0099cc', // App colors
+                        padding: '6px 16px',
+                        borderRadius: '20px',
+                        transition: 'all 0.3s ease',
+                        boxShadow: '0 4px 15px rgba(0,0,0,0.2)'
                     }}
-                />
+                >
+                    <span style={{ fontSize: textSize, fontWeight: 800 }}>
+                        Launch App
+                    </span>
+                    <RocketLaunchIcon sx={{ fontSize: '1.2rem', marginLeft: '0.5rem', color: darkModex ? "#000" : "#fff" }} />
+                </a>
+            ) : (
+                <div
+                    onClick={handleLaunchClick} // Brand also launches app
+                    style={{
+                        display: 'inline-flex',
+                        alignItems: 'center',
+                        textDecoration: 'none',
+                        color: darkModex ? '#000' : '#fff', // Contrast text
+                        opacity: 1,
+                        background: darkModex ? '#E8BAFA' : '#0099cc', // App colors
+                        padding: '6px 16px',
+                        borderRadius: '20px',
+                        transition: 'all 0.3s ease',
+                        boxShadow: '0 4px 15px rgba(0,0,0,0.2)',
+                        cursor: 'pointer'
+                    }}
+                >
+                    {/* Icon on far left */}
+                    <img
+                        src={darkModex ? ClikbaeIcon2 : ClikbaeIcon}
+                        alt="ClikBae icon"
+                        style={{
+                            width: iconSize,
+                            height: iconSize,
+                            marginRight: '0.5rem',
+                        }}
+                    />
 
-                {/* App Name + ™ */}
-                <span style={{ display: 'flex', alignItems: 'flex-start' }}>
-                    <span
-                        style={{
-                            fontSize: textSize,
-                            fontWeight: 800,
-                            lineHeight: 1,
-                        }}
-                    >
-                        Clik
+                    {/* App Name + â„¢ */}
+                    <span style={{ display: 'flex', alignItems: 'baseline' }}>
+                        <span
+                            style={{
+                                fontSize: textSize,
+                                fontWeight: 800,
+                                lineHeight: 1,
+                            }}
+                        >
+                            ClikB
+                        </span>
+
                     </span>
-                    <span
-                        style={{
-                            fontSize: textSize,
-                            fontWeight: 800,
-                            lineHeight: 1,
-                            ///color: '#FF4B9D',    // pink accent
-                            opacity: 0.8,
-                            marginLeft: '0.1rem',
-                        }}
-                    >
-                        B
-                    </span>
-                    <sup
-                        style={{
-                            position: 'relative',
-                            top: '2px',            // nudge ™ into perfect vertical alignment
-                            fontSize: '0.75rem',   // small TM
-                            lineHeight: 1,
-                            marginLeft: '0.2rem',
-                        }}
-                    >
-                        ™
-                    </sup>
-                </span>
-            </a>
-        </footer>
+                </div>
+            )}
+        </footer >
     );
 };
 

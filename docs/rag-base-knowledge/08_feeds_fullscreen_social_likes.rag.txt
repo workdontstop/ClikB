@@ -1,0 +1,227 @@
+﻿[RAG userSnapshotKnowledge] clikb_feeds_fullscreen_social_likes Object {
+  topic: "Feeds, fullscreen story viewing, likes, and social overlays",
+  metadata: {
+    docId: "clikb_feeds_fullscreen_social_likes",
+    sourceType: "clikb-base-rag",
+    sourceName: "08_feeds_fullscreen_social_likes.rag.txt",
+    version: 1,
+    vectorIdPrefix: "clikb_feeds_fullscreen_social_likes::chunk",
+    chunkIdPattern: "clikb_feeds_fullscreen_social_likes::chunk-0001",
+    deleteFilter: {
+      docId: "clikb_feeds_fullscreen_social_likes"
+    },
+    searchKeys: ["clikb_feeds_fullscreen_social_likes", "08_feeds_fullscreen_social_likes.rag.txt", "Feeds, fullscreen story viewing, likes, and social overlays"]
+  },
+  routeMatches: ["/feeds", "/Feeds", "/pages"],
+  pageNames: ["Feeds", "Profile", "FullScreenStories"],
+  featureNames: ["Feeds", "FeedsGate", "FeedLayout", "FeedLayoutHorizontal", "StoryAutoScroller", "FullScreenStories", "likes", "like count", "social overlay", "FollowPanel", "fetchFeeds", "fetchFeedsPagination", "likedArray", "likeCountArray", "horizontal feed", "addLike", "OpenLikes", "Favorite", "/getFeed", "/getFeedStory", "/getFeedsclik", "/getFeedsFeeds", "/getProfile", "/addlikes", "/likesx", "Open Feeds", "Fetch feed items", "Open fullscreen story player", "Social actions", "Feed card", "Fullscreen story", "Heart / Like", "Like count"],
+  sourceFiles: ["src/App.tsx", "src/Feeds.tsx", "src/FeedsGate.tsx", "src/FeedLayout.tsx", "src/FeedLayoutHorizontal.tsx", "src/FullScreenStories.tsx", "src/StoryAutoScroller.tsx", "src/EmotionsGate.tsx", "server/src/server.ts"],
+  understanding: "The Feeds section is the social viewing side of ClikB. App routes /feeds into Feeds, and Feeds mounts FeedsGate. FeedsGate fetches feed data by mode/type, handles pagination, tracks LastId, and initializes likedArray and likeCountArray from feed fields like EmoIn and lovely. FeedsGate can render vertical FeedLayout or horizontal FeedLayoutHorizontal. Both layouts render StoryAutoScroller feed previews and open FullScreenStories when a user taps/clicks a feed card. FullScreenStories is the fullscreen player for feed items: it renders one post per viewport, manages activeIndex, scroll snapping, video/story/audio/caption state, and social controls. The heart button calls /addlikes, toggles likedArray, and updates likeCountArray. The like count can open the likes/social overlay through setLikesPostid, setLikes, setShowEmotions, and route/feed context. Fullscreen also contains FollowPanel context for the post creator. Feeds is where finished/published creations are watched and socially interacted with, not where generation starts.",
+  pipelineStages: [
+    {
+      id: "open_feeds",
+      name: "Open Feeds",
+      routeMatches: [
+        "/feeds",
+        "/Feeds"
+      ],
+      pageNames: [
+        "Feeds"
+      ],
+      controlIds: [
+        "all_feeds_nav"
+      ],
+      userGoal: "Browse published creations.",
+      systemResult: "Feeds renders Feedgate and triggers feed loading."
+    },
+    {
+      id: "fetch_feed_items",
+      name: "Fetch feed items",
+      routeMatches: [
+        "/feeds",
+        "/Feeds",
+        "/pages"
+      ],
+      pageNames: [
+        "Feeds",
+        "Profile"
+      ],
+      controlIds: [
+        "feed_card"
+      ],
+      userGoal: "See posts for the selected feed/profile context.",
+      systemResult: "FeedsGate calls getFeed/getFeedStory/getFeedsclik/getFeedsFeeds/getProfile routes and stores feeds."
+    },
+    {
+      id: "open_fullscreen",
+      name: "Open fullscreen story player",
+      routeMatches: [
+        "/feeds",
+        "/pages"
+      ],
+      pageNames: [
+        "Feeds",
+        "Profile",
+        "FullScreenStories"
+      ],
+      controlIds: [
+        "feed_card",
+        "fullscreen_story"
+      ],
+      userGoal: "Watch a post in immersive feed mode.",
+      systemResult: "FeedLayout opens FullScreenStories with active index and feed context."
+    },
+    {
+      id: "social_actions",
+      name: "Social actions",
+      routeMatches: [
+        "/feeds",
+        "/pages"
+      ],
+      pageNames: [
+        "FullScreenStories"
+      ],
+      controlIds: [
+        "like_button",
+        "likes_count",
+        "follow_panel"
+      ],
+      userGoal: "Like posts, inspect likes, or follow creators.",
+      systemResult: "FullScreenStories updates like state/counts and opens social overlays/follow panels."
+    }
+  ],
+  uiControls: [
+    {
+      id: "feed_card",
+      visibleLabel: "Feed card",
+      controlType: "card/story preview",
+      routeMatches: [
+        "/feeds",
+        "/pages"
+      ],
+      pageNames: [
+        "Feeds",
+        "Profile"
+      ],
+      sourceFile: "src/FeedLayout.tsx",
+      userIntent: "Open a published creation.",
+      systemAction: "StoryAutoScroller preview calls handleOpenFullscreen.",
+      resultingState: "FullScreenStories opens for the selected item."
+    },
+    {
+      id: "fullscreen_story",
+      visibleLabel: "Fullscreen story",
+      controlType: "fullscreen player",
+      routeMatches: [
+        "/feeds",
+        "/pages"
+      ],
+      pageNames: [
+        "FullScreenStories"
+      ],
+      sourceFile: "src/FullScreenStories.tsx",
+      userIntent: "Watch a post full-screen.",
+      systemAction: "Renders full viewport feed item with video/story/caption/audio logic.",
+      resultingState: "User can watch and interact with post."
+    },
+    {
+      id: "like_button",
+      visibleLabel: "Heart / Like",
+      controlType: "button",
+      routeMatches: [
+        "/feeds",
+        "/pages"
+      ],
+      pageNames: [
+        "FullScreenStories"
+      ],
+      sourceFile: "src/FullScreenStories.tsx",
+      userIntent: "Like or unlike a post.",
+      systemAction: "Calls /addlikes and updates likedArray plus likeCountArray.",
+      resultingState: "Heart state and like count change."
+    },
+    {
+      id: "likes_count",
+      visibleLabel: "Like count",
+      controlType: "clickable count",
+      routeMatches: [
+        "/feeds",
+        "/pages"
+      ],
+      pageNames: [
+        "FullScreenStories"
+      ],
+      sourceFile: "src/FullScreenStories.tsx",
+      userIntent: "See who liked a post.",
+      systemAction: "Calls OpenLikes and sets social overlay state including post id, search, profile id, feed last id, and feed type.",
+      resultingState: "EmotionsGate/likes list context opens."
+    }
+  ],
+  snapshotExample: {
+    sourceLog: "[Brainstorm userSnapshot] typed request",
+    route: "/feeds",
+    pageName: "Feeds",
+    lastAction: {
+      type: "button",
+      label: "Heart / Like",
+      tagName: "button",
+      route: "/feeds"
+    }
+  },
+  sourceEvidence: [
+    {
+      sourceFile: "src/FeedsGate.tsx",
+      featureNames: [
+        "fetchFeeds",
+        "fetchFeedsPagination",
+        "likedArray",
+        "likeCountArray",
+        "FeedLayout",
+        "FeedLayoutHorizontal"
+      ],
+      notes: "Feed data fetching and layout selection."
+    },
+    {
+      sourceFile: "src/FeedLayout.tsx",
+      featureNames: [
+        "StoryAutoScroller",
+        "FullScreenStories"
+      ],
+      notes: "Vertical feed preview and fullscreen handoff."
+    },
+    {
+      sourceFile: "src/FeedLayoutHorizontal.tsx",
+      featureNames: [
+        "horizontal feed",
+        "FullScreenStories"
+      ],
+      notes: "Horizontal feed preview and fullscreen handoff."
+    },
+    {
+      sourceFile: "src/FullScreenStories.tsx",
+      featureNames: [
+        "addLike",
+        "OpenLikes",
+        "Favorite",
+        "FollowPanel"
+      ],
+      notes: "Fullscreen social interactions and media player."
+    },
+    {
+      sourceFile: "server/src/server.ts",
+      featureNames: [
+        "/getFeed",
+        "/getFeedStory",
+        "/getFeedsclik",
+        "/getFeedsFeeds",
+        "/getProfile",
+        "/addlikes",
+        "/likesx"
+      ],
+      notes: "Backend feed and social endpoints."
+    }
+  ],
+  extra: {
+    assistantUse: "Use this chunk when the user asks about feeds, watching posts, full-screen story mode, likes, like counts, or social overlays."
+  },
+}

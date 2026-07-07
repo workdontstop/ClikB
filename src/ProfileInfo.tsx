@@ -1,14 +1,33 @@
-// ProfileInfo.tsx
-import { useState, useEffect, useRef } from "react";
+﻿// ProfileInfo.tsx
+import { useState, useEffect, useRef, useCallback } from "react";
 import { useSelector } from "react-redux";
+
+import { useDispatch } from "react-redux";
+
 import { RootState } from "./store";
 import { useLocation } from "react-router-dom";
 import axios from "axios";
+import StarIcon from '@mui/icons-material/Star';
+import { Box, Typography, Stack, useTheme, Button } from "@mui/material";
+import FollowButton from "./FollowButton";
+import FollowersButton from "./FollowersButton";
+import StartFollowButton from "./FollowStartButton";
+import { useFanStatus } from "./useFanStatus";
+import FollowPanel from "./FollowPanel";
+
+
+
+import { useFanList } from "./FanListClient";
 
 // Import the newly created component
 import { CropImageModal } from "./CropImageModal";
 import { match } from "assert";
 import { matchMobile } from "./DetectDevice";
+
+
+import { setFollowersCount, setFollowingCount, incrementFollowingCount } from "./settingsSlice";
+
+//import FollowersAndFollowing from "./FollowersAndFollowing";
 
 // Helper to convert base64 to a File for uploading:
 function dataURLtoFile(dataUrl: string, fileName: string): File {
@@ -30,7 +49,6 @@ function dataURLtoFile(dataUrl: string, fileName: string): File {
 const ProfileInfo = ({
   loggedUser,
   isMenuOpen,
-  x,
   feeds,
   isCropOpen,
   setIsCropOpen,
@@ -39,7 +57,17 @@ const ProfileInfo = ({
   MenuOpenb,
   setMenuOpenb,
   userProfile,
-  setUserProfile
+  setUserProfile,
+  setShowThumb,
+  setShowEmotions,
+  setfollowType,
+  isFullscreen,
+  setIsFullscreen,
+  isFullscreen1,
+  isFullscreen2,
+  isFullscreen3
+
+
 }: any) => {
 
 
@@ -47,8 +75,8 @@ const ProfileInfo = ({
   const CLIK_URL = import.meta.env.VITE_CLIK_URL;
 
   const location = useLocation();
-  const { userId } = location.state || {};
 
+  const dispatch = useDispatch<any>();
   const [Zoom1x, setZoom1x] = useState(false);
   const [typeVal, settypeVal] = useState(0);
   const [userIdx, setuserIdx] = useState(0);
@@ -57,8 +85,82 @@ const ProfileInfo = ({
   const [tempImageUrl, setTempImageUrl] = useState<string | null>(null);
   // For controlling whether the crop modal is open
 
+  const followersReducer = useSelector((s: RootState) => s.settings.followersCount);
+  const followingReducer = useSelector((s: RootState) => s.settings.followingCount);
+
+  ///const { loading, error, followers, following, counts, refresh } =
+  const { followers, following, counts, refresh } =
+    useFanList({
+      id: loggedUser ? !userProfile.id || userProfile.id === 0 ? loggedUser.id :
+        userProfile.id : 0, CLIK_URL, limit: 50
+    });
 
 
+
+
+  //const { status, loading, error, refresh } = useFanStatus({
+  const { status } = useFanStatus({
+    userid: loggedUser ? loggedUser.id : 0,
+    favid: userProfile.id,
+    CLIK_URL,
+  });
+
+  const showList = useCallback(() => {
+    if (isFullscreen || isFullscreen1 || isFullscreen2 || isFullscreen3) {
+      /// window.history.back();
+      setShowEmotions(true);
+    } else {
+
+      setShowEmotions(true);
+    }
+
+
+
+
+
+
+  }, [isFullscreen, isFullscreen1, isFullscreen2, isFullscreen3])
+
+  const { routeScrollPos, routelastId, userId, upload } = location.state || {};
+
+  // hereâ€™s your path name:
+  const pathName = location.pathname;
+  // Now these will be `undefined` if no state was passed
+
+
+
+  const [connected, setConnected] = useState(false);
+
+  useEffect(() => {
+
+    setConnected(Boolean(status?.following)); // or: !!status?.following
+
+
+
+  }, [status])
+
+
+  useEffect(() => {
+
+    if (loggedUser) {
+
+      if (loggedUser.id === userProfile.id || userProfile.id === 0 || !userProfile.id) {
+
+        dispatch(setFollowersCount(counts.followers));
+        dispatch(setFollowingCount(counts.following));
+        // dispatch(incrementFollowingCount());          // +1
+        // or variable step:
+        // dispatch(incrementFollowingCount(delta));   // where delta is 1 or -1 if you add an unfollow version later
+      }
+
+
+
+
+    }
+
+
+
+  }, [counts, followers, following,])
   // Hidden file input ref
   const fileInputRef = useRef<HTMLInputElement>(null);
   const fileInputRef2 = useRef<HTMLInputElement>(null);
@@ -105,6 +207,8 @@ const ProfileInfo = ({
 
 
 
+
+
   // Called if user cancels cropping
   const handleCropCancel = () => {
     setIsCropOpen(false);
@@ -126,6 +230,7 @@ const ProfileInfo = ({
       const user = memberData.payload[0];
 
       setUserProfile({
+        id: user.id || 0,
         profilePic: user.profile_image || "",
         profilePicThumb: user.profile_image_thumb || "",
         billboard: user.billboard1 || "",
@@ -142,10 +247,12 @@ const ProfileInfo = ({
   // UseEffect to load profile data
   useEffect(() => {
     if (userId && loggedUser) {
-      setuserIdx(userId);
+
       if (userId === loggedUser.id) {
+        setuserIdx(loggedUser.id);
         // My own profile
         setUserProfile({
+          id: loggedUser.id || 0,
           profilePic: loggedUser.image || "",
           profilePicThumb: loggedUser.imageThumb || "",
           billboard: loggedUser.userbillboard1 || "",
@@ -156,8 +263,26 @@ const ProfileInfo = ({
         });
       } else {
         // Another user's profile
-        callGetuser(userId);
+        if (userId === 0) {
+          setuserIdx(loggedUser.id);
+
+          // If we do have a loggedUser but no userId, fallback:
+
+          callGetuser(loggedUser.id);
+
+        } else {
+          /// alert(pathName)
+          setuserIdx(userId);
+
+          // Another user's profile
+          callGetuser(userId);
+        }
+
       }
+
+
+
+
     } else {
       setuserIdx(0);
       // If we do have a loggedUser but no userId, fallback:
@@ -179,8 +304,8 @@ const ProfileInfo = ({
 
   const textShadowStylex = {
     textShadow: `
-        0px 0px 10px rgba(0, 0, 0, 0.9), 
-        0px 0px 20px rgba(0, 0, 0, 0.8), 
+        0px 0px 10px rgba(0, 0, 0, 0.9),
+        0px 0px 20px rgba(0, 0, 0, 0.8),
         0px 0px 30px rgba(0, 0, 0, 0.7)
       `,
     color: '#ffffff',
@@ -204,6 +329,30 @@ const ProfileInfo = ({
   }, [])
 
 
+
+  const [showbut, setshowbut] = useState(false);
+  const iconTimeoutRefax = useRef<NodeJS.Timeout | null>(null);
+
+  useEffect(() => {
+
+    setshowbut(loggedUser?.id === userId);
+
+
+
+    if (iconTimeoutRefax.current) {
+      clearTimeout(iconTimeoutRefax.current);
+    }
+
+    // Set a timeout to open the menu after 2 seconds
+    iconTimeoutRefax.current = setTimeout(() => {
+
+      setshowbut(false);
+    }, 5000)
+
+
+
+  }, [loggedUser, userId])
+
   return (
     <div className="profile-info" onClick={
 
@@ -219,45 +368,108 @@ const ProfileInfo = ({
         }
       }
 
-
     }>
 
-      {/* Banner Image */}
-      <img
+
+      {!isMenuOpen || matchMobile ?
 
 
-        onClick={
-
-          () => {
-
-
-            /// if (minimise) {
-
-
-
-            handleImageClick2();
-
+        <img
+          onClick={
+            () => {
+              /// if (minimise) {
+              handleImageClick2();
+            }
           }
+          src={userProfile.billboardThumb ? userProfile.billboardThumb : ""}
+          data-src={userProfile.billboard ? userProfile.billboard : ""}
+          alt={userProfile.username ? `${userProfile.username}'s banner` : "Banner"}
+          style={{
+            cursor: "pointer",
+            height: '',
+            objectFit: 'cover', // or "contain"
+            ///filter: "blur(4px)",
+            ///  display: minimise ? 'none' : 'block'
+          }}
+          className="profile-banner"
+          onLoad={(e: any) => {
+            const img = e.target;
+            img.src = img.getAttribute("data-src");
+          }}
+        />
+
+        : <Box sx={{ position: 'relative', display: 'inline-block' }}>
+          {/* Banner Image */}
+          <img
+            onClick={
+              () => {
+                /// if (minimise) {
+                handleImageClick2();
+              }
+            }
+            src={userProfile.billboardThumb ? userProfile.billboardThumb : ""}
+            data-src={userProfile.billboard ? userProfile.billboard : ""}
+            alt={userProfile.username ? `${userProfile.username}'s banner` : "Banner"}
+            style={{
+              cursor: "pointer",
+              width: '100%',
+              height: 'auto',
+              objectFit: 'scale-down', // or "contain"
+              ///filter: "blur(4px)",
+              ///  display: minimise ? 'none' : 'block'
+            }}
+            className="profile-banner"
+            onLoad={(e: any) => {
+              const img = e.target;
+              img.src = img.getAttribute("data-src");
+            }}
+          />
 
 
-        }
-        src={userProfile.billboardThumb ? userProfile.billboardThumb : ""}
-        data-src={userProfile.billboard ? userProfile.billboard : ""}
-        alt={userProfile.username ? `${userProfile.username}'s banner` : "Banner"}
-        style={{
-          cursor: "pointer",
-          height: '',
-          objectFit: 'cover', // or "contain"
-          ///filter: "blur(4px)",
-          ///  display: minimise ? 'none' : 'block'
-        }}
-        className="profile-banner"
-        onLoad={(e: any) => {
-          const img = e.target;
-          img.src = img.getAttribute("data-src");
-        }}
-      />
 
+
+          {showbut ?
+            <Button
+              variant="outlined"
+              size="medium"
+              sx={{
+                position: 'absolute',
+                top: '2vh',
+                margin: 'auto',
+                opacity: '0.9',
+                left: '0.7vw',
+                minWidth: 110,
+                borderColor: darkModeReducer ? '#F6BB56' : '#ff8a00',
+                color: '#FFFFFF',
+                textShadow: '0px 1px 3px rgba(0,0,0,0.96)',
+                '&:hover': {
+                  bgcolor: darkModeReducer ? '#F6BB56' : '#ff8a00',
+                  borderColor: darkModeReducer ? '#F6BB56' : '#ff8a00',
+                  color: '#000000',
+                  textShadow: 'none',
+                },
+                '&:active': {
+                  bgcolor: darkModeReducer ? '#F6BB56' : '#ff8a00',
+                  borderColor: darkModeReducer ? '#F6BB56' : '#ff8a00',
+                  color: '#000000',
+                  textShadow: 'none',
+                },
+              }}
+              onClick={() => {
+                setShowThumb(true);
+
+
+
+              }}
+              startIcon={<StarIcon style={{}} />}
+            >
+              Thumbnail Creator
+            </Button>
+
+            : null}
+
+        </Box>
+      }
 
       {/* Info Box */}
       <div className="profile-box" style={{
@@ -350,7 +562,7 @@ const ProfileInfo = ({
           />
         </div>
 
-        {/* Right: Username + Followers/Following */}
+        {/* Right: Username + Followers/Following Creator */}
         <div
           className="right-box"
           style={{
@@ -366,18 +578,24 @@ const ProfileInfo = ({
               {userProfile.username || ""}
             </p>
           </div>
-          <div className="right-inner bottom" style={{ display: 'flex' }}>
+          <div className="right-inner bottom" style={{ display: 'flex', opacity: 0.9 }}>
             <div className="followers">
-              <p style={textShadowStyle}>Followers</p>
-              <span style={textShadowStyle}>{userProfile.followers}</span>
+              <p style={textShadowStyle}>Posts</p>
+              <p style={textShadowStyle}>...</p>
             </div>
             <div className="following">
-              <p style={textShadowStyle}>Following</p>
-              <span style={textShadowStyle}>{userProfile.following}</span>
+              <p style={textShadowStyle}>Ranking</p>
+              <p style={textShadowStyle}>Hero</p>
+
+              {/*     <span style={textShadowStyle}>{userProfile.following}</span> */}
             </div>
           </div>
         </div>
+
+
+
       </div>
+
 
       {/* Possibly other user-specific content */}
       {
@@ -387,7 +605,7 @@ const ProfileInfo = ({
               transform: isMenuOpen ? "scale(1)" : "scale(0)",
               marginTop: "0vh",
               width: "100%",
-              display: x ? "none" : "none"
+              display: "none"
             }}
           >
             {/* Admin or special content */}
@@ -504,9 +722,9 @@ const ProfileInfo = ({
               margin-bottom: 10px;
             }
           }
-/* ─────────────────────────  MOBILE ≤ 480 px  ────────────────────────── */
+/* â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€  MOBILE â‰¤ 480 px  â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */
 @media (max-width: 480px) {
-  /* 1️⃣  keep banner as you already had */
+  /* 1ï¸âƒ£  keep banner as you already had */
   .profile-banner {
     height: 120px;
     border-radius: 2vw;
@@ -514,15 +732,15 @@ const ProfileInfo = ({
     padding: 4px;
   }
 
-  /* 2️⃣  main info row (pic | text)  */
+  /* 2ï¸âƒ£  main info row (pic | text)  */
   .profile-box {
-    flex-direction: row;      /* 🔄 horizontal instead of column */
+    flex-direction: row;      /* ðŸ”„ horizontal instead of column */
     align-items: center;
     justify-content: flex-start;
     padding: 6px 8px;
   }
 
-  /* 3️⃣  avatar left */
+  /* 3ï¸âƒ£  avatar left */
   .left-box {
     margin: 0;                /* remove bottom gap */
     margin-right: 12px;       /* little breathing room */
@@ -532,23 +750,23 @@ const ProfileInfo = ({
     height: 64px;
   }
 
-  /* 4️⃣  text block right */
+  /* 4ï¸âƒ£  text block right */
   .right-box {
-    align-items: center; 
+    align-items: center;
      /* left-align internal text */
     text-align: center;
   }
   .right-inner.top .username {
-     align-items: center; 
+     align-items: center;
      /* left-align internal text */
     text-align: center;
-  
+
     font-size: 1.05rem;
     max-width: 220px;         /* stop long names wrapping under pic */
   }
 
   .right-inner.bottom {
-  
+
     flex-direction: row;      /* already row but make sure */
     gap:2rem;
     margin-top: 2px;
@@ -567,6 +785,43 @@ const ProfileInfo = ({
           }
         `}
       </style>
+
+
+
+      <div style={{
+        display: 'flex',
+        gap: '4px',
+        padding: '2px',
+        width: matchMobile ? '98%' : isMenuOpen ? '100%' : '400px',
+        margin: '0 auto',
+        justifyContent: 'center',
+        opacity: 0.8,
+        paddingBottom: '3vh'
+      }}>
+
+        <FollowPanel
+          setShowEmotions={showList}
+          setfollowType={setfollowType}
+
+          typex={false}
+          type={0}
+          userProfile={userProfile.id}
+          loggedUser={loggedUser}
+          connected={connected}
+          setConnected={setConnected}
+          counts={counts}
+          followersReducer={followersReducer}
+          followingReducer={followingReducer}
+          refresh={refresh}
+          onFollowersClick={() => console.log("open followers list")}
+          onFollowToggle={(next) => console.log("follow ->", next)}
+        />
+
+
+      </div>
+
+
+
     </div >
   );
 };

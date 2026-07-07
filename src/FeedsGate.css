@@ -1,4 +1,4 @@
-.fade-enter {
+﻿.fade-enter {
   opacity: 0;
   transform: translateY(10px);
 }
@@ -16,4 +16,27 @@
   opacity: 0;
   transform: translateY(10px);
   transition: opacity 300ms, transform 300ms;
+}
+
+/* --------------------------------------------------------------------
+   Hide the blinking caret (and focus outline) on any focused contenteditable bounce  <div>
+   -------------------------------------------------------------------- */
+div:focus {
+  caret-color: transparent !important;
+  outline: none;
+}
+
+/* kill all carets on focused elements */
+*:focus {
+  caret-color: transparent !important;
+  outline: none !important; /* remove focus ring if you also want that gone */
+}
+
+html :focus,
+html [contenteditable]:focus,
+html [tabindex]:focus {
+  /* hide any insertion caret */
+  caret-color: transparent !important;
+  /* kill the dotted/dashed focus outline if you wish */
+  outline: none !important;
 }

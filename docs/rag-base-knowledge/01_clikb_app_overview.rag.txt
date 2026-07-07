@@ -1,0 +1,286 @@
+﻿[RAG clikbKnowledge] clikb_app_overview Object {
+  topic: "ClikB overall app identity",
+  metadata: {
+    docId: "clikb_app_overview",
+    sourceType: "clikb-base-rag",
+    sourceName: "01_clikb_app_overview.rag.txt",
+    version: 1,
+    vectorIdPrefix: "clikb_app_overview::chunk",
+    chunkIdPattern: "clikb_app_overview::chunk-0001",
+    deleteFilter: {
+      docId: "clikb_app_overview"
+    },
+    searchKeys: ["clikb_app_overview", "01_clikb_app_overview.rag.txt", "ClikB overall app identity"]
+  },
+  routeMatches: ["/", "/MagicMirror", "/images", "/kickit", "/clikit", "/feeds", "/Feeds", "/pages", "/settings"],
+  pageNames: ["Home", "HomePage", "Search", "MagicMirror", "Shorts", "Cinema", "Stories", "Games", "Interactions", "All Feeds", "Feeds", "Profile", "My Page", "Settings", "Storybook", "EditStory"],
+  featureNames: ["AI creation studio", "instruction-to-media workflow", "human-in-the-loop confirmation", "manual prompt editing", "Edit with AI", "Update with AI", "golden prompt", "story-to-video", "interactive games", "node-based game creator", "GptMeme", "GptVisualize", "GptInt", "startPlan", "scenes", "world guide remixData", "desktop PC menu", "Home", "Create", "Games", "Shorts", "Cinema", "My Page", "All Feeds", "Search", "Settings", "mode feeds", "profile feeds", "horizontal feed search", "Publish"],
+  sourceFiles: ["src/App.tsx", "src/MenuSlider.tsx", "src/BottomMenu.tsx", "src/MagicMirror.tsx", "src/Mirror.tsx", "src/PromptInput.tsx", "src/Storybook.tsx", "src/EditStory.tsx", "src/FeedsGate.tsx", "src/ProfileInfo.tsx", "server/src/GptApi.ts"],
+  understanding: "ClikB is a creation-first AI social app where the user gives instructions, the AI creates the media plan/assets/prompts, and the human stays in the loop to confirm, edit, regenerate, manually adjust, or use Edit with AI/Update with AI before publishing. It is not a passive generator; it is an instruction-to-media workflow for Shorts, Cinema/Stories, and Games/Interactions, followed by Storybook/EditStory workshop controls and social publishing. Core loop: start from Home or navigation, choose a mode, give an instruction, the system creates golden prompts and plans, the user reviews and edits the generated content, then publishes and views it in feeds or profile pages. Modes: Shorts creates quick standalone visuals/video scenes; Cinema/Stories creates narrative video story worlds; Games/Interactions creates node-based choose-your-own-adventure interactive games with an intro/root screen, branch nodes, victory/failure endings, baked-in game UI, and manual hotspot placement later by the user. Scene limits are base facts: Shorts/Memes supports 1 to 9 scenes, so the max in Shorts is exactly 9 scenes; Cinema/Stories supports 3 to 9 scenes; Games/Interactions supports 3 to 9 scenes/nodes, so the max in Interactions is exactly 9 scenes/nodes. Do not answer that Shorts or Interactions has no hard cap, do not say Shorts max is 5 or 6, do not say Interactions can have a dozen/few dozen nodes, and do not treat the word Shorts as meaning fewer than the app supports. Desktop/PC navigation is handled by MenuSlider: Home opens the initial welcome/creation landing area, Create opens the PromptInput golden prompt component and defaults to Shorts when the user is not already in a creation mode, Games/Shorts/Cinema open their creation modes, each creation mode also has its own mode feed visible below the creation popup when the user closes or minimizes the creation component, All Feeds shows all modes together with no creation component, My Page shows the user's posts as feeds, and Search/HomePage shows all feeds horizontally with text search across content.",
+  canonicalAnswerRules: {
+    shortsSceneMax: "If the user asks how many scenes Shorts mode can generate, answer clearly: Shorts can generate 1 to 9 scenes, and the maximum is 9 scenes. Do not say there is no strict hard cap. Do not say 5 or 6 is the max. You can mention that Shorts is usually punchy/compact, but the supported max remains 9.",
+    modeSceneLimits: "Shorts/Memes: 1-9 scenes. Cinema/Stories: 3-9 scenes. Games/Interactions: 3-9 scenes/nodes. These are hard app limits for a single generation request. If the user asks the max for Interactions, answer 9 scenes/nodes. Do not say Interactions has no fixed maximum, do not say it can generate a dozen nodes, and do not describe a few dozen nodes unless a future RAG explicitly trains that as a separate manual/multi-batch workflow. If the user asks for more than the mode supports, explain the supported limit and suggest another workflow only if that workflow is actually trained in RAG."
+  },
+  pipelineStages: [
+    {
+      id: "desktop_pc_menu_navigation",
+      name: "Desktop/PC MenuSlider navigation",
+      routeMatches: ["/", "/MagicMirror", "/images", "/kickit", "/clikit", "/Feeds", "/pages", "/settings"],
+      pageNames: ["Home", "Search", "Shorts", "Cinema", "Games", "All Feeds", "My Page", "Settings"],
+      controlIds: ["menu_home", "menu_create", "menu_games", "menu_shorts", "menu_cinema", "menu_my_page", "menu_all_feeds", "menu_search_homepage", "menu_settings"],
+      userGoal: "Move through the major desktop/PC app sections.",
+      systemResult: "MenuSlider maps each visible button to the correct route and active state."
+    },
+    {
+      id: "instruction_to_ai_creation",
+      name: "User instruction to AI creation",
+      routeMatches: ["/images", "/kickit", "/clikit"],
+      pageNames: ["Shorts", "Cinema", "Games"],
+      controlIds: ["prompt_input", "menu_create", "start_generation"],
+      userGoal: "Tell the app what to create.",
+      systemResult: "PromptInput routes type 0 to /startMemes (Shorts/GptMeme), type 1 to /startStory (Cinema/GptVisualize), and type 3 to /startInteractions (Games/GptInt). The returned scenes then go into /startPlan for art style and visual character planning before Storybook/EditStory review."
+    },
+    {
+      id: "human_review_and_edit",
+      name: "Human review, manual edit, and AI edit",
+      routeMatches: ["/images", "/kickit", "/clikit"],
+      pageNames: ["Storybook", "EditStory"],
+      controlIds: ["manual_prompt_fields", "edit_with_ai", "update_with_ai"],
+      userGoal: "Confirm, change, or improve generated content before final output.",
+      systemResult: "Generated prompts/content can be manually edited or refined again with dedicated AI edit/update controls."
+    },
+    {
+      id: "feed_viewing_layers",
+      name: "Mode feeds, all feeds, search feeds, and profile feeds",
+      routeMatches: ["/", "/images", "/kickit", "/clikit", "/feeds", "/Feeds", "/pages"],
+      pageNames: ["Search", "Shorts", "Cinema", "Games", "All Feeds", "Feeds", "My Page", "Profile"],
+      controlIds: ["mode_feed_view", "menu_all_feeds", "menu_search_homepage", "menu_my_page"],
+      userGoal: "Browse finished content by mode, across all modes, by search, or by user page.",
+      systemResult: "Creation routes keep a mode-specific feed below the creation popup; All Feeds shows every mode without the creation component; My Page shows the user's posts as feeds; Search/HomePage shows horizontal all-feed discovery with text search."
+    }
+  ],
+  uiControls: [
+    {
+      id: "menu_home",
+      visibleLabel: "Home",
+      controlType: "desktop/PC menu button",
+      routeMatches: ["/MagicMirror"],
+      pageNames: ["Home", "MagicMirror"],
+      sourceFile: "src/MenuSlider.tsx",
+      userIntent: "Open the initial welcome/creation landing area.",
+      systemAction: "Navigates to /MagicMirror and can close the menu overlay.",
+      resultingState: "The user sees the Home/MagicMirror landing surface for starting creation."
+    },
+    {
+      id: "menu_create",
+      visibleLabel: "Create",
+      controlType: "desktop/PC menu button",
+      routeMatches: ["/images"],
+      pageNames: ["Shorts"],
+      sourceFile: "src/MenuSlider.tsx",
+      userIntent: "Open the creation component.",
+      systemAction: "Calls setminimisePrompt(false); if the user is not already on /images, /kickit, or /clikit, it navigates to /images.",
+      resultingState: "PromptInput opens with the golden prompt creation flow; default creation route is Shorts."
+    },
+    {
+      id: "menu_games",
+      visibleLabel: "Games",
+      alsoSeenAs: ["Interactions"],
+      controlType: "desktop/PC menu button",
+      routeMatches: ["/clikit"],
+      pageNames: ["Games", "Interactions"],
+      sourceFile: "src/MenuSlider.tsx",
+      userIntent: "Navigate to the Games/Interactions creation surface.",
+      systemAction: "Navigates to /clikit. The generation behavior is not defined by this button; it is defined by PromptInput type 3, /startInteractions, and GptInt.",
+      resultingState: "The user is on the interactive game creation route, with the Games feed available below when the creation popup is closed or minimized."
+    },
+    {
+      id: "menu_shorts",
+      visibleLabel: "Shorts",
+      controlType: "desktop/PC menu button",
+      routeMatches: ["/images"],
+      pageNames: ["Shorts"],
+      sourceFile: "src/MenuSlider.tsx",
+      userIntent: "Open short visual/video creation.",
+      systemAction: "Navigates to /images.",
+      resultingState: "Shorts creation opens, with the Shorts feed available underneath when the creation popup is closed or minimized."
+    },
+    {
+      id: "menu_cinema",
+      visibleLabel: "Cinema",
+      alsoSeenAs: ["Stories"],
+      controlType: "desktop/PC menu button",
+      routeMatches: ["/kickit"],
+      pageNames: ["Cinema", "Stories"],
+      sourceFile: "src/MenuSlider.tsx",
+      userIntent: "Open cinematic/story creation.",
+      systemAction: "Navigates to /kickit.",
+      resultingState: "Cinema/Stories creation opens, with the Cinema feed available underneath when the creation popup is closed or minimized."
+    },
+    {
+      id: "menu_my_page",
+      visibleLabel: "My Page",
+      controlType: "desktop/PC menu button",
+      routeMatches: ["/pages"],
+      pageNames: ["My Page", "Profile"],
+      sourceFile: "src/MenuSlider.tsx",
+      userIntent: "Open the user's profile/content page.",
+      systemAction: "Navigates to /pages with logged user state.",
+      resultingState: "The user's posts are shown as profile/page feeds."
+    },
+    {
+      id: "menu_all_feeds",
+      visibleLabel: "All Feeds",
+      controlType: "desktop/PC menu button",
+      routeMatches: ["/Feeds", "/feeds"],
+      pageNames: ["All Feeds", "Feeds"],
+      sourceFile: "src/MenuSlider.tsx",
+      userIntent: "Browse all published content across all modes.",
+      systemAction: "Navigates to /Feeds.",
+      resultingState: "All Feeds shows Shorts, Cinema, and Games content together and does not show a creation component."
+    },
+    {
+      id: "menu_search_homepage",
+      visibleLabel: "HomePage",
+      alsoSeenAs: ["Search"],
+      controlType: "desktop/PC menu button",
+      routeMatches: ["/"],
+      pageNames: ["HomePage", "Search"],
+      sourceFile: "src/MenuSlider.tsx",
+      userIntent: "Search and discover content across feeds.",
+      systemAction: "Navigates to /.",
+      resultingState: "Search/HomePage shows all feeds horizontally and allows text search across content."
+    },
+    {
+      id: "menu_settings",
+      visibleLabel: "Settings",
+      controlType: "desktop/PC menu button",
+      routeMatches: ["/settings"],
+      pageNames: ["Settings"],
+      sourceFile: "src/MenuSlider.tsx",
+      userIntent: "Open app settings.",
+      systemAction: "Navigates to /settings.",
+      resultingState: "Settings page opens."
+    },
+    {
+      id: "prompt_input",
+      visibleLabel: "Prompt Input",
+      controlType: "text field",
+      routeMatches: ["/MagicMirror", "/images", "/kickit", "/clikit"],
+      pageNames: ["Home", "Shorts", "Cinema", "Games"],
+      sourceFile: "src/PromptInput.tsx",
+      userIntent: "Describe what the AI should create.",
+      systemAction: "Captures the instruction, selected mode, model/style settings, and starts the matching backend flow.",
+      resultingState: "Golden prompt and plan generation begin."
+    },
+    {
+      id: "edit_with_ai",
+      visibleLabel: "Edit with AI",
+      alsoSeenAs: ["Update with AI"],
+      controlType: "button",
+      routeMatches: ["/images", "/kickit", "/clikit"],
+      pageNames: ["Storybook", "EditStory"],
+      sourceFile: "src/EditStory.tsx",
+      userIntent: "Improve or change generated prompt/content without rewriting everything manually.",
+      systemAction: "Runs a dedicated AI edit/update flow against the selected content.",
+      resultingState: "The user can accept, keep editing, or manually adjust the result."
+    },
+    {
+      id: "publish",
+      visibleLabel: "Publish",
+      controlType: "button",
+      routeMatches: ["/images", "/kickit", "/clikit"],
+      pageNames: ["Storybook", "EditStory"],
+      sourceFile: "src/Storybook.tsx",
+      userIntent: "Send finished media into the social side of ClikB.",
+      systemAction: "Publishes completed creation data for feeds/profile viewing.",
+      resultingState: "Finished content can appear in mode feeds, All Feeds, and profile pages."
+    }
+  ],
+  sourceEvidence: [
+    {
+      sourceFile: "src/App.tsx",
+      routeMatches: ["/", "/MagicMirror", "/images", "/kickit", "/clikit", "/feeds", "/pages"],
+      pageNames: ["Home", "HomePage", "Shorts", "Stories", "Interactions", "Feeds", "Profile"],
+      featureNames: ["routing", "Brainstorm provider", "social overlay state"],
+      notes: "App owns top-level routing, page-name mapping, Brainstorm provider, social overlay state, and route props."
+    },
+    {
+      sourceFile: "src/MenuSlider.tsx",
+      routeMatches: ["/", "/MagicMirror", "/images", "/kickit", "/clikit", "/Feeds", "/pages", "/settings"],
+      pageNames: ["Home", "HomePage", "Search", "Shorts", "Cinema", "Games", "All Feeds", "Feeds", "My Page", "Settings"],
+      featureNames: ["desktop PC menu", "Home", "Create", "Games", "Shorts", "Cinema", "My Page", "All Feeds", "Search", "Settings"],
+      notes: "Desktop/PC MenuSlider exposes Home, Create, Games, Shorts, Cinema, My Page, All Feeds, HomePage/Search, and Settings. Create opens the PromptInput golden prompt creation component and defaults to Shorts when the user is not already on a creation route. Games, Shorts, and Cinema each have their own mode feed visible below the creation popup when that creation component is closed or minimized. All Feeds shows all modes together with no creation component. My Page shows the user's posts as feeds. HomePage/Search shows all feeds horizontally and supports text search across content."
+    },
+    {
+      sourceFile: "src/PromptInput.tsx",
+      routeMatches: ["/images", "/kickit", "/clikit"],
+      featureNames: ["PromptInput", "StartStory", "golden prompt", "mode backend selection", "Update with AI"],
+      notes: "PromptInput captures the user instruction and mode. type 0 selects /startMemes for Shorts, type 1 selects /startStory for Cinema/Stories, type 3 selects /startInteractions for Games/Interactions, then StartPlan posts scenes to /startPlan. Internally the backend stores scenes in the JSON field named keyPoints. In story mode it duplicates scenes into Stage A/Stage B before planning."
+    },
+    {
+      sourceFile: "server/src/GptApi.ts",
+      featureNames: ["GptVisualize", "GptMeme", "GptInt", "Brainstorm mode prompt"],
+      notes: "GptMeme defines Shorts as visual-director image/scenes, GptVisualize defines Cinema/Stories as cinematic story scenes with poster-first and ending-last rules, GptInt defines Games/Interactions as node-based choose-your-own-adventure game structure, and GptPlan extracts art style plus visible characters for downstream generation."
+    },
+    {
+      sourceFile: "src/EditStory.tsx",
+      pageNames: ["EditStory"],
+      featureNames: ["manual prompt editing", "Update with AI"],
+      notes: "EditStory exposes human review/edit surfaces after AI has generated prompts or content."
+    },
+    {
+      sourceFile: "src/BottomMenu.tsx",
+      routeMatches: ["/kickit", "/images", "/clikit", "/pages"],
+      pageNames: ["Cinema", "Shorts", "Games", "My Page"],
+      featureNames: ["mobile navigation"],
+      notes: "Mobile bottom menu exposes the core app sections."
+    }
+  ],
+  extra: {
+    generationModes: {
+      shorts: {
+        modeName: "Shorts",
+        frontendType: 0,
+        appRoute: "/images",
+        backendRoute: "/startMemes",
+        backendHandler: "GptMeme",
+        generationRole: "Visual Director for concise image/scene creation.",
+        systemPromptBehavior: "Shorts takes the user's scenario and returns visual scenes for scenes/images/pics. When remixData/world guide exists, the AI must film the user's scenario inside that world, keep visual consistency, use the world guide for lighting, colors, textures, character designs, and atmosphere, fit any new prop/location/action into the world's aesthetic, keep lore-accurate tone, and describe input-image characters clearly so they can be reused.",
+        outputContract: "Shorts supports 1 to 9 scenes. The maximum in Shorts is exactly 9 scenes. Returns strict JSON only using the backend field { keyPoints: string[] }, but those keyPoints are user-visible scenes. Each scene is a complete visual scene description for AI image/video generation, not a UI explanation. If the user asks the max, answer 9. If the user does not specify a count, generate a short appropriate set of scenes within 1-9.",
+        afterScenes: "PromptInput sends the scenes to /startPlan so GptPlan can extract art style and visible characters. Storybook/EditStory then let the user review, manually edit, update with AI, generate media, and publish. The Shorts feed sits below the creation popup when minimized or closed."
+      },
+      cinema: {
+        modeName: "Cinema / Stories",
+        frontendType: 1,
+        appRoute: "/kickit",
+        backendRoute: "/startStory",
+        backendHandler: "GptVisualize",
+        generationRole: "Cinematic visual director for story-to-video planning.",
+        systemPromptBehavior: "Cinema turns the user's prompt into 3 to 9 cinematic story scenes unless the user requests an exact count. It must honor the narrative action, use remixData/world guide for the story world's look, character designs, atmosphere, lighting, colors, textures, and tone, and design new props or locations so they fit the world. The first scene is a premium blockbuster poster/cover with a short punchy title. The final scene must resolve the story or end with short ending dialog.",
+        outputContract: "Cinema/Stories supports 3 to 9 scenes. Returns strict JSON only using the backend field { keyPoints: string[] }, but those keyPoints are user-visible story scenes, not generic feature descriptions. The scene count contract matters within the supported range, and the poster/cover counts as scene 1 rather than an extra scene.",
+        afterScenes: "PromptInput duplicates story scenes into adjacent Stage A/Stage B entries before /startPlan, then GptPlan extracts art style and visual characters. Storybook/EditStory handle review, manual edits, AI updates, narration/music flows, generation, and publishing. The Cinema feed sits below the creation popup when minimized or closed."
+      },
+      interactionsSceneMax: "If the user asks how many scenes Interactions mode can generate, answer clearly: Interactions/Games can generate 3 to 9 scenes/nodes in one generation, and the maximum is 9 scenes/nodes. Do not say there is no fixed maximum. Do not say a dozen or a few dozen nodes.",
+      games: {
+        modeName: "Games / Interactions",
+        frontendType: 3,
+        appRoute: "/clikit",
+        backendRoute: "/startInteractions",
+        backendHandler: "GptInt",
+        generationRole: "Core logic engine of a node-based interactive game creator.",
+        systemPromptBehavior: "Games creates the visual content and narrative branching for a choose-your-own-adventure interactive game. It is not responsible for coding hotspots; the user manually adds hotspots later on the frontend. Node 1 must be an intro/main menu screen with the game's title and one context-aware start-style button. Terminal branch nodes must clearly become Victory or Failure/Game Over endings. Body nodes follow the user's plot pacing: simple actions stay tight, complex actions can expand, and action/result moments must not be compressed when an intermediate hotspot node is needed.",
+        outputContract: "Games/Interactions supports 3 to 9 game scenes/nodes in one generation. The maximum in Interactions is exactly 9 scenes/nodes. Do not tell users it can generate a dozen or a few dozen nodes. Returns strict JSON only using the backend field { keyPoints: string[] }. Each string should include node identity/branch context so the user knows how to connect the interaction flow. Scenes must be complete visual descriptions for generation, with premium uncluttered game UI, consistent UI style/placement, no fake text buttons after the intro, and clear visual targets for hotspots.",
+        afterScenes: "PromptInput sends game scenes/nodes to /startPlan, then Storybook/EditStory handle the generated game scenes, user review, manual changes, AI updates, media generation, hotspot preparation, and publish flow. The Games feed sits below the creation popup when minimized or closed."
+      },
+      sharedPlanning: {
+        backendRoute: "/startPlan",
+        backendHandler: "GptPlan",
+        behavior: "After Shorts, Cinema, or Games returns scenes, StartPlan asks GptPlan to produce a JSON plan containing art_style.style_token and up to eight visually important characters or objects. It must describe only visible traits like age, skin tone, hair, eyes, attire, color, texture, or materials. It does not invent extra characters and it does not include places as characters. SelectedStyle can override Auto after the plan returns."
+      },
+      cinemaStageRule: "Cinema/Stories mode creates story scenes, then expands them into Stage A and Stage B pairs before planning, so each story beat can support a richer cinematic progression rather than only one flat scene.",
+      bShotRule: "Across Shorts, Cinema, and Games, each main scene can support an optional B-shot or secondary shot. Explain B-shots as extra supporting shots that enrich a scene, but leave detailed B-shot controls to the Storybook/EditStory knowledge."
+    },
+    assistantUse: "Use this chunk when the user asks what ClikB is, how the app creates from instructions, what the desktop/PC menu buttons do, how Shorts/Cinema/Games generation actually works from the backend prompts, or how generation connects to scenes, StartPlan, mode feeds, all feeds, search, profile feeds, editing, confirmation, and publishing."
+  },
+}

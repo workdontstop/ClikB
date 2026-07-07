@@ -1,0 +1,165 @@
+﻿[RAG userSnapshotKnowledge] clikb_notepad_brainstorm_workspace Object {
+  topic: "Notepad writing pad, voice workspace, templates, and Brainstorm context",
+  metadata: {
+    docId: "clikb_notepad_brainstorm_workspace",
+    sourceType: "clikb-base-rag",
+    sourceName: "07_notepad_brainstorm_workspace.rag.txt",
+    version: 1,
+    vectorIdPrefix: "clikb_notepad_brainstorm_workspace::chunk",
+    chunkIdPattern: "clikb_notepad_brainstorm_workspace::chunk-0001",
+    deleteFilter: {
+      docId: "clikb_notepad_brainstorm_workspace"
+    },
+    searchKeys: ["clikb_notepad_brainstorm_workspace", "07_notepad_brainstorm_workspace.rag.txt", "Notepad writing pad, voice workspace, templates, and Brainstorm context"]
+  },
+  routeMatches: ["/images", "/kickit", "/clikit", "/MagicMirror"],
+  pageNames: ["Shorts", "Stories", "Cinema", "Games", "EditStory", "Storybook", "Home", "Notepad"],
+  featureNames: ["Notepad", "NotepadEditor", "voice workspace", "templates", "Brainstorm", "reference images", "detected characters", "cached image generation", "NotepadProps", "Open voice workspace", "templateList", "referenceImages", "detectedCharacters", "Notepad usage", "read-only shell fields", "Scene Image Prompt", "Video Prompt", "shared Brainstorm session", "Prompt field opens Notepad", "NotepadEditor context", "Prompt field", "Templates"],
+  sourceFiles: ["src/Notepad.tsx", "src/NotepadEditor.tsx", "src/EditStory.tsx", "src/components/PromptConstructor.tsx", "src/components/BrainstormChat.tsx", "src/components/BrainstormSessionProvider.tsx"],
+  understanding: "Notepad is the reusable writing workspace used inside creation and editing fields. It is not just a plain text input. Parent fields open Notepad as a dialog/panel and pass current value, onChange, placeholder, handleKeyDown, caret data, referenceImages, detectedCharacters, selected model, cached image generation data, template state, images, and music mode controls. Notepad contains a voice workspace button labeled by tooltip as Open voice workspace, then renders NotepadEditor. NotepadEditor receives Brainstorm open/change callbacks, template library callbacks, cached image generation, reference images, detected characters, and music segmentation controls. In EditStory, visible prompt fields are often read-only shells; Notepad writes into the real field state. Brainstorm can open from this workspace and should use userSnapshot plus current field context to help write or edit prompts.",
+  pipelineStages: [
+    {
+      id: "field_shell_click",
+      name: "Prompt field opens Notepad",
+      routeMatches: [
+        "/images",
+        "/kickit",
+        "/clikit"
+      ],
+      pageNames: [
+        "EditStory",
+        "Storybook"
+      ],
+      controlIds: [
+        "notepad_prompt_shell"
+      ],
+      userGoal: "Edit a prompt in a larger workspace.",
+      systemResult: "The shell field opens Notepad and passes current value/caret/handlers."
+    },
+    {
+      id: "notepad_editor_context",
+      name: "NotepadEditor context",
+      routeMatches: [
+        "/images",
+        "/kickit",
+        "/clikit"
+      ],
+      pageNames: [
+        "EditStory",
+        "Storybook"
+      ],
+      controlIds: [
+        "notepad_editor"
+      ],
+      userGoal: "Write with access to templates, characters, and AI assistance.",
+      systemResult: "NotepadEditor receives templates, referenceImages, detectedCharacters, cached image generation, Brainstorm hooks, and music controls."
+    }
+  ],
+  uiControls: [
+    {
+      id: "notepad_prompt_shell",
+      visibleLabel: "Prompt field",
+      alsoSeenAs: [
+        "Scene Image Prompt",
+        "Video Prompt",
+        "Enter a Prompt To Recreate The Image",
+        "Use Auto Prompt / Enter Video Prompt"
+      ],
+      controlType: "read-only shell field",
+      routeMatches: [
+        "/images",
+        "/kickit",
+        "/clikit"
+      ],
+      pageNames: [
+        "EditStory"
+      ],
+      sourceFile: "src/EditStory.tsx",
+      userIntent: "Click into a prompt field to edit.",
+      systemAction: "Opens Notepad and routes field edits through value/onChange.",
+      resultingState: "Notepad controls the selected field text."
+    },
+    {
+      id: "voice_workspace",
+      visibleLabel: "Open voice workspace",
+      controlType: "icon button",
+      routeMatches: [
+        "/images",
+        "/kickit",
+        "/clikit"
+      ],
+      pageNames: [
+        "EditStory",
+        "Storybook"
+      ],
+      sourceFile: "src/Notepad.tsx",
+      userIntent: "Open voice-enabled writing controls.",
+      systemAction: "Calls onSpeak from the parent context.",
+      resultingState: "Voice workspace/action can be used with the prompt field."
+    },
+    {
+      id: "template_library",
+      visibleLabel: "Templates",
+      controlType: "library",
+      routeMatches: [
+        "/images",
+        "/kickit",
+        "/clikit"
+      ],
+      pageNames: [
+        "Notepad",
+        "EditStory",
+        "Storybook"
+      ],
+      sourceFile: "src/Notepad.tsx",
+      userIntent: "Reuse saved prompt templates.",
+      systemAction: "Fetches templates from /get_templates_prompt and supports delete/create callbacks.",
+      resultingState: "Template list is available inside writing workspace."
+    }
+  ],
+  snapshotExample: {
+    sourceLog: "[Brainstorm userSnapshot] typed request",
+    route: "/kickit",
+    pageName: "Stories",
+    lastAction: {
+      type: "textarea",
+      label: "Use Auto Prompt / Enter Video Prompt",
+      tagName: "textarea",
+      route: "/kickit"
+    }
+  },
+  sourceEvidence: [
+    {
+      sourceFile: "src/Notepad.tsx",
+      featureNames: [
+        "NotepadProps",
+        "Open voice workspace",
+        "NotepadEditor",
+        "templateList",
+        "referenceImages",
+        "detectedCharacters"
+      ],
+      notes: "Defines workspace props, voice icon, template fetch/delete, and passes context to NotepadEditor."
+    },
+    {
+      sourceFile: "src/EditStory.tsx",
+      featureNames: [
+        "Notepad usage",
+        "read-only shell fields",
+        "Scene Image Prompt",
+        "Video Prompt"
+      ],
+      notes: "Uses Notepad to edit scene and video prompt fields."
+    },
+    {
+      sourceFile: "src/components/BrainstormSessionProvider.tsx",
+      featureNames: [
+        "shared Brainstorm session"
+      ],
+      notes: "Brainstorm context is shared across UI surfaces."
+    }
+  ],
+  extra: {
+    assistantUse: "Use this chunk when the user asks about Notepad, field editing, voice workspace, templates, or how prompt text is edited inside creation/edit screens."
+  },
+}
