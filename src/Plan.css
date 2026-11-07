@@ -1,0 +1,29 @@
+.blueprint-root {
+    position: fixed;
+    inset: 0;
+    z-index: 10000;
+    pointer-events: none;
+    color: var(--blueprint-text);
+    font-family: inherit;
+    -webkit-user-select: text;
+    user-select: text;
+}
+
+.blueprint-root > * { pointer-events: auto; }
+.blueprint-root *, .blueprint-root *::before, .blueprint-root *::after { box-sizing: border-box; }
+.blueprint-body { min-height: 0; overscroll-behavior: contain; scrollbar-color: var(--blueprint-accent-border) transparent; }
+.blueprint-body > * { flex-shrink: 0; scroll-margin-top: 8px; }
+.blueprint-text-card { min-width: 0; }
+.blueprint-root [data-blueprint-expandable] { cursor: pointer; user-select: text; }
+.blueprint-root button, .blueprint-root a { -webkit-tap-highlight-color: transparent; }
+.blueprint-root button:focus-visible, .blueprint-root a:focus-visible,
+.blueprint-root [data-blueprint-expandable]:focus-visible { outline: 2px solid var(--blueprint-accent); outline-offset: 3px; }
+.blueprint-root button:hover, .blueprint-root a:hover { filter: brightness(.95); }
+.blueprint-root [data-plan-scene] { min-width: 0; }
+.blueprint-root audio { min-width: 0; flex: 1 1 0; }
+.blueprint-root [data-plan-scene] > div:first-child { font-weight: 900; }
+
+@media (max-width: 767px) {
+    .blueprint-dialog > div:first-child { align-items: flex-start !important; gap: 8px !important; flex-wrap: wrap; }
+    .blueprint-dialog > div:first-child > div:last-child { margin-left: auto; }
+}

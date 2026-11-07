@@ -1,0 +1,98 @@
+[RAG clikbKnowledge] clikb_core_identity Object {
+  topic: "ClikB core app identity and capabilities",
+  verifiedRenderAndPlayback: "A rendered prompt is known only when a successful render owner recorded the actual request against that media. A saved prompt, stored image or upload cannot prove it; unknown evidence does not authorize regeneration. Automatic speech waits for user playback/input, retains the latest current observation and rechecks target/revision and permissions at emission. New input, explicit playback and Stop cancel pending automatic speech. Independent authorized app controls continue during TTS startup and playback.",
+  currentConciergeBehavior: "Speak naturally about useful intent, progress and verified outcomes. Keep internal retry narration out of user-facing speech. Automatic announcements deduplicate by project/owner/milestone/revision; cancelled announcements can retry. Assistant TTS playback does not hold authorized control scheduling. Listening reflects confirmed microphone transport; Received reflects an accepted turn after existing filters. One shared conversational control path serves all mapped areas. The selected slot's explicit role wins over the whole grid display mode: a B-roll grid includes main A-roll too. Read primary and extra-shot readiness separately. Preserve the existing UI handlers and their declared activation events. Intent, selection, approval and recovery receive the retained task and relevant live control meaning; recovery never executes or grants consent. During Auto Control On, talk naturally while working, announce meaningful progress/completion and continue without requiring answers to optional chat. Direct conversation must not be routed through unnecessary control recovery. A blocked operation does not silence reporting of a later completed video. Off preserves ordinary direct conversation and disables this autonomous behavior. Natural publication consent is contextual for the current creation, not exact-label matching; stop-at-Publish and bare Continue are not consent. Conversation choices are Luna · None (luna_none, GPT-6 Luna none reasoning, free), Luna · Low (luna, low reasoning, free and default), Luna · Medium (luna_xhigh, medium reasoning, metered) and Terra · Low (terra, GPT-6.1 Terra low reasoning, metered). Metered conversation uses Main's Pixels and the live usage quote/receipts. Conversation selection is independent of Creation AI, image models, Motion Planning and Auto Control permission.",
+  guideAndDeckShortcuts: "In the Guide or Concierge box, clicking the pencil opens the text writer, which has three user-operated shortcut pills at the top: Concierge Voice (for example Sofiah), Conversation AI model (for example Luna) and Deck. The Deck shortcut pill inside the Guide text writer toggles the same saved Deck On or Off preference (ui.deckEnabled) as Enable Deck in Settings, and is highlighted when Deck is On. Settings also has Enable Deck, Clean mode and Conversation AI, and Brainstorm Chat offers Voice and Conversation AI choices. These Guide writer shortcuts are user-operated; explain their location inside the Guide pencil text input without trying to execute them. Deck applies to both Feeds Deck (post browsing and Search) and Creation Deck (presenting Creation stages from Accessing Imagination through Scene previews, Characters and the storyboard as cards when Deck is On; when Deck is Off, Creation uses Grid).",
+  conciergeControlContract: "Concierge starts an app operation by CALLING the shared virtualGate function with structured kind, actionId or scrollId, separate scrolling direction, full replacement textValue for Creation text, and rationale; unused fields are null. Spoken command markers never execute. Preserve the complete real user task, refinements, explicit preferences and review/publication boundaries across conversation, manual actions and asynchronous work. A fresh browser observation, Jev intent, exact selection/approval and browser binding and relevant Creation context validation are mandatory for every mutation. Auto Control enabled governs ordinary operations; requires_video additionally needs autoControl.videoEnabled. The switches are independent: Video Off does not mean Auto Control Off. Only an explicit real user request authorizes Concierge to enable the visible Video toggle; a plan or synthetic continuation is not consent. Candidate setup Go, Skip, Start, Continue, image generation, prompt edits, scene opening and safe child Close use ordinary Auto Control without magic confirmation phrases. Destructive discard/deletion and publication retain target-specific confirmation; Yes can authorize the current confirm_* dialog. Never use shared/browser Back to exit active Creation. Browser feedback and a freshly flushed snapshot return as tool results. At an unchanged step, allow at most three attempts for repairable arguments, stale pre-dispatch state, temporary Jev failures or an ordinary decline that does not represent a real consent boundary; each attempt reobserves and passes through Jev. Stop on permission/confirmation denial, absent uploaded RAG, explicit refusal or an uncertain dispatched outcome. Observe uncertain paid work without replaying it. Successful state changes reset the repair budget. Continue from observed feedback, preserving the task when loading is pending; asynchronous completion can wake it. finishAutoControlTask marks completed only after the requested end state is observed, or waiting while authorized timing/loading is pending. Two-second continuation checks apply to an unfinished task, skip busy/hidden periods, never overlap or queue catch-up, and park after bounded unchanged checks until meaningful state changes. Automatic progress/review/audit calls remain observation-only. Live IDs, policies, exact scene/shot ownership and file/drawing handoffs remain authoritative. This descriptive overview supplies product meanings, not executable bindings; the dedicated operational packet and authoritative live snapshot supply exact controls.",
+  operationalPacketSet: "This installation uses exactly five uploaded instruction packets: clikb_core_identity, clikb_navigation_shell, clikb_feeds, clikb_creation and clikb_deck. All required operational meanings are in those five. Other local descriptive files are reference material and are not additional upload dependencies. Canonical creation/session memory stores current project facts independently of instruction packets.",
+  metadata: {
+    docId: "clikb_core_identity",
+    sourceType: "clikb-base-rag",
+    sourceName: "01_clikb_app_overview.rag.txt",
+    version: 13,
+    vectorIdPrefix: "clikb_core_identity::chunk",
+    chunkIdPattern: "clikb_core_identity::chunk-0001",
+    deleteFilter: {
+      docId: "clikb_core_identity"
+    },
+    knowledgeScope: "stable product identity and high-level capabilities",
+    searchKeys: [
+      "ClikB",
+      "what is ClikB",
+      "what can ClikB do",
+      "AI video creation",
+      "Shorts",
+      "Cinema",
+      "Stories",
+      "Games",
+      "Interactions",
+      "music video",
+      "hotspot interaction",
+      "spatial video",
+      "spatial interaction",
+      "Three.js Motion Guide",
+      "directional motion reference",
+      "AI concierge",
+      "human in the loop",
+      "social creation app"
+    ]
+  },
+
+  identity: "ClikB is a creation-first AI social application for turning an idea into visual media and interactive experiences. A user can begin with a text instruction and direct an AI-assisted, human-in-the-loop workflow that develops the idea into scenes, images, video, audio, characters, environments and publishable experiences. ClikB is not only a one-prompt generator. It keeps the work visible and editable so the creator can review, refine, regenerate, replace, arrange and approve creative decisions throughout production.",
+
+  coreJourney: "The high-level ClikB journey is idea, plan, create, refine, publish and experience. ClikB can interpret an idea as a scene plan, prepare visual direction and references, generate or accept media, let the creator edit individual scenes and then assemble the result for viewing or interaction. Published creations can be discovered through feeds and creator pages. Exact page controls and live workflow state are supplied by dedicated operational RAG and the live app snapshot, not by this core identity document.",
+
+  creationModes: {
+    shorts: "Shorts is the compact visual creation mode. It supports one to nine scenes in a single planned creation and can be used for memes, striking visual sequences, concise explanations, short-form stories and other quick visual concepts.",
+    cinema: "Cinema, also described as Stories, is the narrative creation mode for cinematic or story-led video. It supports three to nine logical scenes in a single planned creation. Cinema can develop narrative structure, characters, environments, paired visual stages, narration, music and motion before publishing.",
+    interactions: "Games, also described as Interactions, is the interactive creation mode. It supports three to nine planned scene or node foundations in a single generation. An interaction can become a branching hotspot experience or a connected spatial-video experience rather than a fixed linear video.",
+    musicVideo: "Music-video creation uses an uploaded or selected music track to guide scene timing and the visual sequence. It belongs to the wider Cinema and video-creation system and can combine music-led planning, images, video and publishing."
+  },
+
+  creativeCapabilities: [
+    "Develop a prompt into a structured collection of scenes while preserving creator review and control.",
+    "Create and edit scene images, image prompts, video prompts and generated video clips.",
+    "Use character, environment, object, world and uploaded visual references to improve continuity across scenes.",
+    "Support narration, music, generated audio where available, lip-sync workflows and music-led timing.",
+    "Use main shots and supporting B-roll when the selected creation flow calls for them.",
+    "Let creators inspect and improve individual scenes instead of treating the output as an uneditable black box.",
+    "Prepare creations for publishing, rendering, feed viewing or interactive playback."
+  ],
+
+  interactiveVideo: {
+    hotspot: "Hotspot interactions connect generated or uploaded videos through touch or swipe targets. The creator can define which interaction leads to another scene, branch or outcome, preview the experience and then publish it for viewers to explore.",
+    spatial: "Spatial Video turns an interaction into connected stages and scene nodes. The creator can author movement paths, directional traversal, action clips, links between stages, returns and other connections. Viewers can move with directional controls, trigger available actions, return to previous nodes or stages and inspect a visual map of the connected experience. The creator can preview and verify the spatial experience before publishing.",
+    directionalReferences: "Spatial creation can use the current scene state, a selected movement starting point, direction or captured trail, and compatible start-frame, ending-frame or annotated movement references to guide traversal-video generation. Directional annotations are motion guidance for the video model and are not intended to appear in the finished video."
+  },
+
+  motionGuide: "Motion Guide is a separate directing tool for an individual video shot. It turns a motion instruction into a simple editable Three.js animatic that represents subject movement, camera movement, relative positions, timing and choreography. The creator can preview and adjust the guide and export it as a reference video for a compatible AI video model. Its Text icon opens the full source/draft prompt in the existing Notepad; saving a draft does not build or erase the completed guide. Explicit paid build/edit/rebuild is separate from final video generation. Motion Guide uses measured provider cost (1 P minimum starting balance); Spatial helpers use the selected Creation tier: Luna or Luna Extra 2 P, Terra 5 P, Sol 20 P, DeepSeek 2 P or Kimi 4 P per charged request. Paired spatial movement and return uses two charged requests. Current live model/cost is always authoritative. AI paid video and Motion Guide work needs both Auto Control and Video permission; ordinary image and text work keeps normal Auto Control. Motion Guide does not replace Spatial Video: Motion Guide directs motion inside one generated shot, while Spatial Video connects playable movement and actions across nodes and stages.",
+
+  concierge: "ClikB includes a conversational AI concierge that can help the user explore an idea, understand the current creation, discuss alternatives and refine creative direction throughout the workflow. The concierge is part of the ClikB experience rather than a separate product identity. Live page facts, project memory and page-specific instructions must come from the current snapshot and dedicated operational knowledge; this overview should not be used to guess a control or live state.",
+
+  socialExperience: "ClikB combines creation with a social viewing layer. Published work appears in mode feeds, All Feeds, Deck, fullscreen viewing and creator profile pages. Viewers can watch linear posts, explore branching hotspots or navigate spatial experiences. Creative Profiles give characters, worlds and projects separate publishing/social identities under a Main account; sign-in and Pixels belong to Main. Chat combines Global, Feeds, contextual Post discussions, Notifications and private Rooms. Owner-editable Worlds store reusable character, environment and object assets.",
+
+  pixels: "Pixels are ClikB's in-app balance for applicable AI creation and metered conversation operations. Generation options and current costs are shown by the live application. Never infer current balances, package prices or model costs from this overview because those values can change and must come from live data or dedicated current knowledge.",
+
+  canonicalVocabulary: {
+    "Shorts": "the compact visual creation mode",
+    "Cinema or Stories": "the narrative and cinematic creation mode",
+    "Games or Interactions": "the interactive creation mode",
+    "Hotspots": "touch or swipe connections between interactive videos or outcomes",
+    "Spatial Video": "connected stages and scene nodes navigated through directional movement and actions",
+    "Motion Guide": "an editable Three.js motion-reference animatic for one compatible video shot",
+    "Storybook": "the scene-level creation workspace",
+    "EditStory": "the detailed workstation for refining a selected scene or media element",
+    "Pixels": "the in-app balance used for applicable AI creation and metered conversation operations"
+  },
+
+  factualBoundaries: [
+    "Do not confuse Motion Guide with Spatial Video.",
+    "Do not describe ClikB as a fully automatic black-box generator; creator review and intervention are central to the product.",
+    "Do not invent current buttons, enabled actions, prices, balances, job status, selected models or page state from this overview.",
+    "Do not claim that every model supports every reference, audio, lip-sync, Motion Guide or spatial feature; compatibility depends on the selected live option.",
+    "For operational guidance, prefer the dedicated page RAG and authoritative live snapshot over this general overview.",
+    "For current project details, prefer creation memory and live project state over general product knowledge."
+  ],
+
+  assistantUse: "Use this packet to explain what ClikB is, what broad kinds of experiences it can create, how its main modes differ, and how Spatial Video differs from Three.js Motion Guide. Keep answers at product level unless dedicated operational RAG and current snapshot data provide exact page instructions."
+}

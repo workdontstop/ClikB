@@ -1,0 +1,42 @@
+.fade-enter {
+  opacity: 0;
+  transform: translateY(10px);
+}
+.fade-enter.fade-enter-active {
+  opacity: 1;
+  transform: translateY(0);
+  transition: opacity 300ms, transform 300ms;
+}
+
+.fade-exit {
+  opacity: 1;
+  transform: translateY(0);
+}
+.fade-exit.fade-exit-active {
+  opacity: 0;
+  transform: translateY(10px);
+  transition: opacity 300ms, transform 300ms;
+}
+
+/* --------------------------------------------------------------------
+   Hide the blinking caret (and focus outline) on any focused contenteditable bounce  <div>
+   -------------------------------------------------------------------- */
+div:focus {
+  /* CARET_TEST_DISABLED feedsgate-div-focus: caret-color: transparent !important; */
+  /* CARET_TEST_DISABLED feedsgate-div-focus: outline: none; */
+}
+
+/* kill all carets on focused elements */
+*:focus {
+  /* CARET_TEST_DISABLED feedsgate-star-focus: caret-color: transparent !important; */
+  /* CARET_TEST_DISABLED feedsgate-star-focus: outline: none !important; remove focus ring if you also want that gone */
+}
+
+html :focus,
+html [contenteditable]:focus,
+html [tabindex]:focus {
+  /* hide any insertion caret */
+  /* CARET_TEST_DISABLED feedsgate-html-focus: caret-color: transparent !important; */
+  /* kill the dotted/dashed focus outline if you wish */
+  /* CARET_TEST_DISABLED feedsgate-html-focus: outline: none !important; */
+}

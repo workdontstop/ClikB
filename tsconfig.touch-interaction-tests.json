@@ -1,0 +1,21 @@
+{
+  "compilerOptions": {
+    "target": "ES2022",
+    "module": "CommonJS",
+    "moduleResolution": "Node",
+    "esModuleInterop": true,
+    "strict": true,
+    "skipLibCheck": true,
+    "outDir": "./node_modules/.tmp/touch-interaction-tests",
+    "rootDir": ".",
+    "types": [
+      "node"
+    ]
+  },
+  "include": [
+    "src/TouchInteractionModel.ts",
+    "src/TouchInteractionNavigation.ts",
+    "src/TouchHoldPlaybackModel.ts",
+    "tests/touchHoldPlayback.test.ts"
+  ]
+}

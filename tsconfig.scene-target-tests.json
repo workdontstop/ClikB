@@ -1,0 +1,16 @@
+{
+  "compilerOptions": {
+    "target": "ES2022",
+    "module": "NodeNext",
+    "moduleResolution": "NodeNext",
+    "strict": true,
+    "skipLibCheck": true,
+    "outDir": "./node_modules/.tmp/scene-target-tests",
+    "rootDir": ".",
+    "types": ["node"]
+  },
+  "include": [
+    "src/sceneTargetArchitecture.ts",
+    "tests/sceneTargetArchitecture.test.ts"
+  ]
+}

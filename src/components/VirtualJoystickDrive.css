@@ -1,0 +1,34 @@
+.spatial-drive-hover-arrow-shape {
+  display: none;
+}
+
+@media (hover: none) and (pointer: coarse) {
+  .spatial-drive-control[data-control-mode="hover"],
+  .spatial-drive-control[data-control-mode="hover"] *,
+  .spatial-drive-control[data-control-mode="dpad"],
+  .spatial-drive-control[data-control-mode="dpad"] * {
+    -webkit-user-select: none;
+    user-select: none;
+    -webkit-touch-callout: none;
+    -webkit-tap-highlight-color: transparent;
+  }
+
+  .spatial-drive-control[data-control-mode="hover"] .spatial-drive-hover-arrow-text {
+    display: none;
+  }
+
+  .spatial-drive-control[data-control-mode="hover"] .spatial-drive-hover-arrow-shape {
+    display: block;
+  }
+
+  .spatial-drive-control[data-control-mode="dpad"] .spatial-drive-dpad-button {
+    -webkit-appearance: none;
+    appearance: none;
+  }
+
+  .spatial-drive-control[data-control-mode="dpad"] .spatial-drive-dpad-button:focus:not(:focus-visible),
+  .spatial-drive-control[data-control-mode="dpad"]:focus:not(:focus-visible),
+  .spatial-drive-control[data-control-mode="hover"]:focus:not(:focus-visible) {
+    outline: none;
+  }
+}

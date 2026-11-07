@@ -1,0 +1,28 @@
+# ClikB
+
+> Start with one text prompt, then direct ClikB’s AI-assisted, human-in-the-loop orchestration to create AI videos, memes, stories, music videos, and hotspot or spatial interactive video experiences.
+
+A conversational AI concierge assists throughout creation with planning and refinement. For one-shot video generation, an editable Three.js Motion Guide layer creates choreography and camera-motion reference videos for compatible AI video models.
+
+## Public guides
+- [About ClikB](https://clikb.com/about/): Start with one text prompt, then direct ClikB’s AI-assisted, human-in-the-loop orchestration to create AI videos, memes, stories, music videos, and hotspot or spatial interactive video experiences.
+- [How ClikB works](https://clikb.com/how-it-works/): From your first prompt to scenes, images, video, audio and interactive playback: learn the ClikB creation workflow.
+- [AI video creation with ClikB](https://clikb.com/ai-video-creator/): Create short videos and cinematic stories from your ideas with ClikB scene planning, image editing, video generation and audio tools.
+- [Interactive creation with ClikB](https://clikb.com/playable-ai-video/): Build interactive visual experiences with ClikB using scene nodes, branching choices, hotspots and spatial workflows.
+- [ClikB generation costs](https://clikb.com/pricing/): Learn how to check generation costs in ClikB before creating images, video and audio.
+- [What you can make with ClikB](https://clikb.com/examples/): Explore ideas for ClikB: cinematic stories, visual explanations, short-form content and branching interactive scenes.
+
+## Studio
+- [Open ClikB](https://clikb.com/images): JavaScript application for creating and editing.
+
+Generation options and costs are shown in the app. These guides describe the product; they do not grant access to private projects or account data.
+
+## Spatial interactions
+Create connected stages and scene nodes with configured movement paths, action clips and stage links. Viewers navigate using directional controls, trigger available actions, return to previous nodes or stages and explore connections on a visual map. Preview the spatial experience before publishing. Swipe and touch hotspot workflows connect videos to different scenes or outcomes.
+
+## Public creations and directing tools
+- [Public feed](https://clikb.com/feeds): Published guest-accessible creations, with crawlable links to individual posts.
+- [Live post sitemap](https://clikb.com/sitemap-posts.xml): Public post URLs from the database.
+- AI storyboard creation: prompt to scene plan, characters, environments and image previews.
+- Visual prompts: image-based guidance for individual scenes.
+- Motion Guide: basic Three.js animation from text for camera and subject movement; preview, edit and export as a reference video for compatible models.

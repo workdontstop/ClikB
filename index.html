@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <style>
+      html.clikb-booting, html.clikb-booting body { background: var(--boot-background, #08090b) !important; }
+      html.clikb-booting { overflow: hidden; }
+      #clikb-loading-cover { display: none; }
+      html.clikb-booting #clikb-loading-cover {
+        display: grid;
+        place-items: center;
+        position: fixed;
+        inset: 0;
+        background: var(--boot-background, #08090b);
+        z-index: 2147483647;
+        opacity: 1;
+        transition: opacity 240ms ease-out;
+      }
+      .clikb-loading-logo {
+        display: grid;
+        place-items: center;
+        width: 56px;
+        height: 56px;
+        border-radius: 14px;
+        background: var(--boot-tile, rgba(128,128,128,0.6));
+        border: 1px solid var(--boot-accent, #c2d914);
+        box-shadow: 0 0 12px var(--boot-glow, #c2d91466);
+      }
+      .clikb-loading-logo img { width: 42px; height: 42px; display: block; border-radius: 8px; }
+      .clikb-loading-logo .boot-light { display: none; }
+      html[data-boot-theme="light"] .clikb-loading-logo .boot-dark { display: none; }
+      html[data-boot-theme="light"] .clikb-loading-logo .boot-light { display: block; }
+      html.clikb-booting #clikb-loading-cover[data-ready] { opacity: 0; }
+    </style>
+    <script>
+      // Match App's local-time theme before any body content is painted.
+      (() => {
+        // Vite embeds src/themeSchedule.ts synchronously in dev and production.
+        const dark = __CLIKB_SCHEDULED_DARK_MODE__;
+        const root = document.documentElement;
+        const accent = dark ? '#c2d914' : '#e30ed5';
+        root.dataset.bootTheme = dark ? 'dark' : 'light';
+        root.style.setProperty('--boot-background', dark ? '#08090b' : '#ffffff');
+        root.style.setProperty('--boot-tile', dark ? 'rgba(128,128,128,0.6)' : '#ffffff');
+        root.style.setProperty('--boot-accent', accent);
+        root.style.setProperty('--boot-glow', accent + '66');
+        root.classList.add('clikb-booting');
+      })();
+    </script>
+    <link rel="privacy-policy" href="https://clikb.com/privacy-policy" />
+    <link rel="icon" type="image/png" href="./2.png" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+    <!-- Core fonts you already use -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Abril+Fatface&family=Anton&family=Bangers&family=Barriecito&family=Bebas+Neue&family=Bungee+Spice&family=Comic+Neue:wght@300;400;700&family=DynaPuff:wght@400..700&family=Exo+2:wght@700&family=Fredoka+One&family=Honk&family=Lobster&family=Montserrat:wght@100..900&family=Oregano&family=Oswald:wght@200..700&family=Pacifico&family=Permanent+Marker&family=Princess+Sofia&family=Righteous&family=Roboto+Condensed:wght@100..900&family=Roboto+Slab:wght@100..900&family=Roboto:wght@100..900&display=swap"
+      rel="stylesheet"
+    />
+
+    <!-- CLIKB PUBLIC META START -->
+<title>ClikB — Create AI Videos, AI Memes, AI Stories, AI Music Videos, Hotspot and Spatial Interactive AI Video Experiences</title>
+    <meta name="description" content="Start with one text prompt, then direct ClikB’s AI-assisted, human-in-the-loop orchestration to create AI videos, memes, stories, music videos, and hotspot or spatial interactive video experiences." />
+    <link rel="canonical" href="https://clikb.com/" />
+    <meta property="og:type" content="website" />
+    <meta property="og:site_name" content="ClikB" />
+    <meta property="og:title" content="ClikB — Create AI Videos, AI Memes, AI Stories, AI Music Videos, Hotspot and Spatial Interactive AI Video Experiences" />
+    <meta property="og:description" content="Start with one text prompt, then direct ClikB’s AI-assisted, human-in-the-loop orchestration to create AI videos, memes, stories, music videos, and hotspot or spatial interactive video experiences." />
+    <meta property="og:url" content="https://clikb.com/" />
+    <meta property="og:image" content="https://clikb.com/clikb-og.png" />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
+    <meta property="og:image:alt" content="Create with ClikB" />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content="ClikB — Create AI Videos, AI Memes, AI Stories, AI Music Videos, Hotspot and Spatial Interactive AI Video Experiences" />
+    <meta name="twitter:description" content="Start with one text prompt, then direct ClikB’s AI-assisted, human-in-the-loop orchestration to create AI videos, memes, stories, music videos, and hotspot or spatial interactive video experiences." />
+    <meta name="twitter:image" content="https://clikb.com/clikb-og.png" />
+    <script type="application/ld+json">{"@context":"https://schema.org","@graph":[{"@type":"Organization","@id":"https://clikb.com/#organization","name":"ClikB","url":"https://clikb.com/"},{"@type":"WebSite","@id":"https://clikb.com/#website","name":"ClikB","url":"https://clikb.com/","description":"Start with one text prompt, then direct ClikB’s AI-assisted, human-in-the-loop orchestration to create AI videos, memes, stories, music videos, and hotspot or spatial interactive video experiences. A conversational AI concierge assists throughout creation with planning and refinement. For one-shot video generation, an editable Three.js Motion Guide layer creates choreography and camera-motion reference videos for compatible AI video models.","publisher":{"@id":"https://clikb.com/#organization"}},{"@type":"SoftwareApplication","name":"ClikB","url":"https://clikb.com/","applicationCategory":"MultimediaApplication","operatingSystem":"Web browser","description":"Start with one text prompt, then direct ClikB’s AI-assisted, human-in-the-loop orchestration to create AI videos, memes, stories, music videos, and hotspot or spatial interactive video experiences. A conversational AI concierge assists throughout creation with planning and refinement. For one-shot video generation, an editable Three.js Motion Guide layer creates choreography and camera-motion reference videos for compatible AI video models."}]}</script>
+<!-- CLIKB PUBLIC META END -->
+  </head>
+  <body>
+    <div id="clikb-loading-cover" aria-hidden="true">
+      <div class="clikb-loading-logo">
+        <img class="boot-dark" src="/src/s2.png" alt="" />
+        <img class="boot-light" src="/src/s.png" alt="" />
+      </div>
+    </div>
+    <div id="root"></div>
+    <script type="module" src="/src/main.tsx"></script>
+  </body>
+</html>

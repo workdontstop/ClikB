@@ -1,0 +1,79 @@
+/* Light-mode creation material. Geometry, media and dark-mode styles stay with
+   their existing components. The outer shell supplies the frosted backdrop;
+   its small controls do not need another layer of backdrop blur. */
+[data-creation-stage][data-creation-material="light"] {
+  --creation-glass-fill: linear-gradient(135deg, rgba(255, 255, 255, 0.96), rgba(248, 250, 253, 0.94));
+  --creation-control-bg: rgba(255, 255, 255, 0.94);
+  --creation-control-border: rgba(60, 70, 85, 0.12);
+  --creation-control-shadow: 0 2px 8px rgba(45, 57, 75, 0.06);
+  --creation-ratio-background: #f2f4f7;
+  --creation-ratio-border: 2px solid rgba(85, 98, 116, 0.15);
+  --creation-ratio-shadow: 0 2px 6px rgba(45, 57, 75, 0.07);
+  --creation-ratio-label: #454d59;
+  --creation-ratio-text-shadow: none;
+  background: var(--creation-glass-fill);
+  backdrop-filter: blur(22px) saturate(105%);
+  -webkit-backdrop-filter: blur(22px) saturate(105%);
+  border-color: rgba(255, 255, 255, 0.9);
+  box-shadow: inset 0 1px 0 #fff, 0 12px 32px rgba(45, 57, 75, 0.08), 0 1px 3px rgba(45, 57, 75, 0.04);
+}
+
+[data-creation-material="light"][data-creation-stage="preview"],
+[data-creation-material="light"][data-creation-stage="story"] {
+  --creation-glass-fill: linear-gradient(135deg, rgba(255, 255, 255, 0.98), rgba(248, 250, 253, 0.97));
+}
+
+/* Keep these neutral controls separate from mode selection, music state,
+   generation status and the Storybook Auto toggle, which own their colours. */
+[data-creation-stage][data-creation-material="light"] button:is(
+  [data-creation-control="clikb.creation.setup.control.style"],
+  [data-creation-control="clikb.creation.setup.control.models"],
+  [data-creation-control="clikb.creation.setup.control.upload"],
+  [data-creation-control="clikb.creation.setup.control.create"],
+  [data-creation-control="clikb.creation.styles.control.open"],
+  [data-creation-control="clikb.creation.styles.control.close_composer"],
+  [data-creation-control="clikb.creation.storybook_toolbar.control.open_models"],
+  [data-creation-control="clikb.creation.storybook_toolbar.control.slideshow"],
+  [data-creation-control="clikb.creation.storybook_toolbar.control.minimize"],
+  [data-creation-control="clikb.creation.storybook_toolbar.control.close"]
+):not(:disabled):not([aria-disabled="true"]) {
+  background: var(--creation-control-bg);
+  color: #23272e;
+  border-color: var(--creation-control-border);
+  box-shadow: var(--creation-control-shadow);
+  backdrop-filter: none;
+  -webkit-backdrop-filter: none;
+  text-shadow: none;
+}
+
+[data-creation-stage][data-creation-material="light"] button:is(
+  [data-creation-control="clikb.creation.setup.control.style"],
+  [data-creation-control="clikb.creation.setup.control.models"],
+  [data-creation-control="clikb.creation.setup.control.upload"],
+  [data-creation-control="clikb.creation.setup.control.create"],
+  [data-creation-control="clikb.creation.styles.control.open"],
+  [data-creation-control="clikb.creation.styles.control.close_composer"],
+  [data-creation-control="clikb.creation.storybook_toolbar.control.open_models"],
+  [data-creation-control="clikb.creation.storybook_toolbar.control.slideshow"],
+  [data-creation-control="clikb.creation.storybook_toolbar.control.minimize"],
+  [data-creation-control="clikb.creation.storybook_toolbar.control.close"]
+):not(:disabled):not([aria-disabled="true"]):hover {
+  background: #fff;
+  box-shadow: 0 3px 10px rgba(45, 57, 75, 0.08);
+}
+
+[data-creation-stage][data-creation-material="light"] button:is(
+  [data-creation-control="clikb.creation.setup.control.style"],
+  [data-creation-control="clikb.creation.setup.control.models"],
+  [data-creation-control="clikb.creation.setup.control.upload"],
+  [data-creation-control="clikb.creation.setup.control.create"],
+  [data-creation-control="clikb.creation.styles.control.open"],
+  [data-creation-control="clikb.creation.styles.control.close_composer"],
+  [data-creation-control="clikb.creation.storybook_toolbar.control.open_models"],
+  [data-creation-control="clikb.creation.storybook_toolbar.control.slideshow"],
+  [data-creation-control="clikb.creation.storybook_toolbar.control.minimize"],
+  [data-creation-control="clikb.creation.storybook_toolbar.control.close"]
+):not(:disabled):not([aria-disabled="true"]):active {
+  background: #f0f3f7;
+  box-shadow: inset 0 1px 3px rgba(45, 57, 75, 0.06);
+}

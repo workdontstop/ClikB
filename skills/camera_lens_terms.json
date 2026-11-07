@@ -1,0 +1,3299 @@
+{
+  "camera_terms": [
+    {
+      "id": "extreme_long_shot",
+      "term": "Extreme long shot",
+      "aliases": [
+        "extreme wide shot",
+        "ELS",
+        "EWS"
+      ],
+      "category": "Shot size and framing",
+      "definition": "A framing in which the subject is very small within an expansive environment.",
+      "visual_effect": "Environment dominates and scale relationships become explicit.",
+      "emotional_effect": "awe, isolation or vulnerability",
+      "use_when": "Establish geography, spectacle or overwhelming scale.",
+      "prompt_fragment": "extreme long shot, vast environment",
+      "pairs_well_with": [
+        "ultra_wide_angle",
+        "establishing_shot"
+      ],
+      "conflicts_with": [
+        "extreme_close_up"
+      ],
+      "reliability": "high"
+    },
+    {
+      "id": "long_shot",
+      "term": "Long shot",
+      "aliases": [
+        "wide shot",
+        "LS",
+        "WS"
+      ],
+      "category": "Shot size and framing",
+      "definition": "A framing that shows the complete subject with substantial surrounding space.",
+      "visual_effect": "Body, action and environment remain readable together.",
+      "emotional_effect": "openness or observational distance",
+      "use_when": "Show a subject in meaningful surroundings.",
+      "prompt_fragment": "wide shot with full surroundings",
+      "pairs_well_with": [
+        "wide_angle",
+        "deep_focus"
+      ],
+      "conflicts_with": [
+        "big_close_up"
+      ],
+      "reliability": "high"
+    },
+    {
+      "id": "full_shot",
+      "term": "Full shot",
+      "aliases": [
+        "full-body shot"
+      ],
+      "category": "Shot size and framing",
+      "definition": "A framing that contains a standing subject from head to feet with limited margin.",
+      "visual_effect": "The whole body is legible without letting the setting dominate.",
+      "emotional_effect": "neutral observation",
+      "use_when": "Show posture, clothing or full-body gesture.",
+      "prompt_fragment": "full body shot, head to toe",
+      "pairs_well_with": [
+        "eye_level_angle",
+        "normal_focal_length"
+      ],
+      "conflicts_with": [
+        "extreme_close_up"
+      ],
+      "reliability": "high"
+    },
+    {
+      "id": "medium_long_shot",
+      "term": "Medium long shot",
+      "aliases": [
+        "three-quarter shot",
+        "knee shot",
+        "MLS"
+      ],
+      "category": "Shot size and framing",
+      "definition": "A framing that cuts a standing subject around the knees.",
+      "visual_effect": "It balances readable gesture with facial and environmental information.",
+      "emotional_effect": "poise or moderate intimacy",
+      "use_when": "Show body language while keeping the face important.",
+      "prompt_fragment": "medium long shot, knees up",
+      "pairs_well_with": [
+        "eye_height_position",
+        "fifty_mm_lens"
+      ],
+      "conflicts_with": [
+        "big_close_up"
+      ],
+      "reliability": "high"
+    },
+    {
+      "id": "cowboy_shot",
+      "term": "Cowboy shot",
+      "aliases": [
+        "American shot"
+      ],
+      "category": "Shot size and framing",
+      "definition": "A framing that cuts a standing subject around mid-thigh, historically leaving a holster visible.",
+      "visual_effect": "Hands, hips and facial expression share emphasis.",
+      "emotional_effect": "readiness or confrontation",
+      "use_when": "Feature hand action, stance or a waist-level prop.",
+      "prompt_fragment": "cowboy shot, mid thigh framing",
+      "pairs_well_with": [
+        "low_angle",
+        "thirty_five_mm_lens"
+      ],
+      "conflicts_with": [
+        "extreme_long_shot"
+      ],
+      "reliability": "high"
+    },
+    {
+      "id": "medium_shot",
+      "term": "Medium shot",
+      "aliases": [
+        "waist shot",
+        "MS"
+      ],
+      "category": "Shot size and framing",
+      "definition": "A framing that generally shows a person from the waist upward.",
+      "visual_effect": "Expression and upper-body gesture receive balanced attention.",
+      "emotional_effect": "conversational intimacy",
+      "use_when": "Use for dialogue, interviews or character interaction.",
+      "prompt_fragment": "medium shot, waist up",
+      "pairs_well_with": [
+        "eye_level_angle",
+        "fifty_mm_lens"
+      ],
+      "conflicts_with": [
+        "extreme_long_shot"
+      ],
+      "reliability": "high"
+    },
+    {
+      "id": "medium_close_up",
+      "term": "Medium close-up",
+      "aliases": [
+        "MCU"
+      ],
+      "category": "Shot size and framing",
+      "definition": "A framing that generally shows a person from the chest or shoulders upward.",
+      "visual_effect": "The face dominates while posture and context remain partially visible.",
+      "emotional_effect": "connection and attentiveness",
+      "use_when": "Prioritise expression without losing all surroundings.",
+      "prompt_fragment": "medium close-up, chest up",
+      "pairs_well_with": [
+        "eighty_five_mm_lens",
+        "off_camera_eyeline"
+      ],
+      "conflicts_with": [
+        "extreme_long_shot"
+      ],
+      "reliability": "high"
+    },
+    {
+      "id": "close_up",
+      "term": "Close-up",
+      "aliases": [
+        "CU"
+      ],
+      "category": "Shot size and framing",
+      "definition": "A framing in which a face or similarly sized subject detail fills most of the image.",
+      "visual_effect": "Fine expression and texture become visually dominant.",
+      "emotional_effect": "intimacy or intensity",
+      "use_when": "Make an emotion or important object unmistakable.",
+      "prompt_fragment": "close-up portrait, face filling frame",
+      "pairs_well_with": [
+        "eighty_five_mm_lens",
+        "shallow_depth_of_field"
+      ],
+      "conflicts_with": [
+        "long_shot"
+      ],
+      "reliability": "high"
+    },
+    {
+      "id": "big_close_up",
+      "term": "Big close-up",
+      "aliases": [
+        "BCU",
+        "choker"
+      ],
+      "category": "Shot size and framing",
+      "definition": "A framing that fills the image with a face from roughly forehead to chin.",
+      "visual_effect": "Facial micro-expression appears with very little contextual space.",
+      "emotional_effect": "pressure or extreme intimacy",
+      "use_when": "Heighten a reaction without isolating only one feature.",
+      "prompt_fragment": "big close-up, face fills frame",
+      "pairs_well_with": [
+        "one_hundred_mm_lens",
+        "critical_focus"
+      ],
+      "conflicts_with": [
+        "long_shot"
+      ],
+      "reliability": "medium"
+    },
+    {
+      "id": "extreme_close_up",
+      "term": "Extreme close-up",
+      "aliases": [
+        "ECU",
+        "detail close-up"
+      ],
+      "category": "Shot size and framing",
+      "definition": "A framing that isolates a very small feature such as an eye, mouth or mechanism.",
+      "visual_effect": "Texture and minute detail become abstractly large.",
+      "emotional_effect": "tension, fascination or intrusion",
+      "use_when": "Reveal a clue, sensation or precise material detail.",
+      "prompt_fragment": "extreme close-up of tiny detail",
+      "pairs_well_with": [
+        "macro_lens",
+        "one_hundred_mm_lens"
+      ],
+      "conflicts_with": [
+        "extreme_long_shot"
+      ],
+      "reliability": "high"
+    },
+    {
+      "id": "insert_shot",
+      "term": "Insert shot",
+      "aliases": [
+        "insert"
+      ],
+      "category": "Shot size and framing",
+      "definition": "A tightly framed view of an object or action detail intended to carry specific information.",
+      "visual_effect": "A prop, text or small action becomes unmissable.",
+      "emotional_effect": "attention or anticipation",
+      "use_when": "Clarify a story-critical object within a larger scene.",
+      "prompt_fragment": "tight insert shot of key object",
+      "pairs_well_with": [
+        "selective_focus",
+        "macro_lens"
+      ],
+      "conflicts_with": [],
+      "reliability": "high"
+    },
+    {
+      "id": "tight_framing",
+      "term": "Tight framing",
+      "aliases": [
+        "tight shot"
+      ],
+      "category": "Shot size and framing",
+      "definition": "A composition that leaves little unused space between the subject and frame edges.",
+      "visual_effect": "The subject feels visually confined and immediately dominant.",
+      "emotional_effect": "claustrophobia or intensity",
+      "use_when": "Increase pressure or remove distracting context.",
+      "prompt_fragment": "tightly framed subject, minimal headroom",
+      "pairs_well_with": [
+        "close_up",
+        "negative_space"
+      ],
+      "conflicts_with": [
+        "loose_framing"
+      ],
+      "reliability": "high"
+    },
+    {
+      "id": "loose_framing",
+      "term": "Loose framing",
+      "aliases": [
+        "loose shot"
+      ],
+      "category": "Shot size and framing",
+      "definition": "A composition that leaves generous space around the principal subject.",
+      "visual_effect": "Surroundings and empty areas gain visual weight.",
+      "emotional_effect": "freedom, loneliness or calm",
+      "use_when": "Make context or isolation part of the image.",
+      "prompt_fragment": "loosely framed subject, generous surroundings",
+      "pairs_well_with": [
+        "negative_space",
+        "long_shot"
+      ],
+      "conflicts_with": [
+        "tight_framing"
+      ],
+      "reliability": "high"
+    },
+    {
+      "id": "landscape_orientation",
+      "term": "Landscape orientation",
+      "aliases": [
+        "horizontal orientation"
+      ],
+      "category": "Shot size and framing",
+      "definition": "A frame whose width is greater than its height.",
+      "visual_effect": "Horizontal relationships and lateral environments receive more room.",
+      "emotional_effect": "stability or expansiveness",
+      "use_when": "Show groups, landscapes or side-to-side spatial relationships.",
+      "prompt_fragment": "horizontal landscape-oriented frame",
+      "pairs_well_with": [
+        "long_shot",
+        "scope_aspect_ratio"
+      ],
+      "conflicts_with": [
+        "portrait_orientation"
+      ],
+      "reliability": "high"
+    },
+    {
+      "id": "portrait_orientation",
+      "term": "Portrait orientation",
+      "aliases": [
+        "vertical orientation"
+      ],
+      "category": "Shot size and framing",
+      "definition": "A frame whose height is greater than its width.",
+      "visual_effect": "Vertical bodies and height relationships fill the image efficiently.",
+      "emotional_effect": "immediacy or upward energy",
+      "use_when": "Create portraits, fashion images or mobile-first compositions.",
+      "prompt_fragment": "vertical portrait-oriented frame",
+      "pairs_well_with": [
+        "full_shot",
+        "centered_composition"
+      ],
+      "conflicts_with": [
+        "landscape_orientation"
+      ],
+      "reliability": "high"
+    },
+    {
+      "id": "eye_level_angle",
+      "term": "Eye-level angle",
+      "aliases": [
+        "neutral angle"
+      ],
+      "category": "Camera angle",
+      "definition": "The optical axis views the subject from approximately the subject’s eye level without pronounced up- or down-tilt.",
+      "visual_effect": "Vertical proportions appear familiar and minimally judged.",
+      "emotional_effect": "neutrality or equality",
+      "use_when": "Present a subject without imposing obvious dominance.",
+      "prompt_fragment": "eye-level camera angle",
+      "pairs_well_with": [
+        "medium_shot",
+        "fifty_mm_lens"
+      ],
+      "conflicts_with": [
+        "birds_eye_view",
+        "worms_eye_view"
+      ],
+      "reliability": "high"
+    },
+    {
+      "id": "high_angle",
+      "term": "High-angle shot",
+      "aliases": [
+        "high angle"
+      ],
+      "category": "Camera angle",
+      "definition": "The camera looks downward at the subject from above its reference height.",
+      "visual_effect": "The top surfaces become visible and the subject appears reduced.",
+      "emotional_effect": "vulnerability or detachment",
+      "use_when": "Diminish a subject or clarify floor-plan relationships.",
+      "prompt_fragment": "high-angle view looking down",
+      "pairs_well_with": [
+        "above_head_position",
+        "wide_angle"
+      ],
+      "conflicts_with": [
+        "low_angle"
+      ],
+      "reliability": "high"
+    },
+    {
+      "id": "low_angle",
+      "term": "Low-angle shot",
+      "aliases": [
+        "low angle"
+      ],
+      "category": "Camera angle",
+      "definition": "The camera looks upward at the subject from below its reference height.",
+      "visual_effect": "Lower surfaces dominate and the subject rises against the background.",
+      "emotional_effect": "power, threat or admiration",
+      "use_when": "Make a person or structure feel imposing.",
+      "prompt_fragment": "low-angle view looking upward",
+      "pairs_well_with": [
+        "ground_level_position",
+        "wide_angle"
+      ],
+      "conflicts_with": [
+        "high_angle"
+      ],
+      "reliability": "high"
+    },
+    {
+      "id": "overhead_angle",
+      "term": "Overhead shot",
+      "aliases": [
+        "top-down shot",
+        "90-degree overhead"
+      ],
+      "category": "Camera angle",
+      "definition": "The optical axis points almost vertically downward onto the scene.",
+      "visual_effect": "Depth collapses into plan-like shapes and spatial patterns.",
+      "emotional_effect": "control, abstraction or curiosity",
+      "use_when": "Show layouts, choreography, food or graphic arrangements.",
+      "prompt_fragment": "directly overhead top-down view",
+      "pairs_well_with": [
+        "overhead_position",
+        "flat_lay"
+      ],
+      "conflicts_with": [
+        "worms_eye_view"
+      ],
+      "reliability": "high"
+    },
+    {
+      "id": "birds_eye_view",
+      "term": "Bird’s-eye view",
+      "aliases": [
+        "aerial oblique view"
+      ],
+      "category": "Camera angle",
+      "definition": "The camera views the scene from a very high position at a downward oblique angle.",
+      "visual_effect": "Subjects become small within a readable expanse of terrain.",
+      "emotional_effect": "omniscience or awe",
+      "use_when": "Reveal geography while retaining some horizon-facing surfaces.",
+      "prompt_fragment": "bird’s-eye view from high above",
+      "pairs_well_with": [
+        "extreme_long_shot",
+        "above_head_position"
+      ],
+      "conflicts_with": [
+        "worms_eye_view"
+      ],
+      "reliability": "high"
+    },
+    {
+      "id": "worms_eye_view",
+      "term": "Worm’s-eye view",
+      "aliases": [
+        "extreme low angle"
+      ],
+      "category": "Camera angle",
+      "definition": "The camera views upward from at or near ground level.",
+      "visual_effect": "Foreground forms loom and vertical convergence becomes pronounced.",
+      "emotional_effect": "awe, menace or disorientation",
+      "use_when": "Exaggerate height or monumentalise a subject.",
+      "prompt_fragment": "worm’s-eye view from ground",
+      "pairs_well_with": [
+        "ground_level_position",
+        "ultra_wide_angle"
+      ],
+      "conflicts_with": [
+        "birds_eye_view",
+        "overhead_angle"
+      ],
+      "reliability": "high"
+    },
+    {
+      "id": "dutch_angle",
+      "term": "Dutch angle",
+      "aliases": [
+        "canted angle",
+        "Dutch tilt",
+        "oblique angle"
+      ],
+      "category": "Camera angle",
+      "definition": "The camera is rolled so the horizon or verticals are intentionally diagonal.",
+      "visual_effect": "The frame loses normal gravitational alignment.",
+      "emotional_effect": "unease, instability or energy",
+      "use_when": "Signal disorder, danger or psychological imbalance.",
+      "prompt_fragment": "canted Dutch angle composition",
+      "pairs_well_with": [
+        "diagonal_composition",
+        "wide_angle"
+      ],
+      "conflicts_with": [],
+      "reliability": "high"
+    },
+    {
+      "id": "frontal_view",
+      "term": "Frontal view",
+      "aliases": [
+        "front-on angle"
+      ],
+      "category": "Camera angle",
+      "definition": "The camera faces the front plane of the subject nearly square-on.",
+      "visual_effect": "Symmetry and direct shape recognition are strengthened.",
+      "emotional_effect": "confrontation or formality",
+      "use_when": "Show identity, geometry or direct presentation.",
+      "prompt_fragment": "straight-on frontal camera view",
+      "pairs_well_with": [
+        "symmetrical_composition",
+        "direct_to_lens_eyeline"
+      ],
+      "conflicts_with": [
+        "rear_view"
+      ],
+      "reliability": "high"
+    },
+    {
+      "id": "three_quarter_view",
+      "term": "Three-quarter view",
+      "aliases": [
+        "three-quarter angle",
+        "3/4 view"
+      ],
+      "category": "Camera angle",
+      "definition": "The camera sees both the front and one side of the subject.",
+      "visual_effect": "Form gains dimensionality without losing facial or object identity.",
+      "emotional_effect": "natural engagement",
+      "use_when": "Create a dimensional portrait or product view.",
+      "prompt_fragment": "three-quarter camera view",
+      "pairs_well_with": [
+        "medium_close_up",
+        "eighty_five_mm_lens"
+      ],
+      "conflicts_with": [
+        "rear_three_quarter_view"
+      ],
+      "reliability": "high"
+    },
+    {
+      "id": "profile_view",
+      "term": "Profile view",
+      "aliases": [
+        "side view"
+      ],
+      "category": "Camera angle",
+      "definition": "The camera views the subject from approximately ninety degrees to its frontal axis.",
+      "visual_effect": "Silhouette, nose line and lateral gesture become prominent.",
+      "emotional_effect": "distance, contemplation or graphic clarity",
+      "use_when": "Emphasise outline, gaze direction or side-on action.",
+      "prompt_fragment": "strict side-profile view",
+      "pairs_well_with": [
+        "off_camera_eyeline",
+        "negative_space"
+      ],
+      "conflicts_with": [
+        "frontal_view"
+      ],
+      "reliability": "high"
+    },
+    {
+      "id": "rear_three_quarter_view",
+      "term": "Rear three-quarter view",
+      "aliases": [
+        "back three-quarter angle"
+      ],
+      "category": "Camera angle",
+      "definition": "The camera sees the back and one side of the subject.",
+      "visual_effect": "Identity is partly withheld while direction into space remains visible.",
+      "emotional_effect": "mystery or companionship",
+      "use_when": "Follow attention toward a scene without using a full rear view.",
+      "prompt_fragment": "rear three-quarter view",
+      "pairs_well_with": [
+        "off_camera_eyeline",
+        "loose_framing"
+      ],
+      "conflicts_with": [
+        "three_quarter_view"
+      ],
+      "reliability": "medium"
+    },
+    {
+      "id": "rear_view",
+      "term": "Rear view",
+      "aliases": [
+        "back view"
+      ],
+      "category": "Camera angle",
+      "definition": "The camera faces the back plane of the subject nearly square-on.",
+      "visual_effect": "Facial information disappears and the subject’s destination gains emphasis.",
+      "emotional_effect": "mystery, solitude or anticipation",
+      "use_when": "Align the viewer with where the subject is looking.",
+      "prompt_fragment": "straight-on rear view",
+      "pairs_well_with": [
+        "off_camera_eyeline",
+        "centered_composition"
+      ],
+      "conflicts_with": [
+        "frontal_view"
+      ],
+      "reliability": "high"
+    },
+    {
+      "id": "ground_level_position",
+      "term": "Ground-level camera position",
+      "aliases": [
+        "ground-level shot"
+      ],
+      "category": "Camera height and position relative to subject",
+      "definition": "The camera body is positioned at or only centimetres above the supporting surface.",
+      "visual_effect": "Near foreground objects enlarge and the ground plane recedes strongly.",
+      "emotional_effect": "immersion or vulnerability",
+      "use_when": "Emphasise terrain, feet, small subjects or towering structures.",
+      "prompt_fragment": "camera placed at ground level",
+      "pairs_well_with": [
+        "worms_eye_view",
+        "ultra_wide_angle"
+      ],
+      "conflicts_with": [
+        "overhead_position"
+      ],
+      "reliability": "high"
+    },
+    {
+      "id": "ankle_height_position",
+      "term": "Ankle-height camera position",
+      "aliases": [
+        "ankle-level camera"
+      ],
+      "category": "Camera height and position relative to subject",
+      "definition": "The camera is placed around a standing subject’s ankle height.",
+      "visual_effect": "Feet and lower foreground gain prominence while some ground separation remains.",
+      "emotional_effect": "furtiveness or tension",
+      "use_when": "Feature footwear, steps or low obstacles.",
+      "prompt_fragment": "camera at ankle height",
+      "pairs_well_with": [
+        "low_angle",
+        "twenty_four_mm_lens"
+      ],
+      "conflicts_with": [
+        "above_head_position"
+      ],
+      "reliability": "medium"
+    },
+    {
+      "id": "knee_height_position",
+      "term": "Knee-height camera position",
+      "aliases": [
+        "knee-level camera"
+      ],
+      "category": "Camera height and position relative to subject",
+      "definition": "The camera is placed around a standing subject’s knee height.",
+      "visual_effect": "Legs and low furniture become visually assertive without an extreme ground view.",
+      "emotional_effect": "energy or watchfulness",
+      "use_when": "Show movement-ready posture or a child-scale environment.",
+      "prompt_fragment": "camera at knee height",
+      "pairs_well_with": [
+        "cowboy_shot",
+        "thirty_five_mm_lens"
+      ],
+      "conflicts_with": [
+        "overhead_position"
+      ],
+      "reliability": "medium"
+    },
+    {
+      "id": "hip_height_position",
+      "term": "Hip-height camera position",
+      "aliases": [
+        "hip-level camera"
+      ],
+      "category": "Camera height and position relative to subject",
+      "definition": "The camera is placed around a standing subject’s hip height.",
+      "visual_effect": "Hands, waist and nearby surfaces sit near the optical centre.",
+      "emotional_effect": "practical immediacy",
+      "use_when": "Prioritise handwork, counters or waist-level action.",
+      "prompt_fragment": "camera at hip height",
+      "pairs_well_with": [
+        "cowboy_shot",
+        "fifty_mm_lens"
+      ],
+      "conflicts_with": [
+        "above_head_position"
+      ],
+      "reliability": "medium"
+    },
+    {
+      "id": "waist_height_position",
+      "term": "Waist-height camera position",
+      "aliases": [
+        "waist-level camera"
+      ],
+      "category": "Camera height and position relative to subject",
+      "definition": "The camera is placed around the subject’s waist level.",
+      "visual_effect": "Upper and lower body proportions remain balanced with a subtly low viewpoint.",
+      "emotional_effect": "grounded neutrality",
+      "use_when": "Photograph seated groups, tables or full figures without eye-height formality.",
+      "prompt_fragment": "camera at waist height",
+      "pairs_well_with": [
+        "full_shot",
+        "normal_focal_length"
+      ],
+      "conflicts_with": [
+        "overhead_position"
+      ],
+      "reliability": "medium"
+    },
+    {
+      "id": "chest_height_position",
+      "term": "Chest-height camera position",
+      "aliases": [
+        "chest-level camera"
+      ],
+      "category": "Camera height and position relative to subject",
+      "definition": "The camera is placed around the subject’s chest height.",
+      "visual_effect": "The torso aligns centrally and facial perspective remains restrained.",
+      "emotional_effect": "closeness or candour",
+      "use_when": "Create natural portraits slightly below eye level.",
+      "prompt_fragment": "camera at chest height",
+      "pairs_well_with": [
+        "medium_shot",
+        "fifty_mm_lens"
+      ],
+      "conflicts_with": [
+        "ground_level_position"
+      ],
+      "reliability": "medium"
+    },
+    {
+      "id": "shoulder_height_position",
+      "term": "Shoulder-height camera position",
+      "aliases": [
+        "shoulder-level camera"
+      ],
+      "category": "Camera height and position relative to subject",
+      "definition": "The camera is placed around the subject’s shoulder height.",
+      "visual_effect": "The viewpoint approaches conversational height while retaining a small upward bias.",
+      "emotional_effect": "presence or equality",
+      "use_when": "Frame standing dialogue or documentary portraits.",
+      "prompt_fragment": "camera at shoulder height",
+      "pairs_well_with": [
+        "medium_close_up",
+        "off_camera_eyeline"
+      ],
+      "conflicts_with": [
+        "ground_level_position"
+      ],
+      "reliability": "medium"
+    },
+    {
+      "id": "eye_height_position",
+      "term": "Eye-height camera position",
+      "aliases": [
+        "eye-line camera height"
+      ],
+      "category": "Camera height and position relative to subject",
+      "definition": "The lens entrance pupil is positioned near the subject’s eyes.",
+      "visual_effect": "Facial proportions and interpersonal height cues appear familiar.",
+      "emotional_effect": "equality or directness",
+      "use_when": "Make portraits and conversations feel natural.",
+      "prompt_fragment": "lens positioned at eye height",
+      "pairs_well_with": [
+        "eye_level_angle",
+        "direct_to_lens_eyeline"
+      ],
+      "conflicts_with": [
+        "ground_level_position"
+      ],
+      "reliability": "high"
+    },
+    {
+      "id": "above_head_position",
+      "term": "Above-head camera position",
+      "aliases": [
+        "elevated camera position"
+      ],
+      "category": "Camera height and position relative to subject",
+      "definition": "The camera is positioned above the subject’s head but not necessarily directly overhead.",
+      "visual_effect": "More hair, shoulders and surrounding floor enter the image.",
+      "emotional_effect": "observation or vulnerability",
+      "use_when": "Look over crowds, reveal working surfaces or reduce subject dominance.",
+      "prompt_fragment": "camera raised above subject",
+      "pairs_well_with": [
+        "high_angle",
+        "wide_angle"
+      ],
+      "conflicts_with": [
+        "ankle_height_position"
+      ],
+      "reliability": "high"
+    },
+    {
+      "id": "overhead_position",
+      "term": "Overhead camera position",
+      "aliases": [
+        "ceiling position"
+      ],
+      "category": "Camera height and position relative to subject",
+      "definition": "The camera is physically positioned directly above the subject or scene.",
+      "visual_effect": "Objects align against the ground plane with minimal lateral occlusion.",
+      "emotional_effect": "order or abstraction",
+      "use_when": "Create maps, layouts, flat lays or geometric scenes.",
+      "prompt_fragment": "camera directly above scene",
+      "pairs_well_with": [
+        "overhead_angle",
+        "flat_lay"
+      ],
+      "conflicts_with": [
+        "ground_level_position"
+      ],
+      "reliability": "high"
+    },
+    {
+      "id": "single_subject_framing",
+      "term": "Single",
+      "aliases": [
+        "one-shot",
+        "single shot"
+      ],
+      "category": "Subject framing, blocking and eyeline",
+      "definition": "A frame contains one principal human subject without another comparably important person.",
+      "visual_effect": "Attention concentrates on one character’s expression and body language.",
+      "emotional_effect": "intimacy or isolation",
+      "use_when": "Give one person uncontested narrative emphasis.",
+      "prompt_fragment": "single subject alone in frame",
+      "pairs_well_with": [
+        "medium_close_up",
+        "clean_single"
+      ],
+      "conflicts_with": [
+        "two_shot",
+        "three_shot"
+      ],
+      "reliability": "high"
+    },
+    {
+      "id": "two_shot",
+      "term": "Two-shot",
+      "aliases": [
+        "two shot"
+      ],
+      "category": "Subject framing, blocking and eyeline",
+      "definition": "A frame composes two principal subjects together.",
+      "visual_effect": "Relationship, distance and relative status become visible at once.",
+      "emotional_effect": "connection, tension or comparison",
+      "use_when": "Show interaction without cutting between individuals.",
+      "prompt_fragment": "two people composed together",
+      "pairs_well_with": [
+        "medium_shot",
+        "depth_staging"
+      ],
+      "conflicts_with": [
+        "single_subject_framing"
+      ],
+      "reliability": "high"
+    },
+    {
+      "id": "three_shot",
+      "term": "Three-shot",
+      "aliases": [
+        "three shot"
+      ],
+      "category": "Subject framing, blocking and eyeline",
+      "definition": "A frame composes three principal subjects together.",
+      "visual_effect": "A triangular or linear relationship structure becomes readable.",
+      "emotional_effect": "group tension or solidarity",
+      "use_when": "Show a three-person exchange or hierarchy.",
+      "prompt_fragment": "three people sharing one frame",
+      "pairs_well_with": [
+        "triangular_composition",
+        "medium_long_shot"
+      ],
+      "conflicts_with": [
+        "single_subject_framing"
+      ],
+      "reliability": "high"
+    },
+    {
+      "id": "group_shot",
+      "term": "Group shot",
+      "aliases": [
+        "ensemble shot"
+      ],
+      "category": "Subject framing, blocking and eyeline",
+      "definition": "A frame contains four or more principal people as a coordinated visual group.",
+      "visual_effect": "Collective arrangement and internal hierarchy dominate individual detail.",
+      "emotional_effect": "community, ceremony or crowd pressure",
+      "use_when": "Present a team, family, cast or gathering.",
+      "prompt_fragment": "group portrait, everyone visible",
+      "pairs_well_with": [
+        "rule_of_odds",
+        "deep_focus"
+      ],
+      "conflicts_with": [
+        "single_subject_framing"
+      ],
+      "reliability": "high"
+    },
+    {
+      "id": "over_the_shoulder_shot",
+      "term": "Over-the-shoulder shot",
+      "aliases": [
+        "OTS"
+      ],
+      "category": "Subject framing, blocking and eyeline",
+      "definition": "The camera frames a subject beyond the partial head or shoulder of another person in the foreground.",
+      "visual_effect": "Foreground overlap establishes conversational geography and affiliation.",
+      "emotional_effect": "involvement or tension",
+      "use_when": "Anchor dialogue to one participant’s physical viewpoint.",
+      "prompt_fragment": "classic over-the-shoulder composition",
+      "pairs_well_with": [
+        "medium_close_up",
+        "foreground_occlusion"
+      ],
+      "conflicts_with": [
+        "clean_single"
+      ],
+      "reliability": "high"
+    },
+    {
+      "id": "dirty_single",
+      "term": "Dirty single",
+      "aliases": [
+        "dirty close-up"
+      ],
+      "category": "Subject framing, blocking and eyeline",
+      "definition": "A single-subject framing retains a small out-of-focus portion of another person at a frame edge.",
+      "visual_effect": "The featured subject remains dominant while the partner’s presence persists.",
+      "emotional_effect": "connection or pressure",
+      "use_when": "Preserve relational context in a reaction portrait.",
+      "prompt_fragment": "dirty single with foreground shoulder",
+      "pairs_well_with": [
+        "shallow_depth_of_field",
+        "off_camera_eyeline"
+      ],
+      "conflicts_with": [
+        "clean_single"
+      ],
+      "reliability": "medium"
+    },
+    {
+      "id": "clean_single",
+      "term": "Clean single",
+      "aliases": [
+        "clean close-up"
+      ],
+      "category": "Subject framing, blocking and eyeline",
+      "definition": "A single-subject framing excludes other scene partners from the visible frame.",
+      "visual_effect": "The subject’s reaction is isolated from conversational foreground elements.",
+      "emotional_effect": "clarity or isolation",
+      "use_when": "Give an individual an undistracted reaction image.",
+      "prompt_fragment": "clean single, subject unobstructed",
+      "pairs_well_with": [
+        "single_subject_framing",
+        "medium_close_up"
+      ],
+      "conflicts_with": [
+        "dirty_single",
+        "over_the_shoulder_shot"
+      ],
+      "reliability": "high"
+    },
+    {
+      "id": "profile_two_shot",
+      "term": "Profile two-shot",
+      "aliases": [
+        "two-profile shot"
+      ],
+      "category": "Subject framing, blocking and eyeline",
+      "definition": "Two subjects are framed together largely in opposing profile.",
+      "visual_effect": "Faces and the space between them form a graphic relational axis.",
+      "emotional_effect": "confrontation, intimacy or balance",
+      "use_when": "Stage dialogue, a kiss or a face-off symmetrically.",
+      "prompt_fragment": "two subjects facing in profile",
+      "pairs_well_with": [
+        "symmetrical_composition",
+        "medium_shot"
+      ],
+      "conflicts_with": [],
+      "reliability": "high"
+    },
+    {
+      "id": "depth_staging",
+      "term": "Depth staging",
+      "aliases": [
+        "deep staging"
+      ],
+      "category": "Subject framing, blocking and eyeline",
+      "definition": "Subjects are blocked at deliberately different distances from the camera within one composition.",
+      "visual_effect": "Near-far scale differences create layered spatial hierarchy.",
+      "emotional_effect": "complexity or dramatic separation",
+      "use_when": "Show simultaneous relationships across foreground and background.",
+      "prompt_fragment": "subjects staged across foreground and background",
+      "pairs_well_with": [
+        "deep_focus",
+        "foreground_midground_background"
+      ],
+      "conflicts_with": [],
+      "reliability": "medium"
+    },
+    {
+      "id": "foreground_occlusion",
+      "term": "Foreground occlusion",
+      "aliases": [
+        "foreground obstruction"
+      ],
+      "category": "Subject framing, blocking and eyeline",
+      "definition": "A nearer object partially blocks the principal subject or scene.",
+      "visual_effect": "The viewer sees through or around an intervening layer.",
+      "emotional_effect": "voyeurism, intimacy or concealment",
+      "use_when": "Suggest observation, enclosure or physical depth.",
+      "prompt_fragment": "partially obscured by foreground object",
+      "pairs_well_with": [
+        "frame_within_frame",
+        "shallow_depth_of_field"
+      ],
+      "conflicts_with": [
+        "clean_single"
+      ],
+      "reliability": "high"
+    },
+    {
+      "id": "direct_to_lens_eyeline",
+      "term": "Direct-to-lens eyeline",
+      "aliases": [
+        "camera look",
+        "direct address"
+      ],
+      "category": "Subject framing, blocking and eyeline",
+      "definition": "The subject’s eyes look directly into the camera lens.",
+      "visual_effect": "The gaze meets the viewer without visible angular offset.",
+      "emotional_effect": "confrontation, trust or intimacy",
+      "use_when": "Create direct address, fashion impact or self-aware portraiture.",
+      "prompt_fragment": "subject looking directly into lens",
+      "pairs_well_with": [
+        "frontal_view",
+        "centered_composition"
+      ],
+      "conflicts_with": [
+        "off_camera_eyeline"
+      ],
+      "reliability": "high"
+    },
+    {
+      "id": "off_camera_eyeline",
+      "term": "Off-camera eyeline",
+      "aliases": [
+        "off-screen look"
+      ],
+      "category": "Subject framing, blocking and eyeline",
+      "definition": "The subject looks toward a point outside the frame rather than into the lens.",
+      "visual_effect": "Gaze direction activates unseen space beyond an edge.",
+      "emotional_effect": "curiosity, anticipation or distance",
+      "use_when": "Imply another person, object or event outside the image.",
+      "prompt_fragment": "subject looking beyond the frame",
+      "pairs_well_with": [
+        "rule_of_thirds",
+        "negative_space"
+      ],
+      "conflicts_with": [
+        "direct_to_lens_eyeline"
+      ],
+      "reliability": "high"
+    },
+    {
+      "id": "rule_of_thirds",
+      "term": "Rule of thirds",
+      "aliases": [
+        "thirds grid"
+      ],
+      "category": "Composition systems and rules",
+      "definition": "The frame is divided into thirds horizontally and vertically and key elements are placed near the resulting lines or intersections.",
+      "visual_effect": "The subject sits off-centre within an easily read spatial balance.",
+      "emotional_effect": "natural balance or openness",
+      "use_when": "Create a clear composition with room for context or gaze.",
+      "prompt_fragment": "rule of thirds composition",
+      "pairs_well_with": [
+        "off_camera_eyeline",
+        "negative_space"
+      ],
+      "conflicts_with": [],
+      "reliability": "high"
+    },
+    {
+      "id": "centered_composition",
+      "term": "Centered composition",
+      "aliases": [
+        "central composition"
+      ],
+      "category": "Composition systems and rules",
+      "definition": "The primary subject or dominant axis is placed at the geometric centre of the frame.",
+      "visual_effect": "Visual weight becomes immediate, frontal and stable.",
+      "emotional_effect": "authority, calm or confrontation",
+      "use_when": "Emphasise symmetry, iconography or direct address.",
+      "prompt_fragment": "subject centered in frame",
+      "pairs_well_with": [
+        "symmetrical_composition",
+        "frontal_view"
+      ],
+      "conflicts_with": [],
+      "reliability": "high"
+    },
+    {
+      "id": "symmetrical_composition",
+      "term": "Symmetrical composition",
+      "aliases": [
+        "formal symmetry"
+      ],
+      "category": "Composition systems and rules",
+      "definition": "Visual elements mirror or closely balance across a central axis.",
+      "visual_effect": "The frame appears ordered and deliberately controlled.",
+      "emotional_effect": "calm, grandeur or unease",
+      "use_when": "Highlight architecture, ceremony or rigid control.",
+      "prompt_fragment": "perfectly symmetrical composition",
+      "pairs_well_with": [
+        "centered_composition",
+        "one_point_perspective"
+      ],
+      "conflicts_with": [
+        "asymmetrical_balance"
+      ],
+      "reliability": "high"
+    },
+    {
+      "id": "asymmetrical_balance",
+      "term": "Asymmetrical balance",
+      "aliases": [
+        "informal balance"
+      ],
+      "category": "Composition systems and rules",
+      "definition": "Unequal elements are arranged so their differing visual weights still stabilise the frame.",
+      "visual_effect": "The image feels balanced without mirroring or centring.",
+      "emotional_effect": "energy or naturalism",
+      "use_when": "Create tension and interest while retaining coherence.",
+      "prompt_fragment": "balanced asymmetrical composition",
+      "pairs_well_with": [
+        "negative_space",
+        "rule_of_thirds"
+      ],
+      "conflicts_with": [
+        "symmetrical_composition"
+      ],
+      "reliability": "medium"
+    },
+    {
+      "id": "leading_lines",
+      "term": "Leading lines",
+      "aliases": [
+        "directional lines"
+      ],
+      "category": "Composition systems and rules",
+      "definition": "Visible lines or aligned forms direct attention toward a chosen subject or depth point.",
+      "visual_effect": "The eye follows a controlled route through the image.",
+      "emotional_effect": "momentum or inevitability",
+      "use_when": "Guide attention through roads, rails, shadows or architecture.",
+      "prompt_fragment": "strong leading lines toward subject",
+      "pairs_well_with": [
+        "one_point_perspective",
+        "deep_focus"
+      ],
+      "conflicts_with": [],
+      "reliability": "high"
+    },
+    {
+      "id": "diagonal_composition",
+      "term": "Diagonal composition",
+      "aliases": [
+        "diagonal method"
+      ],
+      "category": "Composition systems and rules",
+      "definition": "Dominant subjects or structural lines run diagonally across the frame.",
+      "visual_effect": "The image gains directional force and reduced static balance.",
+      "emotional_effect": "energy, conflict or instability",
+      "use_when": "Add movement-like tension to a static image.",
+      "prompt_fragment": "strong diagonal composition",
+      "pairs_well_with": [
+        "dutch_angle",
+        "leading_lines"
+      ],
+      "conflicts_with": [],
+      "reliability": "high"
+    },
+    {
+      "id": "triangular_composition",
+      "term": "Triangular composition",
+      "aliases": [
+        "pyramid composition"
+      ],
+      "category": "Composition systems and rules",
+      "definition": "Three dominant points or subjects form an implied triangle within the frame.",
+      "visual_effect": "The eye circulates among three anchors while the base supplies stability.",
+      "emotional_effect": "unity, hierarchy or classical order",
+      "use_when": "Organise three people or major shapes coherently.",
+      "prompt_fragment": "subjects arranged in a triangle",
+      "pairs_well_with": [
+        "three_shot",
+        "asymmetrical_balance"
+      ],
+      "conflicts_with": [],
+      "reliability": "medium"
+    },
+    {
+      "id": "frame_within_frame",
+      "term": "Frame within a frame",
+      "aliases": [
+        "internal framing"
+      ],
+      "category": "Composition systems and rules",
+      "definition": "A visible foreground or architectural boundary encloses the principal subject inside the outer image frame.",
+      "visual_effect": "Nested borders concentrate attention and add depth.",
+      "emotional_effect": "intimacy, surveillance or containment",
+      "use_when": "Use doors, windows, mirrors or foliage to isolate a subject.",
+      "prompt_fragment": "subject framed within doorway",
+      "pairs_well_with": [
+        "foreground_occlusion",
+        "deep_focus"
+      ],
+      "conflicts_with": [],
+      "reliability": "high"
+    },
+    {
+      "id": "negative_space",
+      "term": "Negative space",
+      "aliases": [
+        "active empty space"
+      ],
+      "category": "Composition systems and rules",
+      "definition": "A substantial area around the subject contains little visual detail or competing information.",
+      "visual_effect": "The subject gains emphasis through surrounding emptiness.",
+      "emotional_effect": "calm, loneliness or suspense",
+      "use_when": "Leave room for gaze, text or environmental scale.",
+      "prompt_fragment": "large negative space around subject",
+      "pairs_well_with": [
+        "loose_framing",
+        "off_camera_eyeline"
+      ],
+      "conflicts_with": [
+        "tight_framing"
+      ],
+      "reliability": "high"
+    },
+    {
+      "id": "foreground_midground_background",
+      "term": "Foreground–midground–background composition",
+      "aliases": [
+        "three-layer composition"
+      ],
+      "category": "Composition systems and rules",
+      "definition": "Distinct visual elements occupy near, middle and far depth zones.",
+      "visual_effect": "The image reads as a layered volume rather than a flat plane.",
+      "emotional_effect": "immersion or richness",
+      "use_when": "Build spatial depth in landscapes, interiors or ensembles.",
+      "prompt_fragment": "clear foreground, midground and background",
+      "pairs_well_with": [
+        "deep_focus",
+        "wide_angle"
+      ],
+      "conflicts_with": [],
+      "reliability": "high"
+    },
+    {
+      "id": "rule_of_odds",
+      "term": "Rule of odds",
+      "aliases": [
+        "odd-number composition"
+      ],
+      "category": "Composition systems and rules",
+      "definition": "An odd number of similar subjects is arranged as the principal grouping.",
+      "visual_effect": "The grouping resists simple pairing and often centres one element.",
+      "emotional_effect": "organic balance",
+      "use_when": "Compose flowers, products or small groups with visual variety.",
+      "prompt_fragment": "odd number of subjects arranged",
+      "pairs_well_with": [
+        "group_shot",
+        "triangular_composition"
+      ],
+      "conflicts_with": [],
+      "reliability": "medium"
+    },
+    {
+      "id": "repetition_and_pattern",
+      "term": "Repetition and pattern",
+      "aliases": [
+        "pattern composition"
+      ],
+      "category": "Composition systems and rules",
+      "definition": "Repeated shapes, colours or intervals form a dominant organising structure.",
+      "visual_effect": "Rhythm and regularity spread across the frame.",
+      "emotional_effect": "order, pleasure or monotony",
+      "use_when": "Emphasise architecture, crowds, products or natural texture.",
+      "prompt_fragment": "repeating visual pattern across frame",
+      "pairs_well_with": [
+        "radial_composition",
+        "deep_focus"
+      ],
+      "conflicts_with": [],
+      "reliability": "high"
+    },
+    {
+      "id": "radial_composition",
+      "term": "Radial composition",
+      "aliases": [
+        "radiating composition"
+      ],
+      "category": "Composition systems and rules",
+      "definition": "Lines or repeated elements spread outward from or converge toward a central point.",
+      "visual_effect": "Attention is pulled strongly toward a hub.",
+      "emotional_effect": "focus, force or spectacle",
+      "use_when": "Compose wheels, staircases, flowers or converging groups.",
+      "prompt_fragment": "radial composition around central point",
+      "pairs_well_with": [
+        "centered_composition",
+        "leading_lines"
+      ],
+      "conflicts_with": [],
+      "reliability": "medium"
+    },
+    {
+      "id": "s_curve_composition",
+      "term": "S-curve composition",
+      "aliases": [
+        "serpentine composition"
+      ],
+      "category": "Composition systems and rules",
+      "definition": "A subject boundary or leading line follows an S-shaped path through the frame.",
+      "visual_effect": "The gaze moves gradually between foreground and distance.",
+      "emotional_effect": "grace, calm or sensuality",
+      "use_when": "Guide the eye through roads, bodies, rivers or fabric.",
+      "prompt_fragment": "graceful S-curve through composition",
+      "pairs_well_with": [
+        "leading_lines",
+        "long_shot"
+      ],
+      "conflicts_with": [],
+      "reliability": "medium"
+    },
+    {
+      "id": "one_point_perspective",
+      "term": "One-point perspective",
+      "aliases": [
+        "single-point perspective"
+      ],
+      "category": "Composition systems and rules",
+      "definition": "Parallel receding lines converge toward one dominant vanishing point.",
+      "visual_effect": "Depth becomes graphic, centred and strongly directional.",
+      "emotional_effect": "order, immersion or inevitability",
+      "use_when": "Show corridors, roads or architecture with forceful depth.",
+      "prompt_fragment": "one-point perspective, central vanishing point",
+      "pairs_well_with": [
+        "leading_lines",
+        "symmetrical_composition"
+      ],
+      "conflicts_with": [],
+      "reliability": "high"
+    },
+    {
+      "id": "shallow_depth_of_field",
+      "term": "Shallow depth of field",
+      "aliases": [
+        "shallow focus"
+      ],
+      "category": "Focus, depth of field and plane control",
+      "definition": "Only a narrow distance range around the focus plane is acceptably sharp.",
+      "visual_effect": "The subject separates from a blurred foreground and background.",
+      "emotional_effect": "intimacy, romance or concentration",
+      "use_when": "Isolate one subject or suppress distracting context.",
+      "prompt_fragment": "shallow depth of field, sharp subject",
+      "pairs_well_with": [
+        "wide_open_aperture",
+        "eighty_five_mm_lens"
+      ],
+      "conflicts_with": [
+        "deep_focus"
+      ],
+      "reliability": "high"
+    },
+    {
+      "id": "deep_focus",
+      "term": "Deep focus",
+      "aliases": [
+        "deep depth of field",
+        "pan focus"
+      ],
+      "category": "Focus, depth of field and plane control",
+      "definition": "Near, middle and distant scene elements are all rendered acceptably sharp.",
+      "visual_effect": "Multiple depth layers remain simultaneously readable.",
+      "emotional_effect": "clarity, realism or complexity",
+      "use_when": "Let viewers inspect relationships across the whole scene.",
+      "prompt_fragment": "deep focus from foreground to background",
+      "pairs_well_with": [
+        "stopped_down_aperture",
+        "hyperfocal_focus"
+      ],
+      "conflicts_with": [
+        "shallow_depth_of_field"
+      ],
+      "reliability": "high"
+    },
+    {
+      "id": "selective_focus",
+      "term": "Selective focus",
+      "aliases": [
+        "differential focus"
+      ],
+      "category": "Focus, depth of field and plane control",
+      "definition": "Focus is deliberately restricted to one chosen subject while competing planes remain soft.",
+      "visual_effect": "A precise visual priority emerges within a layered scene.",
+      "emotional_effect": "attention or intimacy",
+      "use_when": "Direct the eye to one face, object or detail.",
+      "prompt_fragment": "selective focus on main subject",
+      "pairs_well_with": [
+        "shallow_depth_of_field",
+        "insert_shot"
+      ],
+      "conflicts_with": [
+        "deep_focus"
+      ],
+      "reliability": "high"
+    },
+    {
+      "id": "hyperfocal_focus",
+      "term": "Hyperfocal focus",
+      "aliases": [
+        "hyperfocal distance"
+      ],
+      "category": "Focus, depth of field and plane control",
+      "definition": "The lens is focused at the distance that extends acceptable sharpness from roughly half that distance to infinity.",
+      "visual_effect": "Maximum practical near-to-far sharpness is obtained for a chosen aperture.",
+      "emotional_effect": "expansiveness or clarity",
+      "use_when": "Photograph landscapes, streets or fast scenes without refocusing.",
+      "prompt_fragment": "hyperfocal focus, near to infinity",
+      "pairs_well_with": [
+        "wide_angle",
+        "stopped_down_aperture"
+      ],
+      "conflicts_with": [
+        "macro_focus"
+      ],
+      "reliability": "medium"
+    },
+    {
+      "id": "zone_focus",
+      "term": "Zone focus",
+      "aliases": [
+        "scale focus"
+      ],
+      "category": "Focus, depth of field and plane control",
+      "definition": "Focus is preset so an anticipated distance interval falls within acceptable depth of field.",
+      "visual_effect": "Subjects entering the chosen distance zone appear sharp without visible focus searching.",
+      "emotional_effect": "spontaneity or documentary immediacy",
+      "use_when": "Work quickly in street, reportage or unpredictable situations.",
+      "prompt_fragment": "zone focus with broad sharp range",
+      "pairs_well_with": [
+        "moderate_wide_angle",
+        "stopped_down_aperture"
+      ],
+      "conflicts_with": [],
+      "reliability": "medium"
+    },
+    {
+      "id": "infinity_focus",
+      "term": "Infinity focus",
+      "aliases": [
+        "focus at infinity"
+      ],
+      "category": "Focus, depth of field and plane control",
+      "definition": "The focus setting places very distant subjects at the image plane.",
+      "visual_effect": "Distant landscapes, stars or horizons become sharp while near objects soften.",
+      "emotional_effect": "vastness or remoteness",
+      "use_when": "Photograph celestial or very distant subjects.",
+      "prompt_fragment": "sharp focus at infinity",
+      "pairs_well_with": [
+        "long_shot",
+        "long_telephoto_focal_length"
+      ],
+      "conflicts_with": [
+        "macro_focus"
+      ],
+      "reliability": "high"
+    },
+    {
+      "id": "macro_focus",
+      "term": "Macro focus",
+      "aliases": [
+        "close focus"
+      ],
+      "category": "Focus, depth of field and plane control",
+      "definition": "The focus distance is set extremely close for high subject magnification.",
+      "visual_effect": "Tiny textures fill the frame and depth of field becomes very narrow.",
+      "emotional_effect": "fascination or scrutiny",
+      "use_when": "Reveal small products, organisms or surface detail.",
+      "prompt_fragment": "extreme macro focus on texture",
+      "pairs_well_with": [
+        "macro_lens",
+        "extreme_close_up"
+      ],
+      "conflicts_with": [
+        "infinity_focus",
+        "hyperfocal_focus"
+      ],
+      "reliability": "high"
+    },
+    {
+      "id": "tilted_focus_plane",
+      "term": "Tilted focus plane",
+      "aliases": [
+        "Scheimpflug focus"
+      ],
+      "category": "Focus, depth of field and plane control",
+      "definition": "The lens plane is tilted relative to the sensor so the focus plane rotates through the scene.",
+      "visual_effect": "A diagonal or receding surface can remain sharp while adjacent regions blur.",
+      "emotional_effect": "uncanny precision or stylisation",
+      "use_when": "Align focus with a tabletop, landscape plane or selective wedge.",
+      "prompt_fragment": "tilted plane of sharp focus",
+      "pairs_well_with": [
+        "tilt_shift_lens",
+        "selective_focus"
+      ],
+      "conflicts_with": [],
+      "reliability": "low"
+    },
+    {
+      "id": "focus_stacking",
+      "term": "Focus stacking",
+      "aliases": [
+        "focus merge"
+      ],
+      "category": "Focus, depth of field and plane control",
+      "definition": "Multiple fixed-camera exposures focused at different distances are combined into one image.",
+      "visual_effect": "Extreme near-to-far sharpness appears beyond a single exposure’s depth of field.",
+      "emotional_effect": "clarity or hyperreality",
+      "use_when": "Render macro products, specimens or landscapes entirely sharp.",
+      "prompt_fragment": "focus-stacked, everything critically sharp",
+      "pairs_well_with": [
+        "macro_lens",
+        "deep_focus"
+      ],
+      "conflicts_with": [
+        "shallow_depth_of_field"
+      ],
+      "reliability": "medium"
+    },
+    {
+      "id": "critical_focus",
+      "term": "Critical focus",
+      "aliases": [
+        "tack focus"
+      ],
+      "category": "Focus, depth of field and plane control",
+      "definition": "Focus is placed with maximum precision on the image’s most important fine detail.",
+      "visual_effect": "The chosen feature appears decisively sharp against any softer regions.",
+      "emotional_effect": "clarity or intensity",
+      "use_when": "Make eyes, text or product details incontrovertibly sharp.",
+      "prompt_fragment": "critical focus on nearest eye",
+      "pairs_well_with": [
+        "close_up",
+        "selective_focus"
+      ],
+      "conflicts_with": [],
+      "reliability": "high"
+    },
+    {
+      "id": "underexposure",
+      "term": "Underexposure",
+      "aliases": [
+        "underexposed capture"
+      ],
+      "category": "Exposure, contrast and lighting-driven camera choices",
+      "definition": "The sensor or film receives less exposure than a neutral rendering would require.",
+      "visual_effect": "Midtones and shadows darken and may lose detail.",
+      "emotional_effect": "gloom, secrecy or heaviness",
+      "use_when": "Protect highlights or create a deliberately dark image.",
+      "prompt_fragment": "deliberately underexposed dark image",
+      "pairs_well_with": [
+        "low_key_capture",
+        "silhouette_exposure"
+      ],
+      "conflicts_with": [
+        "overexposure"
+      ],
+      "reliability": "high"
+    },
+    {
+      "id": "overexposure",
+      "term": "Overexposure",
+      "aliases": [
+        "overexposed capture"
+      ],
+      "category": "Exposure, contrast and lighting-driven camera choices",
+      "definition": "The sensor or film receives more exposure than a neutral rendering would require.",
+      "visual_effect": "Highlights brighten, wash out or clip while shadows lift.",
+      "emotional_effect": "dreaminess, heat or fragility",
+      "use_when": "Create an airy wash or sacrifice highlights intentionally.",
+      "prompt_fragment": "deliberately overexposed bright image",
+      "pairs_well_with": [
+        "high_key_capture",
+        "low_contrast_capture"
+      ],
+      "conflicts_with": [
+        "underexposure"
+      ],
+      "reliability": "high"
+    },
+    {
+      "id": "highlight_priority_exposure",
+      "term": "Expose for the highlights",
+      "aliases": [
+        "highlight-weighted exposure"
+      ],
+      "category": "Exposure, contrast and lighting-driven camera choices",
+      "definition": "Exposure is set to retain texture in the brightest important region.",
+      "visual_effect": "Bright areas keep detail while midtones and shadows fall darker.",
+      "emotional_effect": "restraint or drama",
+      "use_when": "Preserve windows, skies, flames or pale clothing.",
+      "prompt_fragment": "exposed for detailed highlights",
+      "pairs_well_with": [
+        "high_contrast_capture",
+        "silhouette_exposure"
+      ],
+      "conflicts_with": [
+        "shadow_priority_exposure"
+      ],
+      "reliability": "medium"
+    },
+    {
+      "id": "shadow_priority_exposure",
+      "term": "Expose for the shadows",
+      "aliases": [
+        "shadow-weighted exposure"
+      ],
+      "category": "Exposure, contrast and lighting-driven camera choices",
+      "definition": "Exposure is set to retain texture in the darkest important region.",
+      "visual_effect": "Shadow detail opens while bright areas approach clipping.",
+      "emotional_effect": "openness or softness",
+      "use_when": "Reveal dark interiors, faces in shade or low-key textures.",
+      "prompt_fragment": "exposed for detailed shadows",
+      "pairs_well_with": [
+        "low_contrast_capture",
+        "high_iso_capture"
+      ],
+      "conflicts_with": [
+        "highlight_priority_exposure"
+      ],
+      "reliability": "medium"
+    },
+    {
+      "id": "silhouette_exposure",
+      "term": "Silhouette exposure",
+      "aliases": [
+        "expose for background"
+      ],
+      "category": "Exposure, contrast and lighting-driven camera choices",
+      "definition": "Exposure is based on a bright background so the unlit foreground subject records very dark.",
+      "visual_effect": "The subject becomes a simplified outline against a luminous field.",
+      "emotional_effect": "mystery, drama or universality",
+      "use_when": "Hide identity while emphasising pose or shape.",
+      "prompt_fragment": "dark silhouette against bright background",
+      "pairs_well_with": [
+        "profile_view",
+        "highlight_priority_exposure"
+      ],
+      "conflicts_with": [],
+      "reliability": "high"
+    },
+    {
+      "id": "high_key_capture",
+      "term": "High-key capture",
+      "aliases": [
+        "high-key exposure"
+      ],
+      "category": "Exposure, contrast and lighting-driven camera choices",
+      "definition": "Lighting and exposure place most tonal values in the bright range with limited dark shadow.",
+      "visual_effect": "The frame appears luminous, clean and low in dark-area weight.",
+      "emotional_effect": "optimism, innocence or clinical clarity",
+      "use_when": "Create beauty, comedy, advertising or clean product imagery.",
+      "prompt_fragment": "bright high-key photography",
+      "pairs_well_with": [
+        "overexposure",
+        "low_contrast_capture"
+      ],
+      "conflicts_with": [
+        "low_key_capture"
+      ],
+      "reliability": "high"
+    },
+    {
+      "id": "low_key_capture",
+      "term": "Low-key capture",
+      "aliases": [
+        "low-key exposure"
+      ],
+      "category": "Exposure, contrast and lighting-driven camera choices",
+      "definition": "Lighting and exposure place most tonal values in the dark range with selective highlights.",
+      "visual_effect": "Large shadow areas surround a few bright forms.",
+      "emotional_effect": "mystery, danger or solemnity",
+      "use_when": "Create noir, horror or sculptural portraiture.",
+      "prompt_fragment": "dark low-key photography",
+      "pairs_well_with": [
+        "underexposure",
+        "high_contrast_capture"
+      ],
+      "conflicts_with": [
+        "high_key_capture"
+      ],
+      "reliability": "high"
+    },
+    {
+      "id": "high_contrast_capture",
+      "term": "High-contrast capture",
+      "aliases": [
+        "hard contrast"
+      ],
+      "category": "Exposure, contrast and lighting-driven camera choices",
+      "definition": "Lighting or exposure creates a large tonal separation between bright and dark areas.",
+      "visual_effect": "Edges and shapes read boldly while transitional midtones diminish.",
+      "emotional_effect": "drama, harshness or graphic force",
+      "use_when": "Emphasise structure, conflict or hard light.",
+      "prompt_fragment": "stark high-contrast lighting",
+      "pairs_well_with": [
+        "low_key_capture",
+        "black_and_white_filter"
+      ],
+      "conflicts_with": [
+        "low_contrast_capture"
+      ],
+      "reliability": "high"
+    },
+    {
+      "id": "low_contrast_capture",
+      "term": "Low-contrast capture",
+      "aliases": [
+        "flat contrast"
+      ],
+      "category": "Exposure, contrast and lighting-driven camera choices",
+      "definition": "Lighting or exposure keeps highlights and shadows within a relatively narrow tonal range.",
+      "visual_effect": "Tonal transitions appear soft and detail remains open across the frame.",
+      "emotional_effect": "gentleness, nostalgia or quiet",
+      "use_when": "Create flattering portraits, misty scenes or flexible tonal capture.",
+      "prompt_fragment": "soft low-contrast tonal range",
+      "pairs_well_with": [
+        "diffusion_filter",
+        "high_key_capture"
+      ],
+      "conflicts_with": [
+        "high_contrast_capture"
+      ],
+      "reliability": "high"
+    },
+    {
+      "id": "high_iso_capture",
+      "term": "High-ISO capture",
+      "aliases": [
+        "high sensitivity capture"
+      ],
+      "category": "Exposure, contrast and lighting-driven camera choices",
+      "definition": "The camera uses a high sensitivity setting that requires less light for a given exposure.",
+      "visual_effect": "Noise or grain increases and very low-light detail becomes visible.",
+      "emotional_effect": "grit, immediacy or nocturnal realism",
+      "use_when": "Work in dim light or deliberately add coarse texture.",
+      "prompt_fragment": "high ISO, visible sensor grain",
+      "pairs_well_with": [
+        "low_key_capture",
+        "shadow_priority_exposure"
+      ],
+      "conflicts_with": [],
+      "reliability": "high"
+    },
+    {
+      "id": "full_frame_digital",
+      "term": "Full-frame digital capture",
+      "aliases": [
+        "35mm-format digital"
+      ],
+      "category": "Format, aspect ratio, film stock and capture medium",
+      "definition": "A digital sensor approximately matches the 36 by 24 millimetre still-photography frame.",
+      "visual_effect": "For equivalent framing and aperture it supports shallower depth of field than smaller formats.",
+      "emotional_effect": "polish or cinematic familiarity",
+      "use_when": "Seek broad lens availability and strong subject separation.",
+      "prompt_fragment": "full-frame digital photography",
+      "pairs_well_with": [
+        "eighty_five_mm_lens",
+        "shallow_depth_of_field"
+      ],
+      "conflicts_with": [
+        "medium_format_digital",
+        "super_35_digital"
+      ],
+      "reliability": "medium"
+    },
+    {
+      "id": "medium_format_digital",
+      "term": "Medium-format digital capture",
+      "aliases": [
+        "digital medium format"
+      ],
+      "category": "Format, aspect ratio, film stock and capture medium",
+      "definition": "A digital sensor is larger than the 35mm full-frame still format.",
+      "visual_effect": "Fine detail, smooth tonal transitions and shallow equivalent depth of field are emphasised.",
+      "emotional_effect": "luxury, stillness or precision",
+      "use_when": "Create premium portrait, fashion, landscape or product imagery.",
+      "prompt_fragment": "medium-format digital photograph",
+      "pairs_well_with": [
+        "one_hundred_mm_lens",
+        "critical_focus"
+      ],
+      "conflicts_with": [
+        "full_frame_digital",
+        "super_35_digital"
+      ],
+      "reliability": "medium"
+    },
+    {
+      "id": "super_35_digital",
+      "term": "Super 35 digital capture",
+      "aliases": [
+        "S35 sensor"
+      ],
+      "category": "Format, aspect ratio, film stock and capture medium",
+      "definition": "A digital cinema sensor uses an imaging area comparable to the Super 35 motion-picture frame.",
+      "visual_effect": "The field of view is narrower than full frame for the same focal length and lens character feels conventionally cinematic.",
+      "emotional_effect": "cinematic familiarity",
+      "use_when": "Match established cinema lens coverage and depth rendering.",
+      "prompt_fragment": "Super 35 cinema capture",
+      "pairs_well_with": [
+        "thirty_five_mm_lens",
+        "anamorphic_lens"
+      ],
+      "conflicts_with": [
+        "full_frame_digital",
+        "medium_format_digital"
+      ],
+      "reliability": "medium"
+    },
+    {
+      "id": "thirty_five_mm_color_negative",
+      "term": "35mm colour-negative film",
+      "aliases": [
+        "35mm negative",
+        "35mm motion-picture film"
+      ],
+      "category": "Format, aspect ratio, film stock and capture medium",
+      "definition": "The image is photochemically recorded on 35mm colour-negative stock.",
+      "visual_effect": "Organic grain, highlight roll-off and stock-dependent colour texture appear.",
+      "emotional_effect": "nostalgia, tactility or prestige",
+      "use_when": "Seek a classic photochemical cinema or still-photo character.",
+      "prompt_fragment": "shot on 35mm color negative",
+      "pairs_well_with": [
+        "vision3_500t",
+        "low_contrast_capture"
+      ],
+      "conflicts_with": [
+        "sixteen_mm_color_negative"
+      ],
+      "reliability": "medium"
+    },
+    {
+      "id": "sixteen_mm_color_negative",
+      "term": "16mm colour-negative film",
+      "aliases": [
+        "16mm negative",
+        "Super 16"
+      ],
+      "category": "Format, aspect ratio, film stock and capture medium",
+      "definition": "The image is photochemically recorded on 16mm or Super 16 colour-negative stock.",
+      "visual_effect": "Grain is more apparent and fine detail coarser than comparable 35mm capture.",
+      "emotional_effect": "rawness, memory or documentary immediacy",
+      "use_when": "Create tactile reportage, period or independent-film texture.",
+      "prompt_fragment": "shot on grainy 16mm film",
+      "pairs_well_with": [
+        "high_iso_capture",
+        "wide_angle"
+      ],
+      "conflicts_with": [
+        "thirty_five_mm_color_negative"
+      ],
+      "reliability": "medium"
+    },
+    {
+      "id": "vision3_500t",
+      "term": "KODAK VISION3 500T colour-negative film",
+      "aliases": [
+        "5219",
+        "7219",
+        "500T"
+      ],
+      "category": "Format, aspect ratio, film stock and capture medium",
+      "definition": "A tungsten-balanced ISO 500 KODAK VISION3 colour-negative stock records the image photochemically.",
+      "visual_effect": "Visible fine grain, broad latitude and warm practical-light colour response shape the frame.",
+      "emotional_effect": "night-time authenticity or nostalgia",
+      "use_when": "Shoot low-light interiors or emulate contemporary film-origin cinema.",
+      "prompt_fragment": "Kodak Vision3 500T film look",
+      "pairs_well_with": [
+        "thirty_five_mm_color_negative",
+        "low_key_capture"
+      ],
+      "conflicts_with": [],
+      "reliability": "low"
+    },
+    {
+      "id": "academy_aspect_ratio",
+      "term": "Academy ratio",
+      "aliases": [
+        "1.37:1",
+        "Academy aperture"
+      ],
+      "category": "Format, aspect ratio, film stock and capture medium",
+      "definition": "The image is framed at approximately 1.37 units wide for every unit high.",
+      "visual_effect": "The near-square frame concentrates vertical bodies and central staging.",
+      "emotional_effect": "classicism, intimacy or confinement",
+      "use_when": "Evoke early sound cinema or contain lateral space.",
+      "prompt_fragment": "Academy ratio 1.37:1 frame",
+      "pairs_well_with": [
+        "centered_composition",
+        "tableau_shot"
+      ],
+      "conflicts_with": [
+        "scope_aspect_ratio"
+      ],
+      "reliability": "medium"
+    },
+    {
+      "id": "scope_aspect_ratio",
+      "term": "2.39:1 scope aspect ratio",
+      "aliases": [
+        "CinemaScope ratio",
+        "2.39:1 widescreen"
+      ],
+      "category": "Format, aspect ratio, film stock and capture medium",
+      "definition": "The image is framed at approximately 2.39 units wide for every unit high.",
+      "visual_effect": "Wide lateral relationships expand while vertical space is reduced.",
+      "emotional_effect": "scale, spectacle or distance",
+      "use_when": "Stage ensembles, landscapes or strong left-to-right relationships.",
+      "prompt_fragment": "cinematic 2.39:1 widescreen frame",
+      "pairs_well_with": [
+        "landscape_orientation",
+        "anamorphic_lens"
+      ],
+      "conflicts_with": [
+        "academy_aspect_ratio",
+        "portrait_orientation"
+      ],
+      "reliability": "high"
+    },
+    {
+      "id": "establishing_shot",
+      "term": "Establishing shot",
+      "aliases": [
+        "establisher"
+      ],
+      "category": "Signature and specialty static shots",
+      "definition": "A usually wide static view identifies the location and spatial context for a subject or scene.",
+      "visual_effect": "Geography and environment become immediately legible.",
+      "emotional_effect": "orientation or anticipation",
+      "use_when": "Introduce where subsequent action or imagery belongs.",
+      "prompt_fragment": "wide establishing view of location",
+      "pairs_well_with": [
+        "extreme_long_shot",
+        "deep_focus"
+      ],
+      "conflicts_with": [],
+      "reliability": "high"
+    },
+    {
+      "id": "master_shot",
+      "term": "Master shot",
+      "aliases": [
+        "master"
+      ],
+      "category": "Signature and specialty static shots",
+      "definition": "A single comprehensive framing contains the principal subjects and usable spatial action of a scene.",
+      "visual_effect": "The complete relationship and geography remain visible in one view.",
+      "emotional_effect": "objectivity or theatrical presence",
+      "use_when": "Cover an ensemble or staged scene comprehensively.",
+      "prompt_fragment": "static master shot of full scene",
+      "pairs_well_with": [
+        "long_shot",
+        "deep_focus"
+      ],
+      "conflicts_with": [],
+      "reliability": "medium"
+    },
+    {
+      "id": "point_of_view_shot",
+      "term": "Point-of-view shot",
+      "aliases": [
+        "POV shot",
+        "subjective shot"
+      ],
+      "category": "Signature and specialty static shots",
+      "definition": "The camera occupies the visual position of a character or observer.",
+      "visual_effect": "The viewer sees the scene from an implied participant’s location.",
+      "emotional_effect": "identification or immersion",
+      "use_when": "Reveal what a character directly sees.",
+      "prompt_fragment": "first-person point-of-view shot",
+      "pairs_well_with": [
+        "foreground_occlusion",
+        "wide_angle"
+      ],
+      "conflicts_with": [],
+      "reliability": "high"
+    },
+    {
+      "id": "tableau_shot",
+      "term": "Tableau shot",
+      "aliases": [
+        "tableau composition"
+      ],
+      "category": "Signature and specialty static shots",
+      "definition": "Performers and objects are arranged as a deliberately pictorial scene within a largely frontal static frame.",
+      "visual_effect": "The image reads like a staged painting with simultaneous details.",
+      "emotional_effect": "formality, contemplation or irony",
+      "use_when": "Present an ensemble, ritual or symbolic mise-en-scène.",
+      "prompt_fragment": "formal staged tableau composition",
+      "pairs_well_with": [
+        "frontal_view",
+        "deep_focus"
+      ],
+      "conflicts_with": [],
+      "reliability": "medium"
+    },
+    {
+      "id": "flat_lay",
+      "term": "Flat lay",
+      "aliases": [
+        "flat-lay photography"
+      ],
+      "category": "Signature and specialty static shots",
+      "definition": "Objects are arranged on a flat surface and photographed from directly overhead.",
+      "visual_effect": "Depth is suppressed into a clean graphic inventory of shapes.",
+      "emotional_effect": "order, playfulness or clarity",
+      "use_when": "Photograph food, fashion, tools or product collections.",
+      "prompt_fragment": "overhead flat lay arrangement",
+      "pairs_well_with": [
+        "overhead_angle",
+        "overhead_position"
+      ],
+      "conflicts_with": [],
+      "reliability": "high"
+    },
+    {
+      "id": "forced_perspective_shot",
+      "term": "Forced-perspective shot",
+      "aliases": [
+        "forced perspective"
+      ],
+      "category": "Signature and specialty static shots",
+      "definition": "Subjects at different distances are aligned so their apparent scales create a false spatial relationship.",
+      "visual_effect": "Objects appear impossibly large, small, touching or supporting one another.",
+      "emotional_effect": "wonder, humour or uncanniness",
+      "use_when": "Create in-camera scale illusions without compositing.",
+      "prompt_fragment": "forced perspective scale illusion",
+      "pairs_well_with": [
+        "deep_focus",
+        "wide_angle"
+      ],
+      "conflicts_with": [],
+      "reliability": "high"
+    },
+    {
+      "id": "reflection_shot",
+      "term": "Reflection shot",
+      "aliases": [
+        "mirror shot"
+      ],
+      "category": "Signature and specialty static shots",
+      "definition": "The principal subject is viewed partly or entirely through a reflective surface.",
+      "visual_effect": "A second image plane duplicates, reframes or conceals the subject.",
+      "emotional_effect": "introspection, duality or mystery",
+      "use_when": "Show identity, off-axis space or layered information.",
+      "prompt_fragment": "subject seen in mirror reflection",
+      "pairs_well_with": [
+        "frame_within_frame",
+        "foreground_occlusion"
+      ],
+      "conflicts_with": [],
+      "reliability": "high"
+    },
+    {
+      "id": "hero_shot",
+      "term": "Hero shot",
+      "aliases": [
+        "beauty shot",
+        "key visual"
+      ],
+      "category": "Signature and specialty static shots",
+      "definition": "A subject or product is given a polished, dominant presentation designed as the image’s primary statement.",
+      "visual_effect": "Lighting, angle and negative space make the subject appear iconic and advertisement-ready.",
+      "emotional_effect": "aspiration, admiration or authority",
+      "use_when": "Create campaign art, product advertising or a defining character image.",
+      "prompt_fragment": "polished cinematic hero shot",
+      "pairs_well_with": [
+        "low_angle",
+        "centered_composition"
+      ],
+      "conflicts_with": [],
+      "reliability": "high"
+    }
+  ],
+  "lens_terms": [
+    {
+      "id": "ultra_wide_angle",
+      "term": "Ultra-wide-angle focal length",
+      "aliases": [
+        "ultrawide"
+      ],
+      "category": "Focal length classes and what each does to perspective",
+      "definition": "A rectilinear focal length substantially shorter than the format’s normal lens, commonly below 24mm full-frame equivalent.",
+      "visual_effect": "It covers a very wide field and exaggerates near–far scale when the camera is placed close.",
+      "emotional_effect": "expansiveness, urgency or distortion",
+      "use_when": "Make confined spaces, foregrounds or vast architecture feel deep.",
+      "prompt_fragment": "ultra-wide-angle lens, expansive perspective",
+      "pairs_well_with": [
+        "extreme_long_shot",
+        "worms_eye_view"
+      ],
+      "conflicts_with": [
+        "supertelephoto_focal_length"
+      ],
+      "reliability": "high"
+    },
+    {
+      "id": "wide_angle",
+      "term": "Wide-angle focal length",
+      "aliases": [
+        "wide lens"
+      ],
+      "category": "Focal length classes and what each does to perspective",
+      "definition": "A focal length shorter than normal, commonly around 24–35mm full-frame equivalent.",
+      "visual_effect": "It includes broad surroundings and strengthens depth when used near the subject.",
+      "emotional_effect": "openness or immediacy",
+      "use_when": "Balance an important foreground subject with substantial environment.",
+      "prompt_fragment": "wide-angle lens, strong spatial depth",
+      "pairs_well_with": [
+        "long_shot",
+        "foreground_midground_background"
+      ],
+      "conflicts_with": [
+        "long_telephoto_focal_length"
+      ],
+      "reliability": "high"
+    },
+    {
+      "id": "moderate_wide_angle",
+      "term": "Moderate wide-angle focal length",
+      "aliases": [
+        "semi-wide lens"
+      ],
+      "category": "Focal length classes and what each does to perspective",
+      "definition": "A mildly wide focal length near 35mm full-frame equivalent.",
+      "visual_effect": "It gives environmental context with less edge stretching than shorter lenses.",
+      "emotional_effect": "natural immediacy",
+      "use_when": "Create reportage, street or environmental portraits.",
+      "prompt_fragment": "moderate wide-angle documentary lens",
+      "pairs_well_with": [
+        "medium_shot",
+        "zone_focus"
+      ],
+      "conflicts_with": [
+        "supertelephoto_focal_length"
+      ],
+      "reliability": "high"
+    },
+    {
+      "id": "normal_focal_length",
+      "term": "Normal focal length",
+      "aliases": [
+        "standard lens"
+      ],
+      "category": "Focal length classes and what each does to perspective",
+      "definition": "A focal length near the format diagonal, commonly 40–60mm on full frame.",
+      "visual_effect": "The field of view and spatial scaling appear comparatively neutral.",
+      "emotional_effect": "familiarity or transparency",
+      "use_when": "Avoid an obviously wide or telephoto signature.",
+      "prompt_fragment": "normal lens, natural perspective",
+      "pairs_well_with": [
+        "full_shot",
+        "eye_level_angle"
+      ],
+      "conflicts_with": [],
+      "reliability": "high"
+    },
+    {
+      "id": "short_telephoto_focal_length",
+      "term": "Short-telephoto focal length",
+      "aliases": [
+        "short tele"
+      ],
+      "category": "Focal length classes and what each does to perspective",
+      "definition": "A focal length moderately longer than normal, commonly 70–105mm full-frame equivalent.",
+      "visual_effect": "It narrows the field and supports flattering portrait distance with strong background separation.",
+      "emotional_effect": "intimacy or polish",
+      "use_when": "Photograph portraits and details without extreme compression.",
+      "prompt_fragment": "short telephoto portrait lens",
+      "pairs_well_with": [
+        "close_up",
+        "shallow_depth_of_field"
+      ],
+      "conflicts_with": [
+        "ultra_wide_angle"
+      ],
+      "reliability": "high"
+    },
+    {
+      "id": "medium_telephoto_focal_length",
+      "term": "Medium-telephoto focal length",
+      "aliases": [
+        "medium tele"
+      ],
+      "category": "Focal length classes and what each does to perspective",
+      "definition": "A focal length around 120–200mm full-frame equivalent.",
+      "visual_effect": "It isolates distant subjects and makes separated depth planes appear closer when framing is matched.",
+      "emotional_effect": "observation or compression",
+      "use_when": "Shoot stage, sport, landscape details or compressed portraits.",
+      "prompt_fragment": "medium telephoto compression",
+      "pairs_well_with": [
+        "long_shot",
+        "shallow_depth_of_field"
+      ],
+      "conflicts_with": [
+        "ultra_wide_angle"
+      ],
+      "reliability": "high"
+    },
+    {
+      "id": "long_telephoto_focal_length",
+      "term": "Long-telephoto focal length",
+      "aliases": [
+        "long lens"
+      ],
+      "category": "Focal length classes and what each does to perspective",
+      "definition": "A focal length around 300–500mm full-frame equivalent.",
+      "visual_effect": "It produces a narrow field, strong magnification and dense apparent layering from distant camera positions.",
+      "emotional_effect": "distance, surveillance or grandeur",
+      "use_when": "Isolate wildlife, sport or landscape layers from far away.",
+      "prompt_fragment": "long telephoto lens compression",
+      "pairs_well_with": [
+        "infinity_focus",
+        "low_contrast_capture"
+      ],
+      "conflicts_with": [
+        "wide_angle"
+      ],
+      "reliability": "high"
+    },
+    {
+      "id": "supertelephoto_focal_length",
+      "term": "Supertelephoto focal length",
+      "aliases": [
+        "super telephoto"
+      ],
+      "category": "Focal length classes and what each does to perspective",
+      "definition": "A focal length of roughly 600mm or longer on full frame.",
+      "visual_effect": "A very narrow field enlarges remote subjects and strongly layers distant backgrounds.",
+      "emotional_effect": "remoteness or spectacle",
+      "use_when": "Fill the frame with wildlife, aircraft, sport or celestial subjects.",
+      "prompt_fragment": "supertelephoto lens, distant subject",
+      "pairs_well_with": [
+        "infinity_focus",
+        "critical_focus"
+      ],
+      "conflicts_with": [
+        "ultra_wide_angle"
+      ],
+      "reliability": "high"
+    },
+    {
+      "id": "portrait_focal_length_range",
+      "term": "Portrait focal-length range",
+      "aliases": [
+        "portrait lens range"
+      ],
+      "category": "Focal length classes and what each does to perspective",
+      "definition": "A format-relative range, often 70–135mm full-frame equivalent, commonly selected for head-and-shoulders portraits.",
+      "visual_effect": "Working distance reduces near-feature exaggeration and helps separate the background.",
+      "emotional_effect": "flattery or intimacy",
+      "use_when": "Create conventional beauty, editorial or corporate portraits.",
+      "prompt_fragment": "classic portrait focal length",
+      "pairs_well_with": [
+        "medium_close_up",
+        "direct_to_lens_eyeline"
+      ],
+      "conflicts_with": [
+        "ultra_wide_angle"
+      ],
+      "reliability": "high"
+    },
+    {
+      "id": "macro_focal_length_range",
+      "term": "Macro focal-length range",
+      "aliases": [
+        "macro prime range"
+      ],
+      "category": "Focal length classes and what each does to perspective",
+      "definition": "A group of focal lengths, commonly 50–200mm, offered in lenses capable of high reproduction ratios.",
+      "visual_effect": "Working distance and background angle vary while tiny subjects can fill the image.",
+      "emotional_effect": "scrutiny or wonder",
+      "use_when": "Choose practical working distance for products, insects or copy work.",
+      "prompt_fragment": "macro focal length, life-size detail",
+      "pairs_well_with": [
+        "macro_focus",
+        "extreme_close_up"
+      ],
+      "conflicts_with": [],
+      "reliability": "medium"
+    },
+    {
+      "id": "fourteen_mm_lens",
+      "term": "14mm lens",
+      "aliases": [
+        "14 mm full-frame lens"
+      ],
+      "category": "Specific named focal lengths and their signature look",
+      "definition": "A 14mm rectilinear lens on full frame provides an extremely wide fixed field of view.",
+      "visual_effect": "Foreground scale and edge stretching become conspicuous while interiors feel expanded.",
+      "emotional_effect": "immersion or vertigo",
+      "use_when": "Show cramped architecture, dramatic skies or exaggerated foregrounds.",
+      "prompt_fragment": "14mm ultra-wide rectilinear lens",
+      "pairs_well_with": [
+        "worms_eye_view",
+        "extreme_long_shot"
+      ],
+      "conflicts_with": [
+        "two_hundred_mm_lens"
+      ],
+      "reliability": "medium"
+    },
+    {
+      "id": "eighteen_mm_lens",
+      "term": "18mm lens",
+      "aliases": [
+        "18 mm full-frame lens"
+      ],
+      "category": "Specific named focal lengths and their signature look",
+      "definition": "An 18mm lens on full frame provides an ultra-wide fixed field of view.",
+      "visual_effect": "It captures broad surroundings with strong depth but less extremity than 14mm.",
+      "emotional_effect": "expansiveness or immediacy",
+      "use_when": "Shoot interiors, landscapes or close environmental action.",
+      "prompt_fragment": "18mm ultra-wide lens perspective",
+      "pairs_well_with": [
+        "foreground_midground_background",
+        "long_shot"
+      ],
+      "conflicts_with": [
+        "two_hundred_mm_lens"
+      ],
+      "reliability": "medium"
+    },
+    {
+      "id": "twenty_four_mm_lens",
+      "term": "24mm lens",
+      "aliases": [
+        "24 mm full-frame lens"
+      ],
+      "category": "Specific named focal lengths and their signature look",
+      "definition": "A 24mm lens on full frame provides a classic wide fixed field of view.",
+      "visual_effect": "Near subjects feel prominent while substantial environment remains visible.",
+      "emotional_effect": "energy or openness",
+      "use_when": "Create environmental portraits, architecture or dynamic wide images.",
+      "prompt_fragment": "24mm wide-angle lens look",
+      "pairs_well_with": [
+        "cowboy_shot",
+        "wide_angle"
+      ],
+      "conflicts_with": [
+        "two_hundred_mm_lens"
+      ],
+      "reliability": "high"
+    },
+    {
+      "id": "twenty_eight_mm_lens",
+      "term": "28mm lens",
+      "aliases": [
+        "28 mm full-frame lens"
+      ],
+      "category": "Specific named focal lengths and their signature look",
+      "definition": "A 28mm lens on full frame provides a moderately strong wide fixed field of view.",
+      "visual_effect": "It feels immersive and documentary-like without the extremity of an ultrawide.",
+      "emotional_effect": "spontaneity or presence",
+      "use_when": "Photograph streets, groups and contextual portraits from nearby.",
+      "prompt_fragment": "28mm documentary wide-angle look",
+      "pairs_well_with": [
+        "medium_long_shot",
+        "zone_focus"
+      ],
+      "conflicts_with": [
+        "two_hundred_mm_lens"
+      ],
+      "reliability": "high"
+    },
+    {
+      "id": "thirty_five_mm_lens",
+      "term": "35mm lens",
+      "aliases": [
+        "35 mm full-frame lens"
+      ],
+      "category": "Specific named focal lengths and their signature look",
+      "definition": "A 35mm lens on full frame provides a mild wide fixed field of view.",
+      "visual_effect": "It includes environment while keeping people comparatively natural near the centre.",
+      "emotional_effect": "familiarity or immediacy",
+      "use_when": "Make environmental portraits, reportage or small-room scenes.",
+      "prompt_fragment": "35mm environmental portrait lens",
+      "pairs_well_with": [
+        "medium_shot",
+        "moderate_wide_angle"
+      ],
+      "conflicts_with": [
+        "two_hundred_mm_lens"
+      ],
+      "reliability": "high"
+    },
+    {
+      "id": "fifty_mm_lens",
+      "term": "50mm lens",
+      "aliases": [
+        "nifty fifty",
+        "50 mm full-frame lens"
+      ],
+      "category": "Specific named focal lengths and their signature look",
+      "definition": "A 50mm lens on full frame provides a normal fixed field of view.",
+      "visual_effect": "Spatial relationships appear neutral with moderate background separation at wide apertures.",
+      "emotional_effect": "naturalism or intimacy",
+      "use_when": "Create general-purpose portraits, details or low-light stills.",
+      "prompt_fragment": "50mm normal lens photograph",
+      "pairs_well_with": [
+        "medium_shot",
+        "normal_focal_length"
+      ],
+      "conflicts_with": [],
+      "reliability": "high"
+    },
+    {
+      "id": "eighty_five_mm_lens",
+      "term": "85mm lens",
+      "aliases": [
+        "85 mm portrait lens"
+      ],
+      "category": "Specific named focal lengths and their signature look",
+      "definition": "An 85mm lens on full frame provides a short-telephoto fixed field of view.",
+      "visual_effect": "Portraits gain flattering working distance and smooth background separation.",
+      "emotional_effect": "polish or intimacy",
+      "use_when": "Shoot head-and-shoulders portraits and beauty work.",
+      "prompt_fragment": "85mm portrait lens, soft background",
+      "pairs_well_with": [
+        "close_up",
+        "shallow_depth_of_field"
+      ],
+      "conflicts_with": [
+        "fourteen_mm_lens"
+      ],
+      "reliability": "high"
+    },
+    {
+      "id": "one_hundred_mm_lens",
+      "term": "100mm macro lens",
+      "aliases": [
+        "100 mm macro"
+      ],
+      "category": "Specific named focal lengths and their signature look",
+      "definition": "A 100mm macro lens combines short-telephoto framing with close focus near life-size reproduction.",
+      "visual_effect": "Small subjects fill the frame from a comfortable working distance with very shallow depth.",
+      "emotional_effect": "precision or fascination",
+      "use_when": "Photograph products, food, insects, eyes or textures.",
+      "prompt_fragment": "100mm macro lens close-up",
+      "pairs_well_with": [
+        "macro_focus",
+        "critical_focus"
+      ],
+      "conflicts_with": [
+        "fourteen_mm_lens"
+      ],
+      "reliability": "high"
+    },
+    {
+      "id": "one_hundred_thirty_five_mm_lens",
+      "term": "135mm lens",
+      "aliases": [
+        "135 mm telephoto lens"
+      ],
+      "category": "Specific named focal lengths and their signature look",
+      "definition": "A 135mm lens on full frame provides a medium-telephoto fixed field of view.",
+      "visual_effect": "Faces and distant backgrounds appear strongly separated and spatially layered.",
+      "emotional_effect": "elegance or observation",
+      "use_when": "Create compressed outdoor portraits or isolate stage details.",
+      "prompt_fragment": "135mm telephoto portrait compression",
+      "pairs_well_with": [
+        "medium_close_up",
+        "shallow_depth_of_field"
+      ],
+      "conflicts_with": [
+        "fourteen_mm_lens"
+      ],
+      "reliability": "medium"
+    },
+    {
+      "id": "two_hundred_mm_lens",
+      "term": "200mm lens",
+      "aliases": [
+        "200 mm telephoto lens"
+      ],
+      "category": "Specific named focal lengths and their signature look",
+      "definition": "A 200mm lens on full frame provides a narrow medium-telephoto field of view.",
+      "visual_effect": "Remote details enlarge and distant depth planes appear densely stacked.",
+      "emotional_effect": "distance, scrutiny or grandeur",
+      "use_when": "Isolate sport, wildlife, landscapes or candid subjects.",
+      "prompt_fragment": "200mm telephoto compression",
+      "pairs_well_with": [
+        "medium_telephoto_focal_length",
+        "selective_focus"
+      ],
+      "conflicts_with": [
+        "fourteen_mm_lens",
+        "twenty_four_mm_lens"
+      ],
+      "reliability": "high"
+    },
+    {
+      "id": "wide_open_aperture",
+      "term": "Wide-open aperture",
+      "aliases": [
+        "maximum aperture",
+        "shot wide open"
+      ],
+      "category": "Aperture, bokeh and out-of-focus rendering",
+      "definition": "The lens iris is set to its largest available opening.",
+      "visual_effect": "Exposure increases, depth of field narrows and optical character is least corrected.",
+      "emotional_effect": "intimacy or dreaminess",
+      "use_when": "Work in low light or isolate a subject strongly.",
+      "prompt_fragment": "lens shot wide open",
+      "pairs_well_with": [
+        "shallow_depth_of_field",
+        "smooth_bokeh"
+      ],
+      "conflicts_with": [
+        "stopped_down_aperture"
+      ],
+      "reliability": "high"
+    },
+    {
+      "id": "stopped_down_aperture",
+      "term": "Stopped-down aperture",
+      "aliases": [
+        "closed-down iris"
+      ],
+      "category": "Aperture, bokeh and out-of-focus rendering",
+      "definition": "The iris is set several stops smaller than the lens maximum.",
+      "visual_effect": "Depth of field increases and aperture-shaped highlights may become more defined.",
+      "emotional_effect": "clarity or formality",
+      "use_when": "Keep multiple planes sharp or control bright light.",
+      "prompt_fragment": "lens stopped down for deep focus",
+      "pairs_well_with": [
+        "deep_focus",
+        "star_filter"
+      ],
+      "conflicts_with": [
+        "wide_open_aperture"
+      ],
+      "reliability": "high"
+    },
+    {
+      "id": "smooth_bokeh",
+      "term": "Smooth bokeh",
+      "aliases": [
+        "creamy bokeh",
+        "soft bokeh"
+      ],
+      "category": "Aperture, bokeh and out-of-focus rendering",
+      "definition": "Out-of-focus detail is rendered with low-edged, gradual tonal transitions.",
+      "visual_effect": "Background clutter dissolves into soft shapes rather than busy contours.",
+      "emotional_effect": "romance, calm or polish",
+      "use_when": "Create flattering portraits or premium product imagery.",
+      "prompt_fragment": "smooth creamy background bokeh",
+      "pairs_well_with": [
+        "wide_open_aperture",
+        "eighty_five_mm_lens"
+      ],
+      "conflicts_with": [
+        "busy_bokeh"
+      ],
+      "reliability": "high"
+    },
+    {
+      "id": "round_bokeh",
+      "term": "Round bokeh",
+      "aliases": [
+        "circular bokeh"
+      ],
+      "category": "Aperture, bokeh and out-of-focus rendering",
+      "definition": "Out-of-focus point highlights render as approximately circular discs near the image centre.",
+      "visual_effect": "Background lights become soft round orbs.",
+      "emotional_effect": "warmth, festivity or romance",
+      "use_when": "Use practical lights to create clean luminous separation.",
+      "prompt_fragment": "round bokeh light orbs",
+      "pairs_well_with": [
+        "wide_open_aperture",
+        "close_up"
+      ],
+      "conflicts_with": [
+        "polygonal_bokeh"
+      ],
+      "reliability": "high"
+    },
+    {
+      "id": "polygonal_bokeh",
+      "term": "Polygonal bokeh",
+      "aliases": [
+        "aperture-shaped bokeh"
+      ],
+      "category": "Aperture, bokeh and out-of-focus rendering",
+      "definition": "Out-of-focus point highlights take the polygonal shape of the partially closed iris.",
+      "visual_effect": "Blur discs show visible straight edges and geometric repetition.",
+      "emotional_effect": "graphic tension or vintage character",
+      "use_when": "Make the iris-blade signature visible in background lights.",
+      "prompt_fragment": "polygonal aperture-shaped bokeh",
+      "pairs_well_with": [
+        "stopped_down_aperture",
+        "low_key_capture"
+      ],
+      "conflicts_with": [
+        "round_bokeh"
+      ],
+      "reliability": "medium"
+    },
+    {
+      "id": "cat_eye_bokeh",
+      "term": "Cat-eye bokeh",
+      "aliases": [
+        "optical vignetting bokeh"
+      ],
+      "category": "Aperture, bokeh and out-of-focus rendering",
+      "definition": "Out-of-focus highlights near the frame edges are clipped into oval cat-eye shapes by the lens barrel.",
+      "visual_effect": "Blur discs stretch tangentially around the image perimeter.",
+      "emotional_effect": "swirl, speed or vintage intimacy",
+      "use_when": "Add edge character to night portraits at wide aperture.",
+      "prompt_fragment": "cat-eye bokeh near frame edges",
+      "pairs_well_with": [
+        "wide_open_aperture",
+        "vignetting"
+      ],
+      "conflicts_with": [],
+      "reliability": "medium"
+    },
+    {
+      "id": "swirly_bokeh",
+      "term": "Swirly bokeh",
+      "aliases": [
+        "vortex bokeh"
+      ],
+      "category": "Aperture, bokeh and out-of-focus rendering",
+      "definition": "Off-axis blur and field curvature organise background detail into a rotational pattern around the centre.",
+      "visual_effect": "The soft background appears to spiral around the sharp subject.",
+      "emotional_effect": "dreaminess, dizziness or urgency",
+      "use_when": "Give portraits an unmistakable vintage optical signature.",
+      "prompt_fragment": "swirling vintage bokeh background",
+      "pairs_well_with": [
+        "field_curvature",
+        "centered_composition"
+      ],
+      "conflicts_with": [],
+      "reliability": "medium"
+    },
+    {
+      "id": "soap_bubble_bokeh",
+      "term": "Soap-bubble bokeh",
+      "aliases": [
+        "bubble bokeh"
+      ],
+      "category": "Aperture, bokeh and out-of-focus rendering",
+      "definition": "Out-of-focus highlights have bright defined rims and relatively dim centres.",
+      "visual_effect": "Background points become luminous outlined circles resembling bubbles.",
+      "emotional_effect": "whimsy or nervous nostalgia",
+      "use_when": "Create distinctive vintage macro or portrait backgrounds.",
+      "prompt_fragment": "soap-bubble bokeh highlights",
+      "pairs_well_with": [
+        "spherical_aberration",
+        "macro_focus"
+      ],
+      "conflicts_with": [],
+      "reliability": "low"
+    },
+    {
+      "id": "onion_ring_bokeh",
+      "term": "Onion-ring bokeh",
+      "aliases": [
+        "onion bokeh"
+      ],
+      "category": "Aperture, bokeh and out-of-focus rendering",
+      "definition": "Out-of-focus highlight discs contain concentric internal rings caused by fine aspherical-surface structure.",
+      "visual_effect": "Blur circles show visible nested texture rather than smooth fill.",
+      "emotional_effect": "technical or slightly uneasy",
+      "use_when": "Deliberately evoke modern aspherical lens artefacts.",
+      "prompt_fragment": "onion-ring texture inside bokeh",
+      "pairs_well_with": [
+        "wide_open_aperture",
+        "ghost_flare"
+      ],
+      "conflicts_with": [],
+      "reliability": "low"
+    },
+    {
+      "id": "busy_bokeh",
+      "term": "Busy bokeh",
+      "aliases": [
+        "nervous bokeh",
+        "harsh bokeh"
+      ],
+      "category": "Aperture, bokeh and out-of-focus rendering",
+      "definition": "Out-of-focus detail retains strong edges, doubling or high-frequency texture.",
+      "visual_effect": "Backgrounds compete more visibly with the sharp subject.",
+      "emotional_effect": "unease, grit or energy",
+      "use_when": "Seek a raw vintage or deliberately unsettled background.",
+      "prompt_fragment": "busy nervous background bokeh",
+      "pairs_well_with": [
+        "spherical_aberration",
+        "chromatic_aberration"
+      ],
+      "conflicts_with": [
+        "smooth_bokeh"
+      ],
+      "reliability": "medium"
+    },
+    {
+      "id": "prime_lens",
+      "term": "Prime lens",
+      "aliases": [
+        "fixed-focal-length lens"
+      ],
+      "category": "Lens types and physical builds",
+      "definition": "A lens has one fixed focal length and no focal-length zoom mechanism.",
+      "visual_effect": "Its chosen field of view remains fixed and often permits a faster, smaller or more consistent optical design.",
+      "emotional_effect": "discipline or optical purity",
+      "use_when": "Prioritise speed, compactness or a specific focal signature.",
+      "prompt_fragment": "fast prime lens photograph",
+      "pairs_well_with": [
+        "fifty_mm_lens",
+        "wide_open_aperture"
+      ],
+      "conflicts_with": [
+        "zoom_lens"
+      ],
+      "reliability": "high"
+    },
+    {
+      "id": "zoom_lens",
+      "term": "Zoom lens",
+      "aliases": [
+        "variable-focal-length lens"
+      ],
+      "category": "Lens types and physical builds",
+      "definition": "A lens can vary focal length continuously across a stated range while remaining mounted.",
+      "visual_effect": "The fixed frame inherits whichever field of view the lens is set to, with possible zoom-design rendering traits.",
+      "emotional_effect": "versatility",
+      "use_when": "Work quickly across multiple framings or inaccessible positions.",
+      "prompt_fragment": "professional zoom lens rendering",
+      "pairs_well_with": [
+        "normal_focal_length",
+        "stopped_down_aperture"
+      ],
+      "conflicts_with": [
+        "prime_lens"
+      ],
+      "reliability": "high"
+    },
+    {
+      "id": "anamorphic_lens",
+      "term": "Anamorphic lens",
+      "aliases": [
+        "anamorphic optic"
+      ],
+      "category": "Lens types and physical builds",
+      "definition": "Cylindrical optical power compresses a wider horizontal field onto the capture area for later desqueezing.",
+      "visual_effect": "The image can show oval bokeh, horizontal flare and different horizontal versus vertical perspective rendering.",
+      "emotional_effect": "scale, romance or cinematic spectacle",
+      "use_when": "Create a widescreen cinema signature with characteristic artefacts.",
+      "prompt_fragment": "anamorphic lens, oval bokeh",
+      "pairs_well_with": [
+        "scope_aspect_ratio",
+        "streak_filter"
+      ],
+      "conflicts_with": [
+        "spherical_lens"
+      ],
+      "reliability": "high"
+    },
+    {
+      "id": "spherical_lens",
+      "term": "Spherical lens",
+      "aliases": [
+        "spherical cinema lens"
+      ],
+      "category": "Lens types and physical builds",
+      "definition": "The lens uses rotationally symmetric imaging optics without anamorphic horizontal squeeze.",
+      "visual_effect": "Geometry and bokeh remain similar in horizontal and vertical directions.",
+      "emotional_effect": "clarity or conventional realism",
+      "use_when": "Avoid anamorphic squeeze and directional artefacts.",
+      "prompt_fragment": "spherical cinema lens rendering",
+      "pairs_well_with": [
+        "super_35_digital",
+        "round_bokeh"
+      ],
+      "conflicts_with": [
+        "anamorphic_lens"
+      ],
+      "reliability": "high"
+    },
+    {
+      "id": "macro_lens",
+      "term": "Macro lens",
+      "aliases": [
+        "micro lens"
+      ],
+      "category": "Lens types and physical builds",
+      "definition": "A lens is corrected to focus at high reproduction ratios, commonly reaching 1:1 on the sensor.",
+      "visual_effect": "Small subjects fill the image with high close-range detail and narrow depth of field.",
+      "emotional_effect": "scrutiny or wonder",
+      "use_when": "Photograph insects, products, documents or textures.",
+      "prompt_fragment": "true macro lens, life-size detail",
+      "pairs_well_with": [
+        "macro_focus",
+        "focus_stacking"
+      ],
+      "conflicts_with": [],
+      "reliability": "high"
+    },
+    {
+      "id": "tilt_shift_lens",
+      "term": "Tilt-shift lens",
+      "aliases": [
+        "perspective-control lens",
+        "PC lens"
+      ],
+      "category": "Lens types and physical builds",
+      "definition": "The lens can tilt and shift relative to the sensor while the camera body remains fixed.",
+      "visual_effect": "Shift controls convergence and tilt rotates the plane of focus.",
+      "emotional_effect": "precision or uncanny order",
+      "use_when": "Correct architecture or create selective-plane effects.",
+      "prompt_fragment": "tilt-shift perspective-control lens",
+      "pairs_well_with": [
+        "tilted_focus_plane",
+        "one_point_perspective"
+      ],
+      "conflicts_with": [],
+      "reliability": "medium"
+    },
+    {
+      "id": "fisheye_lens",
+      "term": "Fisheye lens",
+      "aliases": [
+        "curvilinear ultrawide"
+      ],
+      "category": "Lens types and physical builds",
+      "definition": "An extreme-wide lens uses a deliberately non-rectilinear projection.",
+      "visual_effect": "Straight lines away from the centre bow dramatically and the field may approach 180 degrees.",
+      "emotional_effect": "playfulness, surveillance or disorientation",
+      "use_when": "Create immersive distortion or fit an enormous view into one frame.",
+      "prompt_fragment": "fisheye lens, curved distortion",
+      "pairs_well_with": [
+        "barrel_distortion",
+        "ground_level_position"
+      ],
+      "conflicts_with": [],
+      "reliability": "high"
+    },
+    {
+      "id": "pancake_lens",
+      "term": "Pancake lens",
+      "aliases": [
+        "pancake prime"
+      ],
+      "category": "Lens types and physical builds",
+      "definition": "A lens uses a notably thin, compact barrel relative to its image format.",
+      "visual_effect": "The optical look is focal-length dependent, while the small build encourages unobtrusive close placement.",
+      "emotional_effect": "candour or portability",
+      "use_when": "Keep a camera discreet for travel, street or compact setups.",
+      "prompt_fragment": "compact pancake lens photograph",
+      "pairs_well_with": [
+        "moderate_wide_angle",
+        "zone_focus"
+      ],
+      "conflicts_with": [],
+      "reliability": "low"
+    },
+    {
+      "id": "catadioptric_lens",
+      "term": "Catadioptric lens",
+      "aliases": [
+        "mirror lens",
+        "reflex lens"
+      ],
+      "category": "Lens types and physical builds",
+      "definition": "A telephoto lens folds the light path using mirrors as well as refractive elements.",
+      "visual_effect": "It gives strong telephoto compression with fixed aperture and ring-shaped out-of-focus highlights.",
+      "emotional_effect": "surveillance or retro futurism",
+      "use_when": "Obtain long reach or distinctive doughnut bokeh.",
+      "prompt_fragment": "mirror telephoto lens, donut bokeh",
+      "pairs_well_with": [
+        "supertelephoto_focal_length",
+        "busy_bokeh"
+      ],
+      "conflicts_with": [],
+      "reliability": "medium"
+    },
+    {
+      "id": "probe_lens",
+      "term": "Probe lens",
+      "aliases": [
+        "snorkel lens"
+      ],
+      "category": "Lens types and physical builds",
+      "definition": "A long narrow relay lens places a small front element close to or inside confined subjects while the camera remains farther away.",
+      "visual_effect": "The view can travel visually through miniature spaces with extreme close focus and unusually deep perspective.",
+      "emotional_effect": "discovery, novelty or immersion",
+      "use_when": "Photograph food, miniatures, products or inaccessible interiors.",
+      "prompt_fragment": "probe lens extreme close-up",
+      "pairs_well_with": [
+        "macro_focus",
+        "deep_focus"
+      ],
+      "conflicts_with": [],
+      "reliability": "medium"
+    },
+    {
+      "id": "barrel_distortion",
+      "term": "Barrel distortion",
+      "aliases": [
+        "negative distortion"
+      ],
+      "category": "Optical characteristics, aberrations and flaws used deliberately",
+      "definition": "Magnification decreases toward the frame edges so straight lines bow outward.",
+      "visual_effect": "The centre bulges visually and edge geometry curves away.",
+      "emotional_effect": "playfulness, urgency or unease",
+      "use_when": "Exaggerate space or evoke action cameras and vintage wide lenses.",
+      "prompt_fragment": "strong barrel lens distortion",
+      "pairs_well_with": [
+        "fisheye_lens",
+        "ultra_wide_angle"
+      ],
+      "conflicts_with": [
+        "pincushion_distortion"
+      ],
+      "reliability": "high"
+    },
+    {
+      "id": "pincushion_distortion",
+      "term": "Pincushion distortion",
+      "aliases": [
+        "positive distortion"
+      ],
+      "category": "Optical characteristics, aberrations and flaws used deliberately",
+      "definition": "Magnification increases toward the frame edges so straight lines bow inward.",
+      "visual_effect": "Frame edges appear pulled toward the corners.",
+      "emotional_effect": "compression or subtle unease",
+      "use_when": "Invoke imperfect telephoto or zoom optics deliberately.",
+      "prompt_fragment": "visible pincushion lens distortion",
+      "pairs_well_with": [
+        "long_telephoto_focal_length",
+        "vignetting"
+      ],
+      "conflicts_with": [
+        "barrel_distortion"
+      ],
+      "reliability": "low"
+    },
+    {
+      "id": "chromatic_aberration",
+      "term": "Chromatic aberration",
+      "aliases": [
+        "colour fringing",
+        "CA"
+      ],
+      "category": "Optical characteristics, aberrations and flaws used deliberately",
+      "definition": "Different wavelengths fail to converge at the same point or magnification.",
+      "visual_effect": "High-contrast edges acquire coloured fringes, often cyan, magenta, red or blue.",
+      "emotional_effect": "grit, nostalgia or digital imperfection",
+      "use_when": "Add vintage, lo-fi or stressed-optics character.",
+      "prompt_fragment": "visible chromatic aberration fringes",
+      "pairs_well_with": [
+        "busy_bokeh",
+        "high_contrast_capture"
+      ],
+      "conflicts_with": [],
+      "reliability": "high"
+    },
+    {
+      "id": "spherical_aberration",
+      "term": "Spherical aberration",
+      "aliases": [
+        "spherical softness"
+      ],
+      "category": "Optical characteristics, aberrations and flaws used deliberately",
+      "definition": "Marginal and central rays from spherical surfaces focus at different longitudinal positions.",
+      "visual_effect": "Wide-open detail blooms and focus transitions or bokeh edges become characterful.",
+      "emotional_effect": "dreaminess or nostalgia",
+      "use_when": "Soften portraits or create distinctive foreground and background blur.",
+      "prompt_fragment": "wide-open spherical aberration glow",
+      "pairs_well_with": [
+        "soap_bubble_bokeh",
+        "wide_open_aperture"
+      ],
+      "conflicts_with": [],
+      "reliability": "medium"
+    },
+    {
+      "id": "coma_aberration",
+      "term": "Coma",
+      "aliases": [
+        "comatic aberration"
+      ],
+      "category": "Optical characteristics, aberrations and flaws used deliberately",
+      "definition": "Off-axis point sources are imaged asymmetrically because rays at different pupil zones magnify differently.",
+      "visual_effect": "Edge lights stretch into comet-like wings or tails.",
+      "emotional_effect": "unease or celestial atmosphere",
+      "use_when": "Give night lights, stars or vintage corners a smeared signature.",
+      "prompt_fragment": "comet-shaped lights near edges",
+      "pairs_well_with": [
+        "wide_open_aperture",
+        "vignetting"
+      ],
+      "conflicts_with": [],
+      "reliability": "low"
+    },
+    {
+      "id": "astigmatism_aberration",
+      "term": "Lens astigmatism",
+      "aliases": [
+        "oblique astigmatism"
+      ],
+      "category": "Optical characteristics, aberrations and flaws used deliberately",
+      "definition": "Tangential and sagittal detail at the same off-axis point focus on different planes.",
+      "visual_effect": "Edge detail stretches in different directions and fine texture loses uniform sharpness.",
+      "emotional_effect": "tension or vintage imperfection",
+      "use_when": "Create directional corner softness or characterful bokeh.",
+      "prompt_fragment": "directional astigmatic edge blur",
+      "pairs_well_with": [
+        "busy_bokeh",
+        "field_curvature"
+      ],
+      "conflicts_with": [],
+      "reliability": "low"
+    },
+    {
+      "id": "field_curvature",
+      "term": "Field curvature",
+      "aliases": [
+        "curved field of focus"
+      ],
+      "category": "Optical characteristics, aberrations and flaws used deliberately",
+      "definition": "The lens forms its sharpest image on a curved surface rather than a flat sensor plane.",
+      "visual_effect": "A flat subject cannot remain uniformly sharp from centre to edges at one focus setting.",
+      "emotional_effect": "swirl or dreamlike enclosure",
+      "use_when": "Create centre emphasis, swirly backgrounds or vintage edge softness.",
+      "prompt_fragment": "curved field of focus",
+      "pairs_well_with": [
+        "swirly_bokeh",
+        "selective_focus"
+      ],
+      "conflicts_with": [],
+      "reliability": "low"
+    },
+    {
+      "id": "vignetting",
+      "term": "Optical vignetting",
+      "aliases": [
+        "corner falloff",
+        "natural vignetting"
+      ],
+      "category": "Optical characteristics, aberrations and flaws used deliberately",
+      "definition": "The lens transmits less illumination toward the image corners than at the centre.",
+      "visual_effect": "Corners darken and attention gathers toward the middle.",
+      "emotional_effect": "intimacy, age or menace",
+      "use_when": "Focus attention or evoke vintage and wide-open optics.",
+      "prompt_fragment": "strong natural corner vignetting",
+      "pairs_well_with": [
+        "centered_composition",
+        "cat_eye_bokeh"
+      ],
+      "conflicts_with": [],
+      "reliability": "high"
+    },
+    {
+      "id": "veiling_flare",
+      "term": "Veiling flare",
+      "aliases": [
+        "flare wash"
+      ],
+      "category": "Optical characteristics, aberrations and flaws used deliberately",
+      "definition": "Stray light scatters broadly inside the lens without forming a distinct source image.",
+      "visual_effect": "Contrast falls and highlights spread into a milky coloured wash.",
+      "emotional_effect": "nostalgia, heat or dreaminess",
+      "use_when": "Soften a backlit image or suggest atmosphere and memory.",
+      "prompt_fragment": "soft veiling lens flare wash",
+      "pairs_well_with": [
+        "low_contrast_capture",
+        "diffusion_filter"
+      ],
+      "conflicts_with": [
+        "high_contrast_capture"
+      ],
+      "reliability": "high"
+    },
+    {
+      "id": "ghost_flare",
+      "term": "Ghost flare",
+      "aliases": [
+        "lens ghosts",
+        "internal reflection flare"
+      ],
+      "category": "Optical characteristics, aberrations and flaws used deliberately",
+      "definition": "Reflections between optical surfaces form distinct images of a bright source or aperture.",
+      "visual_effect": "Coloured discs, polygons or arcs repeat across the frame.",
+      "emotional_effect": "energy, spectacle or imperfection",
+      "use_when": "Make a visible light source feel intense or cinematic.",
+      "prompt_fragment": "visible lens flare ghost shapes",
+      "pairs_well_with": [
+        "high_contrast_capture",
+        "anamorphic_lens"
+      ],
+      "conflicts_with": [],
+      "reliability": "high"
+    },
+    {
+      "id": "neutral_density_filter",
+      "term": "Neutral-density filter",
+      "aliases": [
+        "ND filter"
+      ],
+      "category": "Filters and front-of-lens attachments",
+      "definition": "A neutral filter reduces transmitted light approximately evenly across visible wavelengths.",
+      "visual_effect": "It permits wider apertures or longer exposures without changing nominal colour.",
+      "emotional_effect": null,
+      "use_when": "Control exposure while preserving the chosen aperture look.",
+      "prompt_fragment": "neutral-density filter, wide aperture",
+      "pairs_well_with": [
+        "wide_open_aperture",
+        "shallow_depth_of_field"
+      ],
+      "conflicts_with": [],
+      "reliability": "medium"
+    },
+    {
+      "id": "graduated_nd_filter",
+      "term": "Graduated neutral-density filter",
+      "aliases": [
+        "grad ND",
+        "GND"
+      ],
+      "category": "Filters and front-of-lens attachments",
+      "definition": "A filter transitions from neutral density to clear across part of its surface.",
+      "visual_effect": "A bright region such as a sky darkens while the rest remains relatively unchanged.",
+      "emotional_effect": "balance or drama",
+      "use_when": "Hold sky detail against a darker landscape in one exposure.",
+      "prompt_fragment": "graduated ND darkened sky",
+      "pairs_well_with": [
+        "highlight_priority_exposure",
+        "long_shot"
+      ],
+      "conflicts_with": [],
+      "reliability": "medium"
+    },
+    {
+      "id": "circular_polarizer",
+      "term": "Circular polarizing filter",
+      "aliases": [
+        "CPL",
+        "polariser"
+      ],
+      "category": "Filters and front-of-lens attachments",
+      "definition": "A linear polarizer followed by a quarter-wave layer selectively transmits light orientation while remaining compatible with modern metering systems.",
+      "visual_effect": "Reflections on non-metallic surfaces reduce and blue skies or foliage can deepen.",
+      "emotional_effect": "clarity or saturation",
+      "use_when": "Control glare on water, glass, leaves or painted surfaces.",
+      "prompt_fragment": "circular polarizer, reduced reflections",
+      "pairs_well_with": [
+        "high_contrast_capture",
+        "reflection_shot"
+      ],
+      "conflicts_with": [],
+      "reliability": "medium"
+    },
+    {
+      "id": "diffusion_filter",
+      "term": "Diffusion filter",
+      "aliases": [
+        "mist filter",
+        "softening filter"
+      ],
+      "category": "Filters and front-of-lens attachments",
+      "definition": "A front filter scatters a controlled portion of image-forming light.",
+      "visual_effect": "Highlights bloom, microcontrast falls and skin detail softens while gross focus remains.",
+      "emotional_effect": "romance, nostalgia or gentleness",
+      "use_when": "Take digital sharpness off portraits or create halation around lights.",
+      "prompt_fragment": "subtle diffusion filter, glowing highlights",
+      "pairs_well_with": [
+        "low_contrast_capture",
+        "veiling_flare"
+      ],
+      "conflicts_with": [],
+      "reliability": "high"
+    },
+    {
+      "id": "star_filter",
+      "term": "Star filter",
+      "aliases": [
+        "cross-screen filter",
+        "starburst filter"
+      ],
+      "category": "Filters and front-of-lens attachments",
+      "definition": "Etched or embedded lines diffract bright point sources into defined rays.",
+      "visual_effect": "Lights acquire repeated star-shaped spikes whose count follows the filter pattern.",
+      "emotional_effect": "glamour, magic or spectacle",
+      "use_when": "Stylise jewellery, night lights or polished highlights.",
+      "prompt_fragment": "star filter on bright lights",
+      "pairs_well_with": [
+        "high_contrast_capture",
+        "stopped_down_aperture"
+      ],
+      "conflicts_with": [],
+      "reliability": "high"
+    },
+    {
+      "id": "close_up_diopter",
+      "term": "Close-up diopter",
+      "aliases": [
+        "full-field diopter",
+        "close-up filter"
+      ],
+      "category": "Filters and front-of-lens attachments",
+      "definition": "A positive supplementary lens mounted in front of the taking lens shortens its minimum focus distance.",
+      "visual_effect": "The camera can magnify nearer subjects, often with softer edges and reduced working distance.",
+      "emotional_effect": "intimacy or curiosity",
+      "use_when": "Make a non-macro or anamorphic lens focus closer.",
+      "prompt_fragment": "close-up diopter magnification",
+      "pairs_well_with": [
+        "macro_focus",
+        "anamorphic_lens"
+      ],
+      "conflicts_with": [],
+      "reliability": "medium"
+    },
+    {
+      "id": "split_field_diopter",
+      "term": "Split-field diopter",
+      "aliases": [
+        "split diopter"
+      ],
+      "category": "Filters and front-of-lens attachments",
+      "definition": "A partial positive lens covers only part of the taking lens so a near region and distant region can be focused together.",
+      "visual_effect": "Two separated depth zones appear sharp with a visible soft transition boundary.",
+      "emotional_effect": "tension, simultaneity or uncanniness",
+      "use_when": "Hold an extreme foreground detail and background subject sharp together.",
+      "prompt_fragment": "split-diopter near and far focus",
+      "pairs_well_with": [
+        "deep_focus",
+        "foreground_midground_background"
+      ],
+      "conflicts_with": [
+        "shallow_depth_of_field"
+      ],
+      "reliability": "medium"
+    },
+    {
+      "id": "streak_filter",
+      "term": "Streak filter",
+      "aliases": [
+        "anamorphic streak filter"
+      ],
+      "category": "Filters and front-of-lens attachments",
+      "definition": "Fine parallel structures in a front filter spread point lights along one axis.",
+      "visual_effect": "Bright sources produce long directional flare streaks, usually horizontal.",
+      "emotional_effect": "futurism, energy or spectacle",
+      "use_when": "Simulate or intensify an anamorphic-style flare.",
+      "prompt_fragment": "horizontal blue light streak filter",
+      "pairs_well_with": [
+        "anamorphic_lens",
+        "high_contrast_capture"
+      ],
+      "conflicts_with": [],
+      "reliability": "high"
+    },
+    {
+      "id": "colour_correction_filter",
+      "term": "Colour-correction filter",
+      "aliases": [
+        "colour-conversion filter",
+        "CC filter"
+      ],
+      "category": "Filters and front-of-lens attachments",
+      "definition": "A coloured optical filter changes the spectral balance of light before it reaches the capture medium.",
+      "visual_effect": "The entire image shifts warmer, cooler or toward a compensating hue.",
+      "emotional_effect": "warmth, coldness or period mood",
+      "use_when": "Match daylight and tungsten sources or create an in-camera colour bias.",
+      "prompt_fragment": "warm color-correction lens filter",
+      "pairs_well_with": [
+        "vision3_500t",
+        "high_key_capture"
+      ],
+      "conflicts_with": [],
+      "reliability": "medium"
+    },
+    {
+      "id": "black_and_white_filter",
+      "term": "Black-and-white contrast filter",
+      "aliases": [
+        "B&W colour filter",
+        "red filter"
+      ],
+      "category": "Filters and front-of-lens attachments",
+      "definition": "A coloured front filter selectively transmits wavelengths before monochrome capture or conversion.",
+      "visual_effect": "Different scene colours separate into lighter or darker grey values, with red filters strongly darkening blue skies.",
+      "emotional_effect": "drama or graphic severity",
+      "use_when": "Control tonal separation in monochrome landscapes or portraits.",
+      "prompt_fragment": "red filter black-and-white contrast",
+      "pairs_well_with": [
+        "high_contrast_capture",
+        "long_shot"
+      ],
+      "conflicts_with": [],
+      "reliability": "medium"
+    }
+  ],
+  "notes": "Researched against official references from Canon, Nikon, ARRI, Kodak, ZEISS, Tiffen, Adobe and Google. Focal length directly controls field of view; apparent perspective changes described here assume the camera is repositioned to maintain comparable subject framing. Reliability is a qualitative cross-model estimate as of 2026-08-11: common semantic descriptions rate higher than exact optical simulations. Sources: Canon focal length https://www.canon-europe.com/pro/infobank/understanding-focal-length/ ; Nikon composition https://www.nikonusa.com/learn-and-explore/c/tips-and-techniques/when-center-composition-can-elevate-a-portrait ; ARRI formats https://www.arri.com/en/cine-systems/cine-cameras/amira ; Kodak glossary https://www.kodak.com/en/motion/page/glossary-of-motion-picture-terms/ ; ZEISS lens characteristics https://www.zeiss.com/photonics-and-optics/us/cinematography/cincraft/lenscore.html ; Tiffen split diopter https://tiffen.com/products/138mm-split-field-diopter ; Google Imagen prompting https://cloud.google.com/blog/products/ai-machine-learning/a-developers-guide-to-imagen-3-on-vertex-ai"
+}

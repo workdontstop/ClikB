@@ -1,0 +1,94 @@
+/* Right Content Styling */
+
+/*----------------------
+   Dark Mode (Blueish)
+  ----------------------*/
+/* Dark Mode – Neutral Charcoal with Subtle Cool Accent */
+/* Dark Mode – Neutral Grays with Optional Warm Accent */
+.contentdark {
+  background-color: #000000; /* Facebook-style dark gray */
+  color: #e4e6eb; /* soft off-white */
+  border-radius: 0;
+  /* no shadow by default */
+  box-shadow: none;
+  transition: width 0.28s cubic-bezier(0.4, 0, 0.2, 1), background-color 0.5s, color 0.5s, box-shadow 0.5s;
+  will-change: width;
+}
+
+.menudark {
+  background-color: #000000; /* almost black bounce */
+  color: #e4e6eb; /* match content text */
+  border-radius: 0;
+  /* no shadow by default */
+  box-shadow: none;
+  transition: width 0.28s cubic-bezier(0.4, 0, 0.2, 1), background-color 0.5s, color 0.5s, box-shadow 0.5s;
+  will-change: width;
+}
+
+/* Mobile only (up to 600px wide) */
+@media screen and (max-width: 600px) {
+  .contentdark {
+    box-shadow: inset 3px 3px 6px rgba(0, 0, 0, 0.6),
+      inset -3px -3px 6px rgba(255, 255, 255, 0.05);
+  }
+  .menudark {
+    box-shadow: 3px 3px 6px rgba(0, 0, 0, 0.4),
+      -3px -3px 6px rgba(255, 255, 255, 0.05);
+  }
+}
+
+/*----------------------
+     Light Mode (Ashish)
+    ----------------------*/
+/* Light Mode – Professional Neutral Grays */
+/* Ultra-Gray Light Mode */
+/* Light Mode – Slightly Grayer (1×) */
+.content {
+  background-color: #ffffff; /* one step darker than #f2f2f2 */
+  color: #000000; /* unchanged charcoal text */
+  border-radius: 0px;
+
+  transition: width 0.28s cubic-bezier(0.4, 0, 0.2, 1), background-color 0.5s, color 0.5s, box-shadow 0.5s;
+  will-change: width;
+}
+
+.menu {
+  background-color: #eeeeee; /* one step darker than #d9d9d9 */
+  color: #000000; /* unchanged charcoal text */
+  border-radius: 0px;
+
+  transition: width 0.28s cubic-bezier(0.4, 0, 0.2, 1), background-color 0.5s, color 0.5s, box-shadow 0.5s;
+  will-change: width;
+}
+
+.contentdarkColor {
+  background-color: #000000; /* Deep dark gray background */
+  color: #f5f5f5; /* Softer light text for contrast */
+}
+.contentColor {
+  background-color: #ffffff; /* Light background */
+  color: #2c3e50; /* Light text color */
+}
+
+/* --------------------------------------------------------------------
+   Hide the blinking caret (and focus outline) on any focused contenteditable  <div>
+   -------------------------------------------------------------------- */
+div:focus {
+  /* CARET_TEST_DISABLED theme-div-focus: caret-color: transparent !important; */
+  /* CARET_TEST_DISABLED theme-div-focus: outline: none; */
+}
+
+/* kill all carets on focused elements */
+*:focus {
+  /* CARET_TEST_DISABLED theme-star-focus: caret-color: transparent !important; */
+  /* CARET_TEST_DISABLED theme-star-focus: outline: none !important; remove focus ring if you also want that gone */
+}
+
+html :focus,
+html [contenteditable]:focus,
+html [tabindex]:focus {
+  /* hide any insertion caret */
+  /* CARET_TEST_DISABLED theme-html-focus: caret-color: transparent !important; */
+  /* kill the dotted/dashed focus outline if you wish */
+  /* CARET_TEST_DISABLED theme-html-focus: outline: none !important; */
+}

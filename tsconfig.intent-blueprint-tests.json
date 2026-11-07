@@ -1,0 +1,21 @@
+{
+  "compilerOptions": {
+    "target": "ES2022",
+    // `bundler` rather than `NodeNext`: src/intentBlueprint.ts is app code and
+    // uses Vite-style extensionless imports. Its only relative import is
+    // `import type`, so nothing survives emit and the ESM output still runs
+    // directly under node.
+    "module": "ESNext",
+    "moduleResolution": "bundler",
+    "strict": true,
+    "skipLibCheck": true,
+    "outDir": "./node_modules/.tmp/intent-blueprint-tests",
+    "rootDir": ".",
+    "types": ["node"]
+  },
+  "include": [
+    "src/intentBlueprint.ts",
+    "src/sceneTargetArchitecture.ts",
+    "tests/intentBlueprint.test.ts"
+  ]
+}

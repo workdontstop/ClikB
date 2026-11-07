@@ -1,0 +1,107 @@
+.spatial-interaction-button::after {
+  content: "";
+  position: absolute;
+  inset: -5px;
+  border-radius: 50%;
+  border: 2px solid var(--spatial-action-border, currentColor);
+  pointer-events: none;
+  animation: spatial-interaction-pulse 2.4s ease-out infinite;
+}
+
+.spatial-interaction-button:active::after {
+  animation: none;
+  opacity: 0;
+}
+
+.spatial-action-step[data-pulse="true"]::after {
+  content: "";
+  position: absolute;
+  inset: -5px;
+  border: 2px solid #fff;
+  border-radius: inherit;
+  pointer-events: none;
+  animation: spatial-action-step-pulse 420ms ease-out both;
+}
+
+.spatial-link-return-controller[data-spatial-return-hold="true"] .spatial-drive-control::after {
+  content: "";
+  position: absolute;
+  inset: -6px;
+  border-radius: 50%;
+  border: 2.5px solid var(--spatial-return-color, currentColor);
+  box-shadow: 0 0 18px var(--spatial-return-color, currentColor), 0 0 36px var(--spatial-return-color, currentColor), inset 0 0 10px var(--spatial-return-color, currentColor);
+  pointer-events: none;
+  animation: spatial-link-return-pulse 1.1s ease-in-out infinite;
+}
+
+@keyframes spatial-link-return-pulse {
+  0%, 100% { transform: scale(1); opacity: .45; }
+  50% { transform: scale(1.08); opacity: 1; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .spatial-link-return-controller[data-spatial-return-hold="true"] .spatial-drive-control::after {
+    animation: none;
+    opacity: 1;
+  }
+}
+
+@keyframes spatial-action-step-pulse {
+  from { transform: scale(.98); opacity: .8; }
+  to { transform: scale(1.22); opacity: 0; }
+}
+
+@keyframes spatial-interaction-pulse {
+  0%, 28% {
+    transform: scale(0.94);
+    opacity: 0;
+  }
+  38% {
+    opacity: 0.7;
+  }
+  72%, 100% {
+    transform: scale(1.22);
+    opacity: 0;
+  }
+}
+
+.spatial-completion-badge {
+  position: absolute;
+  left: 50%;
+  bottom: clamp(24px, 5vh, 56px);
+  width: 132px;
+  height: 132px;
+  z-index: 32;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transform: translateX(-50%);
+  border-radius: 50%;
+  border: 1px solid rgba(255, 255, 255, 0.64);
+  background: radial-gradient(circle, rgba(16,18,24,0.5) 0 28%, rgba(8,10,16,0.86) 68%, rgba(0,0,0,0.94) 100%);
+  box-shadow: 0 14px 38px rgba(0,0,0,0.42), inset 0 0 28px rgba(255,255,255,0.08);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  font-size: 16px;
+  font-weight: 900;
+  letter-spacing: 0.01em;
+  pointer-events: none;
+  animation: spatial-completion-arrive 420ms cubic-bezier(.2,.8,.2,1) both;
+}
+
+@keyframes spatial-completion-arrive {
+  from { transform: translateX(-50%) scale(.84); opacity: 0; }
+  to { transform: translateX(-50%) scale(1); opacity: 1; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .spatial-link-return-controller[data-spatial-return-hold="true"] .spatial-drive-control::after { animation: none; opacity: .5; }
+  .spatial-action-step::after { animation: none !important; }
+  .spatial-interaction-button::after {
+    animation: none;
+    opacity: 0;
+  }
+  .spatial-completion-badge {
+    animation: none;
+  }
+}

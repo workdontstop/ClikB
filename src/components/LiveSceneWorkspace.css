@@ -1,0 +1,22 @@
+/* Activity only: fixed layout, no per-frame JavaScript or WebGL rendering. */
+.live-scene-activity {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 3px;
+    z-index: 1;
+    pointer-events: none;
+    opacity: .3;
+    transform-origin: center;
+    animation: live-scene-working 2.4s ease-in-out infinite;
+}
+
+@keyframes live-scene-working {
+    0%, 100% { transform: scaleX(.12); }
+    50% { transform: scaleX(1); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .live-scene-activity { animation: none; transform: scaleX(1); }
+}

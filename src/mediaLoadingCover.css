@@ -1,0 +1,9 @@
+/* Fast loads reveal their media before the pending cue appears. */
+.media-loading-cover {
+    filter: grayscale(0);
+    animation: media-loading-cover-pending 0s 150ms forwards;
+}
+
+@keyframes media-loading-cover-pending {
+    to { filter: grayscale(1); }
+}

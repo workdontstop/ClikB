@@ -1,0 +1,80 @@
+# â”€â”€ Logs â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
+logs
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+lerna-debug.log*
+
+# ───────────────────────────
+node_modules
+dist
+dist-ssr
+dev-dist
+build
+client/dist
+server/dist
+*.local
+
+# ─────────────────────────────────────
+.vscode/*
+!.vscode/extensions.json
+.idea
+.DS_Store
+*.suo
+*.ntvs*
+*.njsproj
+*.sln
+*.sw?
+
+# â”€â”€ Secrets (env files) â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
+**/*.env
+.env*
+server/.env*
+!.env.example
+!server/.env.example
+client/.env*
+
+# â”€â”€ Docker (keep prod/secret deploy files out of git) â”€â”€
+# This local Dockerfile contains deployment secrets; keep it out of Git.
+/Dockerfile
+docker-compose.prod.yml
+docker-compose.secrets.yml
+docker-compose.override.yml
+compose.prod.yml
+ops/
+deploy/
+infra/
+*.local.yml
+*.override.yml
+.docker/
+
+# â”€â”€ Keys & certs (never commit) â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
+*.pem
+*.key
+id_rsa*
+id_ed25519*
+*.crt
+*.csr
+
+
+# Google service-account keys
+TTXgoogleStream.json
+TTSgoogleStream.json
+*google*Stream*.json
+
+# Local temp, review frames, reference and scratch folders
+.tmp/
+__pycache__/
+*.pyc
+.video-review-deps/
+_comfy_reference/
+_ltx_node_reference/
+_teacache_reference/
+haven-review/
+hero-review/
+pub-review/
+scratch/
+video gen/
+

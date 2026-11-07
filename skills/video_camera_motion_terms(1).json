@@ -1,0 +1,2925 @@
+{
+  "camera_terms": [
+    {
+      "id": "pan_left",
+      "term": "Pan left",
+      "aliases": [
+        "camera pan left"
+      ],
+      "category": "Movement primitives",
+      "definition": "The camera rotates left around a fixed vertical axis without translating its position.",
+      "visual_effect": "New space enters from the left while existing content exits right.",
+      "emotional_effect": "attention, anticipation or orientation",
+      "use_when": "Reveal or follow something located left of the current frame.",
+      "prompt_fragment": "smooth camera pan left",
+      "requires_start_framing": "A frame with meaningful off-screen space to the left.",
+      "pairs_well_with": [
+        "fluid_head_tripod",
+        "pan_reveal"
+      ],
+      "conflicts_with": [
+        "pan_right"
+      ],
+      "reliability": "high"
+    },
+    {
+      "id": "pan_right",
+      "term": "Pan right",
+      "aliases": [
+        "camera pan right"
+      ],
+      "category": "Movement primitives",
+      "definition": "The camera rotates right around a fixed vertical axis without translating its position.",
+      "visual_effect": "New space enters from the right while existing content exits left.",
+      "emotional_effect": "attention, anticipation or orientation",
+      "use_when": "Reveal or follow something located right of the current frame.",
+      "prompt_fragment": "smooth camera pan right",
+      "requires_start_framing": "A frame with meaningful off-screen space to the right.",
+      "pairs_well_with": [
+        "fluid_head_tripod",
+        "pan_reveal"
+      ],
+      "conflicts_with": [
+        "pan_left"
+      ],
+      "reliability": "high"
+    },
+    {
+      "id": "tilt_up",
+      "term": "Tilt up",
+      "aliases": [
+        "camera tilt up"
+      ],
+      "category": "Movement primitives",
+      "definition": "The camera rotates upward around a fixed horizontal axis without changing height.",
+      "visual_effect": "Lower content exits as higher parts of the subject or setting enter.",
+      "emotional_effect": "awe, discovery or rising tension",
+      "use_when": "Reveal height, a face, a tower or something above frame.",
+      "prompt_fragment": "slow camera tilt upward",
+      "requires_start_framing": "The opening frame must contain a lower visual anchor.",
+      "pairs_well_with": [
+        "fluid_head_tripod",
+        "tilt_reveal"
+      ],
+      "conflicts_with": [
+        "tilt_down"
+      ],
+      "reliability": "high"
+    },
+    {
+      "id": "tilt_down",
+      "term": "Tilt down",
+      "aliases": [
+        "camera tilt down"
+      ],
+      "category": "Movement primitives",
+      "definition": "The camera rotates downward around a fixed horizontal axis without changing height.",
+      "visual_effect": "Upper content exits as lower parts of the subject or setting enter.",
+      "emotional_effect": "discovery, gravity or decline",
+      "use_when": "Reveal hands, feet, an object or something below frame.",
+      "prompt_fragment": "slow camera tilt downward",
+      "requires_start_framing": "The opening frame must contain an upper visual anchor.",
+      "pairs_well_with": [
+        "fluid_head_tripod",
+        "tilt_reveal"
+      ],
+      "conflicts_with": [
+        "tilt_up"
+      ],
+      "reliability": "high"
+    },
+    {
+      "id": "roll_clockwise",
+      "term": "Clockwise camera roll",
+      "aliases": [
+        "clockwise Dutch roll"
+      ],
+      "category": "Movement primitives",
+      "definition": "The camera rotates clockwise around the lens axis while remaining in position.",
+      "visual_effect": "The horizon continuously cants clockwise and the frame appears to spin.",
+      "emotional_effect": "disorientation or instability",
+      "use_when": "Intensify vertigo, impact or psychological disturbance.",
+      "prompt_fragment": "camera slowly rolling clockwise",
+      "requires_start_framing": "A readable horizon or vertical reference must be visible.",
+      "pairs_well_with": [
+        "motorized_gimbal",
+        "spiral_camera_move"
+      ],
+      "conflicts_with": [
+        "roll_counterclockwise"
+      ],
+      "reliability": "medium"
+    },
+    {
+      "id": "roll_counterclockwise",
+      "term": "Counterclockwise camera roll",
+      "aliases": [
+        "counterclockwise Dutch roll"
+      ],
+      "category": "Movement primitives",
+      "definition": "The camera rotates counterclockwise around the lens axis while remaining in position.",
+      "visual_effect": "The horizon continuously cants counterclockwise and the frame appears to spin.",
+      "emotional_effect": "disorientation or instability",
+      "use_when": "Reverse a prior roll or create rotational unease.",
+      "prompt_fragment": "camera rolling counterclockwise",
+      "requires_start_framing": "A readable horizon or vertical reference must be visible.",
+      "pairs_well_with": [
+        "motorized_gimbal",
+        "spiral_camera_move"
+      ],
+      "conflicts_with": [
+        "roll_clockwise"
+      ],
+      "reliability": "medium"
+    },
+    {
+      "id": "dolly_in",
+      "term": "Dolly in",
+      "aliases": [
+        "push in",
+        "camera push"
+      ],
+      "category": "Movement primitives",
+      "definition": "The entire camera translates forward toward the subject, unlike a zoom which changes focal length from a fixed position.",
+      "visual_effect": "Perspective and parallax change as the subject grows and the background spreads outward.",
+      "emotional_effect": "intimacy, pressure or revelation",
+      "use_when": "Move the viewer physically closer to an important subject.",
+      "prompt_fragment": "camera slowly dollies toward subject",
+      "requires_start_framing": "A medium or wider view with a clear path toward the subject.",
+      "pairs_well_with": [
+        "camera_dolly",
+        "tracking_shot"
+      ],
+      "conflicts_with": [
+        "dolly_out"
+      ],
+      "reliability": "high"
+    },
+    {
+      "id": "dolly_out",
+      "term": "Dolly out",
+      "aliases": [
+        "pull out",
+        "camera pullback"
+      ],
+      "category": "Movement primitives",
+      "definition": "The entire camera translates backward away from the subject, unlike a zoom which changes focal length without translation.",
+      "visual_effect": "Perspective and parallax change as the subject shrinks and more surroundings appear.",
+      "emotional_effect": "distance, release or revelation",
+      "use_when": "Withdraw emotionally or expose previously hidden context.",
+      "prompt_fragment": "camera dollies backward smoothly",
+      "requires_start_framing": "A close or medium view with safe space behind the camera.",
+      "pairs_well_with": [
+        "camera_dolly",
+        "pull_back_to_reveal"
+      ],
+      "conflicts_with": [
+        "dolly_in"
+      ],
+      "reliability": "high"
+    },
+    {
+      "id": "truck_left",
+      "term": "Truck left",
+      "aliases": [
+        "track left",
+        "lateral dolly left"
+      ],
+      "category": "Movement primitives",
+      "definition": "The entire camera translates left on a lateral path, unlike a dolly which travels toward or away from the subject.",
+      "visual_effect": "Foreground and background slide at different rates while framing shifts sideways.",
+      "emotional_effect": "observation, energy or spatial clarity",
+      "use_when": "Move alongside action or reveal around an obstruction.",
+      "prompt_fragment": "camera trucks left laterally",
+      "requires_start_framing": "A subject or reveal path extending left of the starting frame.",
+      "pairs_well_with": [
+        "camera_slider",
+        "parallax_slide"
+      ],
+      "conflicts_with": [
+        "truck_right"
+      ],
+      "reliability": "high"
+    },
+    {
+      "id": "truck_right",
+      "term": "Truck right",
+      "aliases": [
+        "track right",
+        "lateral dolly right"
+      ],
+      "category": "Movement primitives",
+      "definition": "The entire camera translates right on a lateral path, unlike a dolly which travels toward or away from the subject.",
+      "visual_effect": "Foreground and background slide at different rates while framing shifts sideways.",
+      "emotional_effect": "observation, energy or spatial clarity",
+      "use_when": "Move alongside action or reveal around an obstruction.",
+      "prompt_fragment": "camera trucks right laterally",
+      "requires_start_framing": "A subject or reveal path extending right of the starting frame.",
+      "pairs_well_with": [
+        "camera_slider",
+        "parallax_slide"
+      ],
+      "conflicts_with": [
+        "truck_left"
+      ],
+      "reliability": "high"
+    },
+    {
+      "id": "pedestal_up",
+      "term": "Pedestal up",
+      "aliases": [
+        "ped up"
+      ],
+      "category": "Movement primitives",
+      "definition": "The camera rises vertically while its orientation and lateral position remain essentially unchanged.",
+      "visual_effect": "The viewpoint gains height and lower foreground may clear without tilting.",
+      "emotional_effect": "elevation, discovery or authority",
+      "use_when": "See over an obstacle or raise the viewer to subject height.",
+      "prompt_fragment": "camera pedestals straight upward",
+      "requires_start_framing": "A lower camera height with vertical clearance above.",
+      "pairs_well_with": [
+        "motion_control_precision",
+        "pedestal_and_tilt"
+      ],
+      "conflicts_with": [
+        "pedestal_down"
+      ],
+      "reliability": "medium"
+    },
+    {
+      "id": "pedestal_down",
+      "term": "Pedestal down",
+      "aliases": [
+        "ped down"
+      ],
+      "category": "Movement primitives",
+      "definition": "The camera descends vertically while its orientation and lateral position remain essentially unchanged.",
+      "visual_effect": "The viewpoint lowers and foreground objects may begin to occlude the scene.",
+      "emotional_effect": "grounding, vulnerability or descent",
+      "use_when": "Drop to a child, seated subject or low story detail.",
+      "prompt_fragment": "camera pedestals straight downward",
+      "requires_start_framing": "A raised viewpoint with vertical clearance below.",
+      "pairs_well_with": [
+        "motion_control_precision",
+        "pedestal_and_tilt"
+      ],
+      "conflicts_with": [
+        "pedestal_up"
+      ],
+      "reliability": "medium"
+    },
+    {
+      "id": "boom_up",
+      "term": "Boom up",
+      "aliases": [
+        "jib up"
+      ],
+      "category": "Movement primitives",
+      "definition": "A jib or crane arm raises the camera along an arc rather than a purely vertical pedestal line.",
+      "visual_effect": "Height, distance and perspective change together as the camera sweeps upward.",
+      "emotional_effect": "release, grandeur or revelation",
+      "use_when": "Open a scene vertically or rise above subjects.",
+      "prompt_fragment": "camera booms upward on jib",
+      "requires_start_framing": "A low or medium start with clear overhead rig travel.",
+      "pairs_well_with": [
+        "jib_arm",
+        "crane_sweep"
+      ],
+      "conflicts_with": [
+        "boom_down"
+      ],
+      "reliability": "medium"
+    },
+    {
+      "id": "boom_down",
+      "term": "Boom down",
+      "aliases": [
+        "jib down"
+      ],
+      "category": "Movement primitives",
+      "definition": "A jib or crane arm lowers the camera along an arc rather than a purely vertical pedestal line.",
+      "visual_effect": "Height, distance and perspective change together as the camera sweeps downward.",
+      "emotional_effect": "arrival, gravity or intimacy",
+      "use_when": "Descend into a scene or settle on a character.",
+      "prompt_fragment": "camera booms downward on jib",
+      "requires_start_framing": "A high start with a clear descending path.",
+      "pairs_well_with": [
+        "jib_arm",
+        "crane_sweep"
+      ],
+      "conflicts_with": [
+        "boom_up"
+      ],
+      "reliability": "medium"
+    },
+    {
+      "id": "optical_zoom",
+      "term": "Optical zoom",
+      "aliases": [
+        "lens zoom"
+      ],
+      "category": "Movement primitives",
+      "definition": "The lens changes focal length while the camera position stays fixed, unlike a dolly which translates and changes perspective.",
+      "visual_effect": "The field of view narrows or widens without translation parallax.",
+      "emotional_effect": "attention, surveillance or stylisation",
+      "use_when": "Change apparent magnification when physical movement is impossible or unwanted.",
+      "prompt_fragment": "slow optical lens zoom inward",
+      "requires_start_framing": "A stable frame with the target already visible near centre.",
+      "pairs_well_with": [
+        "zoom_out_reveal",
+        "creeping_zoom"
+      ],
+      "conflicts_with": [],
+      "reliability": "high"
+    },
+    {
+      "id": "diagonal_dolly",
+      "term": "Diagonal dolly",
+      "aliases": [
+        "diagonal track"
+      ],
+      "category": "Compound and combination moves",
+      "definition": "The camera translates simultaneously along lateral and forward-or-back axes.",
+      "visual_effect": "Subject scale and background parallax change along an oblique screen direction.",
+      "emotional_effect": "energy or discovery",
+      "use_when": "Approach while clearing an obstacle or changing the subject angle.",
+      "prompt_fragment": "camera dollies diagonally toward subject",
+      "requires_start_framing": "A medium or wide start with an unobstructed diagonal path.",
+      "pairs_well_with": [
+        "camera_dolly",
+        "parallax_slide"
+      ],
+      "conflicts_with": [],
+      "reliability": "medium"
+    },
+    {
+      "id": "arc_shot",
+      "term": "Arc shot",
+      "aliases": [
+        "curved tracking shot"
+      ],
+      "category": "Compound and combination moves",
+      "definition": "The camera travels through a partial curve around a subject while maintaining useful framing.",
+      "visual_effect": "The background rotates behind the subject and profile changes progressively.",
+      "emotional_effect": "connection, tension or discovery",
+      "use_when": "Reveal relationships or move from one side of a subject to another.",
+      "prompt_fragment": "camera arcs halfway around subject",
+      "requires_start_framing": "A subject separated from obstacles with partial circular clearance.",
+      "pairs_well_with": [
+        "motorized_gimbal",
+        "side_tracking_shot"
+      ],
+      "conflicts_with": [
+        "locked_off_camera"
+      ],
+      "reliability": "high"
+    },
+    {
+      "id": "orbit_shot",
+      "term": "Orbit shot",
+      "aliases": [
+        "360-degree orbit",
+        "circular tracking shot"
+      ],
+      "category": "Compound and combination moves",
+      "definition": "The camera travels around a subject through a broad circle, usually maintaining the subject near frame centre.",
+      "visual_effect": "The entire environment revolves behind a relatively stable subject.",
+      "emotional_effect": "spectacle, scrutiny or emotional intensity",
+      "use_when": "Celebrate, isolate or inspect a central subject.",
+      "prompt_fragment": "camera orbits fully around subject",
+      "requires_start_framing": "A centred subject with full circular clearance.",
+      "pairs_well_with": [
+        "motorized_gimbal",
+        "bayhem_orbit"
+      ],
+      "conflicts_with": [
+        "locked_off_camera"
+      ],
+      "reliability": "high"
+    },
+    {
+      "id": "spiral_camera_move",
+      "term": "Spiral camera move",
+      "aliases": [
+        "helical camera move",
+        "corkscrew move"
+      ],
+      "category": "Compound and combination moves",
+      "definition": "The camera orbits while simultaneously rising or descending around the subject.",
+      "visual_effect": "The background rotates as camera height and subject angle change continuously.",
+      "emotional_effect": "vertigo, transformation or spectacle",
+      "use_when": "Turn an orbit into an escalating reveal or descent.",
+      "prompt_fragment": "camera spirals upward around subject",
+      "requires_start_framing": "A centred subject with circular and vertical clearance.",
+      "pairs_well_with": [
+        "camera_crane",
+        "roll_clockwise"
+      ],
+      "conflicts_with": [
+        "locked_off_camera"
+      ],
+      "reliability": "low"
+    },
+    {
+      "id": "dolly_and_pan",
+      "term": "Dolly-and-pan move",
+      "aliases": [
+        "compound dolly pan"
+      ],
+      "category": "Compound and combination moves",
+      "definition": "The camera translates on a dolly while panning to redirect the optical axis.",
+      "visual_effect": "Translation parallax combines with a changing horizontal view direction.",
+      "emotional_effect": "fluid attention or immersion",
+      "use_when": "Pass a subject while keeping it framed or transfer attention.",
+      "prompt_fragment": "dolly forward while panning left",
+      "requires_start_framing": "A wide or medium frame with room for translation and rotation.",
+      "pairs_well_with": [
+        "camera_dolly",
+        "tracking_shot"
+      ],
+      "conflicts_with": [
+        "locked_off_camera"
+      ],
+      "reliability": "medium"
+    },
+    {
+      "id": "dolly_and_tilt",
+      "term": "Dolly-and-tilt move",
+      "aliases": [
+        "compound dolly tilt"
+      ],
+      "category": "Compound and combination moves",
+      "definition": "The camera translates while tilting to maintain or change vertical framing.",
+      "visual_effect": "Perspective changes while the view travels along the subject’s height.",
+      "emotional_effect": "awe or discovery",
+      "use_when": "Approach a tall subject and reveal upward or downward detail.",
+      "prompt_fragment": "dolly inward while tilting upward",
+      "requires_start_framing": "A medium or wide start on the lower part of a tall subject.",
+      "pairs_well_with": [
+        "camera_dolly",
+        "tilt_reveal"
+      ],
+      "conflicts_with": [
+        "locked_off_camera"
+      ],
+      "reliability": "medium"
+    },
+    {
+      "id": "truck_and_pan",
+      "term": "Truck-and-pan move",
+      "aliases": [
+        "compound lateral track"
+      ],
+      "category": "Compound and combination moves",
+      "definition": "The camera translates laterally while panning, usually to hold or pass a subject.",
+      "visual_effect": "Strong parallax combines with an evolving front, profile or rear angle.",
+      "emotional_effect": "presence or kinetic observation",
+      "use_when": "Track action while changing the viewer’s relation to it.",
+      "prompt_fragment": "truck sideways while panning on subject",
+      "requires_start_framing": "A visible subject with lateral travel space.",
+      "pairs_well_with": [
+        "camera_dolly",
+        "side_tracking_shot"
+      ],
+      "conflicts_with": [
+        "locked_off_camera"
+      ],
+      "reliability": "medium"
+    },
+    {
+      "id": "pedestal_and_tilt",
+      "term": "Pedestal-and-tilt move",
+      "aliases": [
+        "vertical compound move"
+      ],
+      "category": "Compound and combination moves",
+      "definition": "The camera changes height while tilting to maintain or redirect framing.",
+      "visual_effect": "The viewpoint rises or falls while vertical composition evolves independently.",
+      "emotional_effect": "revelation or graceful emphasis",
+      "use_when": "Clear foreground objects while keeping a subject framed.",
+      "prompt_fragment": "pedestal upward while tilting down",
+      "requires_start_framing": "A subject already visible with vertical clearance.",
+      "pairs_well_with": [
+        "motion_control_precision",
+        "tilt_down"
+      ],
+      "conflicts_with": [
+        "locked_off_camera"
+      ],
+      "reliability": "medium"
+    },
+    {
+      "id": "compound_pan_tilt",
+      "term": "Compound pan-and-tilt",
+      "aliases": [
+        "diagonal head move"
+      ],
+      "category": "Compound and combination moves",
+      "definition": "The camera rotates horizontally and vertically at the same time from a fixed support point.",
+      "visual_effect": "The frame follows a diagonal or curved path across the scene without translation parallax.",
+      "emotional_effect": "attention or agility",
+      "use_when": "Follow airborne, climbing or diagonally moving action.",
+      "prompt_fragment": "pan right while tilting upward",
+      "requires_start_framing": "A subject positioned to travel diagonally across frame.",
+      "pairs_well_with": [
+        "fluid_head_tripod",
+        "aerial_follow_shot"
+      ],
+      "conflicts_with": [
+        "locked_off_camera"
+      ],
+      "reliability": "high"
+    },
+    {
+      "id": "crane_sweep",
+      "term": "Crane sweep",
+      "aliases": [
+        "sweeping crane move"
+      ],
+      "category": "Compound and combination moves",
+      "definition": "A crane carries the camera through a large combined vertical and horizontal arc.",
+      "visual_effect": "Scale, height, perspective and geography change in one continuous move.",
+      "emotional_effect": "grandeur, freedom or revelation",
+      "use_when": "Introduce crowds, architecture or landscape at production scale.",
+      "prompt_fragment": "sweeping crane move across scene",
+      "requires_start_framing": "A wide spatial setup with a clear three-dimensional rig path.",
+      "pairs_well_with": [
+        "camera_crane",
+        "pull_back_to_reveal"
+      ],
+      "conflicts_with": [
+        "locked_off_camera"
+      ],
+      "reliability": "medium"
+    },
+    {
+      "id": "jib_swing",
+      "term": "Jib swing",
+      "aliases": [
+        "jib arc"
+      ],
+      "category": "Compound and combination moves",
+      "definition": "A short crane arm swings the camera laterally and vertically around its pivot.",
+      "visual_effect": "The lens follows a compact curved path with noticeable foreground parallax.",
+      "emotional_effect": "polish or discovery",
+      "use_when": "Add a controlled reveal in confined studio or location space.",
+      "prompt_fragment": "jib swings around foreground object",
+      "requires_start_framing": "A near foreground anchor and clear arm radius.",
+      "pairs_well_with": [
+        "jib_arm",
+        "foreground_reveal"
+      ],
+      "conflicts_with": [
+        "locked_off_camera"
+      ],
+      "reliability": "medium"
+    },
+    {
+      "id": "parallax_slide",
+      "term": "Parallax slide",
+      "aliases": [
+        "parallax move",
+        "slider parallax"
+      ],
+      "category": "Compound and combination moves",
+      "definition": "The camera slides laterally while near and far elements remain at different depths.",
+      "visual_effect": "Foreground moves faster than background, making depth visibly separate.",
+      "emotional_effect": "dimensionality or elegance",
+      "use_when": "Add depth to products, portraits, miniatures or landscapes.",
+      "prompt_fragment": "slow lateral parallax camera slide",
+      "requires_start_framing": "At least two visible elements must occupy distinct depth planes.",
+      "pairs_well_with": [
+        "camera_slider",
+        "foreground_reveal"
+      ],
+      "conflicts_with": [
+        "locked_off_camera"
+      ],
+      "reliability": "high"
+    },
+    {
+      "id": "fluid_head_tripod",
+      "term": "Fluid-head tripod move",
+      "aliases": [
+        "tripod pan-and-tilt"
+      ],
+      "category": "Rig, mount and support types",
+      "definition": "A stationary tripod and fluid-damped head rotate the camera smoothly in pan or tilt.",
+      "visual_effect": "Rotation is controlled and repeatable with no translation parallax.",
+      "emotional_effect": "calm, observation or broadcast precision",
+      "use_when": "Make polished pans and tilts from a fixed position.",
+      "prompt_fragment": "smooth fluid-head tripod movement",
+      "requires_start_framing": "A stable support point and subject path within the head range.",
+      "pairs_well_with": [
+        "pan_left",
+        "tilt_up"
+      ],
+      "conflicts_with": [
+        "handheld_camera_rig"
+      ],
+      "reliability": "high"
+    },
+    {
+      "id": "camera_dolly",
+      "term": "Camera dolly move",
+      "aliases": [
+        "dolly track move"
+      ],
+      "category": "Rig, mount and support types",
+      "definition": "A wheeled platform carries the camera through space on track or a prepared floor.",
+      "visual_effect": "Translation produces stable perspective change and controlled parallax.",
+      "emotional_effect": "immersion or cinematic polish",
+      "use_when": "Execute precise pushes, pullbacks, tracking or compound moves.",
+      "prompt_fragment": "smooth camera dolly on track",
+      "requires_start_framing": "A clear, level travel path and planned start mark.",
+      "pairs_well_with": [
+        "dolly_in",
+        "tracking_shot"
+      ],
+      "conflicts_with": [
+        "locked_off_camera"
+      ],
+      "reliability": "high"
+    },
+    {
+      "id": "camera_slider",
+      "term": "Camera slider move",
+      "aliases": [
+        "linear slider shot"
+      ],
+      "category": "Rig, mount and support types",
+      "definition": "A camera carriage moves along a short rigid rail.",
+      "visual_effect": "A compact linear translation creates controlled parallax.",
+      "emotional_effect": "elegance or product polish",
+      "use_when": "Add subtle motion to products, interviews or establishing details.",
+      "prompt_fragment": "slow camera slider move",
+      "requires_start_framing": "A composition with foreground and background separation.",
+      "pairs_well_with": [
+        "parallax_slide",
+        "truck_left"
+      ],
+      "conflicts_with": [
+        "locked_off_camera"
+      ],
+      "reliability": "high"
+    },
+    {
+      "id": "jib_arm",
+      "term": "Jib shot",
+      "aliases": [
+        "jib arm move"
+      ],
+      "category": "Rig, mount and support types",
+      "definition": "A pivoting counterweighted arm moves the camera through a compact vertical or lateral arc.",
+      "visual_effect": "The view rises, falls or swings with smooth curved parallax.",
+      "emotional_effect": "grace or revelation",
+      "use_when": "Create small crane-like moves where space or budget is limited.",
+      "prompt_fragment": "smooth jib arm camera move",
+      "requires_start_framing": "Clearance around the arm pivot and subject.",
+      "pairs_well_with": [
+        "boom_up",
+        "jib_swing"
+      ],
+      "conflicts_with": [
+        "locked_off_camera"
+      ],
+      "reliability": "high"
+    },
+    {
+      "id": "camera_crane",
+      "term": "Camera crane shot",
+      "aliases": [
+        "crane move"
+      ],
+      "category": "Rig, mount and support types",
+      "definition": "A long counterweighted arm carries the camera through large vertical and horizontal arcs.",
+      "visual_effect": "The shot can travel from intimate height to broad overhead geography.",
+      "emotional_effect": "spectacle, freedom or scale",
+      "use_when": "Reveal large sets, crowds, architecture or landscapes.",
+      "prompt_fragment": "large sweeping camera crane shot",
+      "requires_start_framing": "A broad unobstructed rig path and rehearsed end frame.",
+      "pairs_well_with": [
+        "crane_sweep",
+        "boom_down"
+      ],
+      "conflicts_with": [
+        "locked_off_camera"
+      ],
+      "reliability": "high"
+    },
+    {
+      "id": "technocrane",
+      "term": "Telescopic crane shot",
+      "aliases": [
+        "Technocrane move",
+        "telescopic camera crane"
+      ],
+      "category": "Rig, mount and support types",
+      "definition": "A telescoping crane changes arm length while booming and swinging the remote camera head.",
+      "visual_effect": "The lens can push, pull, rise and arc through complex three-dimensional paths.",
+      "emotional_effect": "precision, spectacle or immersion",
+      "use_when": "Combine crane scale with a direct push-in or pullback.",
+      "prompt_fragment": "telescopic crane pushes through scene",
+      "requires_start_framing": "A wide start with extensive overhead and forward clearance.",
+      "pairs_well_with": [
+        "crane_sweep",
+        "diagonal_dolly"
+      ],
+      "conflicts_with": [
+        "locked_off_camera"
+      ],
+      "reliability": "medium"
+    },
+    {
+      "id": "steadicam_rig",
+      "term": "Steadicam shot",
+      "aliases": [
+        "body-worn stabilizer shot"
+      ],
+      "category": "Rig, mount and support types",
+      "definition": "A mechanically isolated body-worn stabilizer lets an operator walk or run with reduced shake.",
+      "visual_effect": "The camera floats through space while retaining subtle human drift.",
+      "emotional_effect": "immersion, freedom or presence",
+      "use_when": "Follow characters through complex terrain without tracks.",
+      "prompt_fragment": "floating steadicam tracking shot",
+      "requires_start_framing": "A walkable route and subject position visible at the start.",
+      "pairs_well_with": [
+        "following_shot",
+        "floating_stabilization"
+      ],
+      "conflicts_with": [
+        "locked_off_camera"
+      ],
+      "reliability": "high"
+    },
+    {
+      "id": "motorized_gimbal",
+      "term": "Motorized gimbal shot",
+      "aliases": [
+        "three-axis gimbal shot"
+      ],
+      "category": "Rig, mount and support types",
+      "definition": "Motorized axes actively stabilize pan, tilt and roll while the operator or mount moves.",
+      "visual_effect": "The horizon and orientation remain very smooth despite translation.",
+      "emotional_effect": "polish, glide or detachment",
+      "use_when": "Create smooth low, high, vehicle or running moves.",
+      "prompt_fragment": "smooth three-axis gimbal movement",
+      "requires_start_framing": "A planned travel path with enough subject separation for tracking.",
+      "pairs_well_with": [
+        "orbit_shot",
+        "gimbal_horizon_lock"
+      ],
+      "conflicts_with": [
+        "locked_off_camera"
+      ],
+      "reliability": "high"
+    },
+    {
+      "id": "handheld_camera_rig",
+      "term": "Handheld camera",
+      "aliases": [
+        "handheld shot"
+      ],
+      "category": "Rig, mount and support types",
+      "definition": "The operator supports and aims the camera directly without a stabilizing platform.",
+      "visual_effect": "Breathing, footfalls and grip corrections appear as organic frame movement.",
+      "emotional_effect": "immediacy, danger or authenticity",
+      "use_when": "Place the viewer inside documentary, conflict or intimate action.",
+      "prompt_fragment": "organic handheld camera movement",
+      "requires_start_framing": "The subject must be framed with margin for operator drift.",
+      "pairs_well_with": [
+        "controlled_handheld",
+        "shaky_cam"
+      ],
+      "conflicts_with": [
+        "fluid_head_tripod",
+        "locked_off_camera"
+      ],
+      "reliability": "high"
+    },
+    {
+      "id": "shoulder_mounted_rig",
+      "term": "Shoulder-mounted camera",
+      "aliases": [
+        "shoulder rig"
+      ],
+      "category": "Rig, mount and support types",
+      "definition": "The camera rests on the operator’s shoulder and moves with torso and steps.",
+      "visual_effect": "The view has directional stability with characteristic vertical and rotational sway.",
+      "emotional_effect": "documentary presence or urgency",
+      "use_when": "Follow action with more mass and control than bare handheld.",
+      "prompt_fragment": "shoulder-mounted camera following action",
+      "requires_start_framing": "A medium or wider start with margin around the subject.",
+      "pairs_well_with": [
+        "shoulder_mounted_sway",
+        "following_shot"
+      ],
+      "conflicts_with": [
+        "locked_off_camera"
+      ],
+      "reliability": "high"
+    },
+    {
+      "id": "drone_camera",
+      "term": "Drone camera move",
+      "aliases": [
+        "aerial drone shot"
+      ],
+      "category": "Rig, mount and support types",
+      "definition": "A remotely piloted aircraft translates and changes altitude while carrying a stabilized camera.",
+      "visual_effect": "The viewpoint crosses terrain freely at heights and paths unavailable to ground rigs.",
+      "emotional_effect": "awe, freedom or surveillance",
+      "use_when": "Reveal geography, follow vehicles or connect distant spaces.",
+      "prompt_fragment": "cinematic drone camera flight",
+      "requires_start_framing": "A wide outdoor opening with safe aerial clearance.",
+      "pairs_well_with": [
+        "aerial_follow_shot",
+        "crane_sweep"
+      ],
+      "conflicts_with": [
+        "locked_off_camera"
+      ],
+      "reliability": "high"
+    },
+    {
+      "id": "cable_camera",
+      "term": "Cable-camera shot",
+      "aliases": [
+        "wirecam",
+        "cable cam"
+      ],
+      "category": "Rig, mount and support types",
+      "definition": "A remotely controlled camera carriage travels along tensioned cables above or through a venue.",
+      "visual_effect": "The shot covers long repeatable aerial paths while remaining tied to the cable line.",
+      "emotional_effect": "speed, scale or event immersion",
+      "use_when": "Follow sport, concerts or crowds over long distances.",
+      "prompt_fragment": "cable camera flying above action",
+      "requires_start_framing": "A broad venue view aligned with the cable route.",
+      "pairs_well_with": [
+        "leading_shot",
+        "side_tracking_shot"
+      ],
+      "conflicts_with": [
+        "locked_off_camera"
+      ],
+      "reliability": "medium"
+    },
+    {
+      "id": "tracking_shot",
+      "term": "Tracking shot",
+      "aliases": [
+        "travelling shot"
+      ],
+      "category": "Follow, tracking and subject-relative behaviours",
+      "definition": "The camera translates through space to maintain, approach or move alongside a subject, whereas following and leading specify positions behind or ahead.",
+      "visual_effect": "Subject framing stays purposeful while environment and parallax evolve.",
+      "emotional_effect": "immersion or sustained attention",
+      "use_when": "Accompany action while showing changing spatial context.",
+      "prompt_fragment": "smooth tracking shot with subject",
+      "requires_start_framing": "A visible moving subject and a clear travel direction.",
+      "pairs_well_with": [
+        "camera_dolly",
+        "locked_on_subject_tracking"
+      ],
+      "conflicts_with": [
+        "locked_off_camera"
+      ],
+      "reliability": "high"
+    },
+    {
+      "id": "following_shot",
+      "term": "Following shot",
+      "aliases": [
+        "follow shot",
+        "trailing shot"
+      ],
+      "category": "Follow, tracking and subject-relative behaviours",
+      "definition": "The camera travels behind or just off the rear of a moving subject, unlike generic tracking which can use any relative position.",
+      "visual_effect": "The subject leads into newly revealed space while the background approaches.",
+      "emotional_effect": "identification, pursuit or curiosity",
+      "use_when": "Let the viewer accompany a character into an environment.",
+      "prompt_fragment": "camera follows directly behind subject",
+      "requires_start_framing": "A rear or rear-three-quarter view of a subject beginning to move away.",
+      "pairs_well_with": [
+        "steadicam_rig",
+        "walking_forward"
+      ],
+      "conflicts_with": [
+        "leading_shot"
+      ],
+      "reliability": "high"
+    },
+    {
+      "id": "leading_shot",
+      "term": "Leading shot",
+      "aliases": [
+        "front-leading track"
+      ],
+      "category": "Follow, tracking and subject-relative behaviours",
+      "definition": "The camera travels ahead of a moving subject while facing back toward them, unlike following from behind.",
+      "visual_effect": "The subject advances toward camera as the background retreats behind them.",
+      "emotional_effect": "anticipation, confidence or confrontation",
+      "use_when": "Show expression during forward travel.",
+      "prompt_fragment": "camera leads subject from the front",
+      "requires_start_framing": "A frontal medium or wide view with travel space behind the camera.",
+      "pairs_well_with": [
+        "motorized_gimbal",
+        "backpedaling"
+      ],
+      "conflicts_with": [
+        "following_shot"
+      ],
+      "reliability": "high"
+    },
+    {
+      "id": "side_tracking_shot",
+      "term": "Side tracking shot",
+      "aliases": [
+        "profile tracking shot",
+        "parallel tracking"
+      ],
+      "category": "Follow, tracking and subject-relative behaviours",
+      "definition": "The camera travels parallel to the subject from a side-on position.",
+      "visual_effect": "The subject remains in profile while the background scrolls laterally with strong parallax.",
+      "emotional_effect": "speed, observation or momentum",
+      "use_when": "Show locomotion clearly against changing surroundings.",
+      "prompt_fragment": "camera tracks beside moving subject",
+      "requires_start_framing": "A profile view and lateral route parallel to the subject.",
+      "pairs_well_with": [
+        "vehicle_tracking_shot",
+        "running"
+      ],
+      "conflicts_with": [
+        "locked_off_camera"
+      ],
+      "reliability": "high"
+    },
+    {
+      "id": "chase_shot",
+      "term": "Chase shot",
+      "aliases": [
+        "pursuit shot",
+        "chase camera"
+      ],
+      "category": "Follow, tracking and subject-relative behaviours",
+      "definition": "The camera aggressively follows one or more fast subjects while preserving directional continuity.",
+      "visual_effect": "Rapid translation, corrections and changing gaps communicate pursuit.",
+      "emotional_effect": "urgency, danger or excitement",
+      "use_when": "Photograph running, driving or combat pursuit.",
+      "prompt_fragment": "fast camera chase behind subject",
+      "requires_start_framing": "A wide rear or three-quarter view with open pursuit space.",
+      "pairs_well_with": [
+        "controlled_handheld",
+        "sprinting"
+      ],
+      "conflicts_with": [],
+      "reliability": "high"
+    },
+    {
+      "id": "walk_and_talk",
+      "term": "Walk-and-talk shot",
+      "aliases": [
+        "walking dialogue shot"
+      ],
+      "category": "Follow, tracking and subject-relative behaviours",
+      "definition": "The camera tracks continuously with characters who converse while walking.",
+      "visual_effect": "Dialogue framing persists as the environment flows past.",
+      "emotional_effect": "momentum, competence or immediacy",
+      "use_when": "Deliver exposition without stopping the scene.",
+      "prompt_fragment": "smooth walk-and-talk tracking shot",
+      "requires_start_framing": "A two-shot or group framing with characters already walking.",
+      "pairs_well_with": [
+        "steadicam_rig",
+        "walking_forward"
+      ],
+      "conflicts_with": [
+        "locked_off_camera"
+      ],
+      "reliability": "high"
+    },
+    {
+      "id": "over_shoulder_tracking",
+      "term": "Over-the-shoulder tracking shot",
+      "aliases": [
+        "moving OTS"
+      ],
+      "category": "Follow, tracking and subject-relative behaviours",
+      "definition": "The camera travels while maintaining an over-the-shoulder relationship to a foreground character.",
+      "visual_effect": "Foreground shoulder overlap anchors viewpoint as the environment changes.",
+      "emotional_effect": "involvement or tension",
+      "use_when": "Follow a conversation, search or pursuit from a participant’s side.",
+      "prompt_fragment": "moving over-the-shoulder follow shot",
+      "requires_start_framing": "A foreground shoulder and the tracked subject must both be visible.",
+      "pairs_well_with": [
+        "steadicam_rig",
+        "following_shot"
+      ],
+      "conflicts_with": [],
+      "reliability": "medium"
+    },
+    {
+      "id": "pov_tracking",
+      "term": "Moving point-of-view shot",
+      "aliases": [
+        "POV tracking shot",
+        "subjective moving camera"
+      ],
+      "category": "Follow, tracking and subject-relative behaviours",
+      "definition": "The camera moves as if occupying a character’s eyes or body position.",
+      "visual_effect": "Camera path and gaze changes directly represent the character’s locomotion.",
+      "emotional_effect": "embodiment, tension or discovery",
+      "use_when": "Let the viewer experience walking, running, riding or searching first-hand.",
+      "prompt_fragment": "first-person moving point-of-view shot",
+      "requires_start_framing": "A forward-facing view aligned with the implied character path.",
+      "pairs_well_with": [
+        "handheld_camera_rig",
+        "walking_forward"
+      ],
+      "conflicts_with": [],
+      "reliability": "high"
+    },
+    {
+      "id": "snorricam_shot",
+      "term": "SnorriCam shot",
+      "aliases": [
+        "body-mount shot",
+        "chest-mounted reverse shot"
+      ],
+      "category": "Follow, tracking and subject-relative behaviours",
+      "definition": "A rigid body-mounted camera faces the performer so camera and torso move together.",
+      "visual_effect": "The face stays nearly fixed while the world lurches and rotates behind it.",
+      "emotional_effect": "panic, intoxication or psychological isolation",
+      "use_when": "Externalise disorientation while preserving facial performance.",
+      "prompt_fragment": "body-mounted snorricam on actor",
+      "requires_start_framing": "A tight frontal view with the actor centred.",
+      "pairs_well_with": [
+        "stumbling",
+        "organic_camera_drift"
+      ],
+      "conflicts_with": [
+        "locked_off_camera"
+      ],
+      "reliability": "medium"
+    },
+    {
+      "id": "vehicle_tracking_shot",
+      "term": "Vehicle-to-vehicle tracking shot",
+      "aliases": [
+        "camera-car tracking",
+        "process trailer shot"
+      ],
+      "category": "Follow, tracking and subject-relative behaviours",
+      "definition": "A camera mounted on or operated from one moving vehicle tracks another vehicle or subject.",
+      "visual_effect": "Speed is expressed through background flow while relative subject distance stays controllable.",
+      "emotional_effect": "velocity, pursuit or scale",
+      "use_when": "Film driving, cycling or high-speed travel safely and consistently.",
+      "prompt_fragment": "vehicle-mounted camera tracks alongside car",
+      "requires_start_framing": "A wide or medium view of the target vehicle on a parallel route.",
+      "pairs_well_with": [
+        "side_tracking_shot",
+        "chase_shot"
+      ],
+      "conflicts_with": [
+        "locked_off_camera"
+      ],
+      "reliability": "high"
+    },
+    {
+      "id": "aerial_follow_shot",
+      "term": "Aerial follow shot",
+      "aliases": [
+        "drone follow"
+      ],
+      "category": "Follow, tracking and subject-relative behaviours",
+      "definition": "An aerial camera travels above or behind a moving subject while adjusting position to retain it.",
+      "visual_effect": "The subject remains readable within changing geography and altitude.",
+      "emotional_effect": "freedom, surveillance or epic scale",
+      "use_when": "Follow people, animals, boats or vehicles across terrain.",
+      "prompt_fragment": "drone follows subject from above",
+      "requires_start_framing": "A wide aerial view with the moving subject already identifiable.",
+      "pairs_well_with": [
+        "drone_camera",
+        "locked_on_subject_tracking"
+      ],
+      "conflicts_with": [
+        "locked_off_camera"
+      ],
+      "reliability": "high"
+    },
+    {
+      "id": "locked_on_subject_tracking",
+      "term": "Locked-on subject tracking",
+      "aliases": [
+        "subject-centred tracking",
+        "target lock shot"
+      ],
+      "category": "Follow, tracking and subject-relative behaviours",
+      "definition": "The camera path and orientation continually adjust so a chosen moving subject remains near a fixed frame position.",
+      "visual_effect": "The subject appears compositionally stable while background motion carries most movement.",
+      "emotional_effect": "focus, control or surveillance",
+      "use_when": "Keep erratic action readable or isolate one performer in motion.",
+      "prompt_fragment": "camera locked onto moving subject",
+      "requires_start_framing": "The target must be clearly visible and separated from similar subjects.",
+      "pairs_well_with": [
+        "motorized_gimbal",
+        "tracking_shot"
+      ],
+      "conflicts_with": [
+        "locked_off_camera"
+      ],
+      "reliability": "high"
+    },
+    {
+      "id": "slow_motion",
+      "term": "Slow motion",
+      "aliases": [
+        "slow-mo",
+        "overcranked playback"
+      ],
+      "category": "Speed, ramping and temporal manipulation",
+      "definition": "Action is recorded or generated with more temporal samples and played longer than real time, unlike a speed ramp which changes rate within the shot.",
+      "visual_effect": "Movement stretches smoothly and small physical details become visible.",
+      "emotional_effect": "grace, impact or contemplation",
+      "use_when": "Emphasise emotion, athletic form, debris or a decisive instant.",
+      "prompt_fragment": "cinematic slow motion action",
+      "requires_start_framing": null,
+      "pairs_well_with": [
+        "explosive_movement",
+        "recoiling_from_impact"
+      ],
+      "conflicts_with": [
+        "fast_motion"
+      ],
+      "reliability": "high"
+    },
+    {
+      "id": "fast_motion",
+      "term": "Fast motion",
+      "aliases": [
+        "undercranked playback",
+        "accelerated motion"
+      ],
+      "category": "Speed, ramping and temporal manipulation",
+      "definition": "Action is played faster than real time at a constant rate, unlike a speed ramp which varies rate during the shot.",
+      "visual_effect": "Travel and gestures compress into brisk, often comic movement.",
+      "emotional_effect": "urgency, comedy or efficiency",
+      "use_when": "Compress routine action or make a process feel frantic.",
+      "prompt_fragment": "action moving in fast motion",
+      "requires_start_framing": null,
+      "pairs_well_with": [
+        "time_lapse",
+        "walking_forward"
+      ],
+      "conflicts_with": [
+        "slow_motion",
+        "freeze_frame"
+      ],
+      "reliability": "high"
+    },
+    {
+      "id": "speed_ramp",
+      "term": "Speed ramp",
+      "aliases": [
+        "time ramp",
+        "variable-speed ramp"
+      ],
+      "category": "Speed, ramping and temporal manipulation",
+      "definition": "Playback speed changes continuously or in stages within one shot, unlike constant slow motion or a frozen frame.",
+      "visual_effect": "Motion accelerates or decelerates around a selected beat.",
+      "emotional_effect": "impact, anticipation or exhilaration",
+      "use_when": "Enter slow motion for a key moment and return to real time.",
+      "prompt_fragment": "speed ramp into slow motion",
+      "requires_start_framing": "The action must begin before the moment selected for the rate change.",
+      "pairs_well_with": [
+        "sprinting",
+        "punching"
+      ],
+      "conflicts_with": [
+        "freeze_frame"
+      ],
+      "reliability": "medium"
+    },
+    {
+      "id": "freeze_frame",
+      "term": "Freeze frame",
+      "aliases": [
+        "frame hold"
+      ],
+      "category": "Speed, ramping and temporal manipulation",
+      "definition": "One image is held for a duration so all visual motion stops, unlike slow motion which still advances through time.",
+      "visual_effect": "The moving shot becomes perfectly static before motion or editing resumes.",
+      "emotional_effect": "emphasis, shock or reflection",
+      "use_when": "Punctuate an identity, impact, joke or turning point.",
+      "prompt_fragment": "freeze frame on decisive moment",
+      "requires_start_framing": "A clear decisive pose or readable action apex must be reached.",
+      "pairs_well_with": [
+        "match_move_cut",
+        "celebrating"
+      ],
+      "conflicts_with": [
+        "slow_motion",
+        "fast_motion",
+        "speed_ramp"
+      ],
+      "reliability": "high"
+    },
+    {
+      "id": "time_lapse",
+      "term": "Time-lapse",
+      "aliases": [
+        "interval photography"
+      ],
+      "category": "Speed, ramping and temporal manipulation",
+      "definition": "Frames captured or generated at long intervals are played continuously to compress a long duration.",
+      "visual_effect": "Slow processes such as clouds, traffic or construction move rapidly.",
+      "emotional_effect": "passage, scale or inevitability",
+      "use_when": "Show hours, days or gradual change within seconds.",
+      "prompt_fragment": "time-lapse clouds and moving shadows",
+      "requires_start_framing": "A stable wide composition containing a visibly changing process.",
+      "pairs_well_with": [
+        "locked_off_camera",
+        "organic_camera_drift"
+      ],
+      "conflicts_with": [
+        "freeze_frame"
+      ],
+      "reliability": "high"
+    },
+    {
+      "id": "hyperlapse",
+      "term": "Hyperlapse",
+      "aliases": [
+        "moving time-lapse"
+      ],
+      "category": "Speed, ramping and temporal manipulation",
+      "definition": "A time-lapse includes substantial controlled camera translation between recorded frames.",
+      "visual_effect": "Long travel collapses into rapid forward movement with a relatively anchored target.",
+      "emotional_effect": "energy, journey or transformation",
+      "use_when": "Compress movement through streets, buildings or landscapes.",
+      "prompt_fragment": "forward-moving cinematic hyperlapse",
+      "requires_start_framing": "A centred distant anchor and repeatable travel path are required.",
+      "pairs_well_with": [
+        "locked_on_subject_tracking",
+        "motion_control_precision"
+      ],
+      "conflicts_with": [
+        "locked_off_camera"
+      ],
+      "reliability": "medium"
+    },
+    {
+      "id": "frame_skipping",
+      "term": "Frame skipping",
+      "aliases": [
+        "frame dropping",
+        "skip-frame effect"
+      ],
+      "category": "Speed, ramping and temporal manipulation",
+      "definition": "Selected intermediate frames are omitted so motion advances in discontinuous jumps.",
+      "visual_effect": "Movement becomes choppy with abrupt spatial increments.",
+      "emotional_effect": "unease, urgency or digital disruption",
+      "use_when": "Create panic, malfunction or an intentionally broken cadence.",
+      "prompt_fragment": "intentional skip-frame choppy motion",
+      "requires_start_framing": null,
+      "pairs_well_with": [
+        "jerky_movement",
+        "shaky_cam"
+      ],
+      "conflicts_with": [
+        "slow_motion"
+      ],
+      "reliability": "medium"
+    },
+    {
+      "id": "step_printing",
+      "term": "Step printing",
+      "aliases": [
+        "step-printed motion"
+      ],
+      "category": "Speed, ramping and temporal manipulation",
+      "definition": "Frames are optically or digitally repeated in groups while source action advances at a different cadence.",
+      "visual_effect": "Moving subjects leave a smeared, pulsing or stuttering temporal trail.",
+      "emotional_effect": "dream, memory or intoxication",
+      "use_when": "Create expressive motion trails associated with stylised cinema.",
+      "prompt_fragment": "step-printed motion blur trails",
+      "requires_start_framing": null,
+      "pairs_well_with": [
+        "organic_camera_drift",
+        "dancing"
+      ],
+      "conflicts_with": [
+        "short_shutter_staccato"
+      ],
+      "reliability": "low"
+    },
+    {
+      "id": "slow_shutter_motion",
+      "term": "Slow-shutter motion",
+      "aliases": [
+        "shutter drag",
+        "motion smear"
+      ],
+      "category": "Speed, ramping and temporal manipulation",
+      "definition": "Each video frame uses a long exposure relative to frame duration so moving detail smears.",
+      "visual_effect": "Subjects and camera movement produce flowing trails and reduced temporal crispness.",
+      "emotional_effect": "dreaminess, speed or disorientation",
+      "use_when": "Suggest night energy, memory, dance or velocity.",
+      "prompt_fragment": "slow shutter with motion trails",
+      "requires_start_framing": null,
+      "pairs_well_with": [
+        "dancing",
+        "organic_camera_drift"
+      ],
+      "conflicts_with": [
+        "short_shutter_staccato"
+      ],
+      "reliability": "medium"
+    },
+    {
+      "id": "short_shutter_staccato",
+      "term": "Short-shutter staccato",
+      "aliases": [
+        "high-shutter look",
+        "staccato motion"
+      ],
+      "category": "Speed, ramping and temporal manipulation",
+      "definition": "Each frame uses a short exposure so motion blur is reduced without changing playback speed.",
+      "visual_effect": "Moving edges become crisp and action feels sharply segmented.",
+      "emotional_effect": "tension, harshness or combat intensity",
+      "use_when": "Make explosions, running or impacts feel immediate and abrasive.",
+      "prompt_fragment": "high shutter, crisp staccato motion",
+      "requires_start_framing": null,
+      "pairs_well_with": [
+        "shaky_cam",
+        "punching"
+      ],
+      "conflicts_with": [
+        "slow_shutter_motion",
+        "step_printing"
+      ],
+      "reliability": "high"
+    },
+    {
+      "id": "whip_pan_transition",
+      "term": "Whip-pan transition",
+      "aliases": [
+        "swish-pan transition"
+      ],
+      "category": "Shot transitions and cuts driven by camera",
+      "definition": "The camera pans so rapidly that the image becomes directional blur, unlike an ordinary pan which preserves readable detail.",
+      "visual_effect": "One scene smears horizontally into another across a hidden cut.",
+      "emotional_effect": "speed, surprise or continuity",
+      "use_when": "Connect locations, times or subjects with energetic direction.",
+      "prompt_fragment": "fast whip pan transition right",
+      "requires_start_framing": "A readable subject with open pan space toward the transition direction.",
+      "pairs_well_with": [
+        "pan_right",
+        "match_move_cut"
+      ],
+      "conflicts_with": [
+        "slow_motion"
+      ],
+      "reliability": "high"
+    },
+    {
+      "id": "whip_tilt_transition",
+      "term": "Whip-tilt transition",
+      "aliases": [
+        "swish-tilt transition"
+      ],
+      "category": "Shot transitions and cuts driven by camera",
+      "definition": "The camera tilts rapidly until vertical motion blur hides a cut to a matching tilt.",
+      "visual_effect": "The frame streaks vertically and resolves into a new shot.",
+      "emotional_effect": "surprise, acceleration or disorientation",
+      "use_when": "Change scenes using upward or downward visual momentum.",
+      "prompt_fragment": "fast whip tilt transition upward",
+      "requires_start_framing": "A frame with a clear vertical movement direction.",
+      "pairs_well_with": [
+        "tilt_up",
+        "match_move_cut"
+      ],
+      "conflicts_with": [
+        "locked_off_camera"
+      ],
+      "reliability": "medium"
+    },
+    {
+      "id": "foreground_wipe_transition",
+      "term": "Foreground wipe transition",
+      "aliases": [
+        "object wipe"
+      ],
+      "category": "Shot transitions and cuts driven by camera",
+      "definition": "A foreground object crosses the lens and progressively covers the frame to motivate a cut.",
+      "visual_effect": "The moving occluder replaces one image area at a time with the next shot.",
+      "emotional_effect": "continuity or playful concealment",
+      "use_when": "Hide a cut behind a passer-by, wall, vehicle or prop.",
+      "prompt_fragment": "foreground object wipes across frame",
+      "requires_start_framing": "An approaching foreground object must already be near one frame edge.",
+      "pairs_well_with": [
+        "side_tracking_shot",
+        "pass_by_transition"
+      ],
+      "conflicts_with": [],
+      "reliability": "high"
+    },
+    {
+      "id": "lens_occlusion_transition",
+      "term": "Lens-occlusion transition",
+      "aliases": [
+        "lens block transition",
+        "cover transition"
+      ],
+      "category": "Shot transitions and cuts driven by camera",
+      "definition": "The camera moves into complete occlusion behind an object before cutting and emerging elsewhere.",
+      "visual_effect": "The image darkens or fills completely, masking the edit.",
+      "emotional_effect": "seamlessness, secrecy or passage",
+      "use_when": "Transition through doors, bodies, pillars or darkness.",
+      "prompt_fragment": "camera passes behind full-frame obstruction",
+      "requires_start_framing": "A large nearby object must be able to cover the entire lens.",
+      "pairs_well_with": [
+        "foreground_reveal",
+        "camera_handoff"
+      ],
+      "conflicts_with": [],
+      "reliability": "high"
+    },
+    {
+      "id": "push_through_transition",
+      "term": "Push-through transition",
+      "aliases": [
+        "portal push",
+        "through-object transition"
+      ],
+      "category": "Shot transitions and cuts driven by camera",
+      "definition": "The camera pushes through an opening, surface or matched portal into a different scene.",
+      "visual_effect": "The frame crosses a boundary and emerges in new space with forward momentum.",
+      "emotional_effect": "transport, discovery or transformation",
+      "use_when": "Link locations through doors, windows, screens or stylised surfaces.",
+      "prompt_fragment": "camera pushes through doorway transition",
+      "requires_start_framing": "A centred opening or surface large enough to fill the frame.",
+      "pairs_well_with": [
+        "dolly_in",
+        "frame_fill_transition"
+      ],
+      "conflicts_with": [],
+      "reliability": "high"
+    },
+    {
+      "id": "match_move_cut",
+      "term": "Match-move cut",
+      "aliases": [
+        "matched camera-motion cut"
+      ],
+      "category": "Shot transitions and cuts driven by camera",
+      "definition": "A cut joins two shots whose camera direction, speed and framing continue one apparent movement.",
+      "visual_effect": "The environment changes while camera momentum appears uninterrupted.",
+      "emotional_effect": "flow, connection or surprise",
+      "use_when": "Link separate places or subjects without losing kinetic continuity.",
+      "prompt_fragment": "matched camera movement across cut",
+      "requires_start_framing": "The first shot must end on a reproducible motion vector and framing.",
+      "pairs_well_with": [
+        "whip_pan_transition",
+        "cut_on_camera_motion"
+      ],
+      "conflicts_with": [],
+      "reliability": "medium"
+    },
+    {
+      "id": "cut_on_camera_motion",
+      "term": "Cut on camera movement",
+      "aliases": [
+        "cut during movement"
+      ],
+      "category": "Shot transitions and cuts driven by camera",
+      "definition": "The edit occurs while the camera is actively moving so motion masks spatial discontinuity.",
+      "visual_effect": "The cut feels softer because the frame is already changing.",
+      "emotional_effect": "pace or continuity",
+      "use_when": "Hide coverage changes inside pans, tilts or tracking moves.",
+      "prompt_fragment": "cut seamlessly during camera motion",
+      "requires_start_framing": "The camera must already be moving decisively before the cut point.",
+      "pairs_well_with": [
+        "tracking_shot",
+        "match_move_cut"
+      ],
+      "conflicts_with": [
+        "locked_off_camera"
+      ],
+      "reliability": "high"
+    },
+    {
+      "id": "frame_fill_transition",
+      "term": "Frame-fill transition",
+      "aliases": [
+        "full-frame match transition"
+      ],
+      "category": "Shot transitions and cuts driven by camera",
+      "definition": "The camera approaches a colour, texture or object until it fills the image before cutting to a matching field.",
+      "visual_effect": "Recognisable space disappears into a full-frame visual surface and reopens elsewhere.",
+      "emotional_effect": "transformation or visual wit",
+      "use_when": "Match walls, clothing, darkness, light or texture between scenes.",
+      "prompt_fragment": "camera moves into full-frame texture",
+      "requires_start_framing": "A large target surface must be centred and reachable.",
+      "pairs_well_with": [
+        "dolly_in",
+        "push_through_transition"
+      ],
+      "conflicts_with": [],
+      "reliability": "medium"
+    },
+    {
+      "id": "camera_handoff",
+      "term": "Camera handoff",
+      "aliases": [
+        "operator handoff",
+        "rig handoff"
+      ],
+      "category": "Shot transitions and cuts driven by camera",
+      "definition": "The moving camera is physically or virtually transferred between operators, rigs or spaces during one apparent take.",
+      "visual_effect": "The shot continues through a change of support, height or access without a visible cut.",
+      "emotional_effect": "immersion, virtuosity or surprise",
+      "use_when": "Move through windows, vehicles, stairs or impossible rig changes.",
+      "prompt_fragment": "seamless moving camera handoff",
+      "requires_start_framing": "The camera must approach a reachable transfer point with stable framing.",
+      "pairs_well_with": [
+        "steadicam_rig",
+        "drone_camera"
+      ],
+      "conflicts_with": [
+        "locked_off_camera"
+      ],
+      "reliability": "low"
+    },
+    {
+      "id": "pass_by_transition",
+      "term": "Pass-by transition",
+      "aliases": [
+        "pillar wipe transition"
+      ],
+      "category": "Shot transitions and cuts driven by camera",
+      "definition": "The moving camera passes behind a near vertical object that briefly fills the frame and conceals a cut.",
+      "visual_effect": "Lateral parallax supplies a natural wipe into the next location.",
+      "emotional_effect": "flow or spatial continuity",
+      "use_when": "Hide edits during tracking shots through architecture or crowds.",
+      "prompt_fragment": "camera passes behind pillar transition",
+      "requires_start_framing": "A near pillar, wall edge or person must intersect the travel path.",
+      "pairs_well_with": [
+        "truck_left",
+        "foreground_wipe_transition"
+      ],
+      "conflicts_with": [],
+      "reliability": "high"
+    },
+    {
+      "id": "crash_zoom",
+      "term": "Crash zoom",
+      "aliases": [
+        "slam zoom"
+      ],
+      "category": "Framing that changes during the shot",
+      "definition": "The lens zooms aggressively through a clearly visible brief interval, unlike a snap zoom which is nearly instantaneous and a dolly zoom which also moves the camera.",
+      "visual_effect": "The field of view changes violently without translation parallax.",
+      "emotional_effect": "shock, urgency or comic emphasis",
+      "use_when": "Punch into or away from a sudden discovery.",
+      "prompt_fragment": "violent crash zoom into face",
+      "requires_start_framing": "A medium or wide view with the target already near the zoom centre.",
+      "pairs_well_with": [
+        "short_shutter_staccato",
+        "flinching"
+      ],
+      "conflicts_with": [
+        "creeping_zoom"
+      ],
+      "reliability": "high"
+    },
+    {
+      "id": "snap_zoom",
+      "term": "Snap zoom",
+      "aliases": [
+        "instant zoom"
+      ],
+      "category": "Framing that changes during the shot",
+      "definition": "The lens changes focal length almost instantaneously, faster and more jump-like than a crash zoom and without the camera translation of a dolly zoom.",
+      "visual_effect": "Framing appears to jump rapidly to a tighter or wider scale.",
+      "emotional_effect": "surprise, comedy or graphic emphasis",
+      "use_when": "Hit a reaction or detail with minimal transition time.",
+      "prompt_fragment": "instant snap zoom to detail",
+      "requires_start_framing": "A clearly visible target must already occupy the zoom centre.",
+      "pairs_well_with": [
+        "freeze_frame",
+        "flinching"
+      ],
+      "conflicts_with": [
+        "creeping_zoom"
+      ],
+      "reliability": "medium"
+    },
+    {
+      "id": "creeping_zoom",
+      "term": "Creeping zoom",
+      "aliases": [
+        "slow zoom",
+        "invisible zoom"
+      ],
+      "category": "Framing that changes during the shot",
+      "definition": "The lens changes focal length so slowly that the viewer may not consciously notice the reframing.",
+      "visual_effect": "The subject gradually grows or recedes while perspective remains fixed.",
+      "emotional_effect": "unease, intimacy or gathering pressure",
+      "use_when": "Build attention or anxiety without obvious camera travel.",
+      "prompt_fragment": "barely perceptible slow zoom inward",
+      "requires_start_framing": "A stable medium or wide frame held long enough for gradual change.",
+      "pairs_well_with": [
+        "optical_zoom",
+        "locked_off_camera"
+      ],
+      "conflicts_with": [
+        "crash_zoom",
+        "snap_zoom"
+      ],
+      "reliability": "high"
+    },
+    {
+      "id": "zoom_out_reveal",
+      "term": "Zoom-out reveal",
+      "aliases": [
+        "optical pullback reveal"
+      ],
+      "category": "Framing that changes during the shot",
+      "definition": "The lens widens from a tight view to expose context without translating the camera.",
+      "visual_effect": "More of the scene appears but perspective relationships remain fixed.",
+      "emotional_effect": "surprise, irony or orientation",
+      "use_when": "Reveal that a detail belongs to a larger unexpected setting.",
+      "prompt_fragment": "zoom out to reveal surroundings",
+      "requires_start_framing": "A tight opening on a detail that conceals the wider context.",
+      "pairs_well_with": [
+        "optical_zoom",
+        "frame_fill_transition"
+      ],
+      "conflicts_with": [
+        "pull_back_to_reveal"
+      ],
+      "reliability": "high"
+    },
+    {
+      "id": "pull_back_to_reveal",
+      "term": "Pull-back-to-reveal",
+      "aliases": [
+        "dolly-out reveal"
+      ],
+      "category": "Framing that changes during the shot",
+      "definition": "The camera physically dollies backward from a tight view, producing parallax unlike a zoom-out reveal.",
+      "visual_effect": "Foreground and background separate as hidden surroundings enter frame.",
+      "emotional_effect": "revelation, isolation or release",
+      "use_when": "Expose scale, danger, witnesses or geography around a subject.",
+      "prompt_fragment": "camera pulls back revealing full scene",
+      "requires_start_framing": "A close or medium opening that intentionally withholds context.",
+      "pairs_well_with": [
+        "dolly_out",
+        "camera_crane"
+      ],
+      "conflicts_with": [
+        "zoom_out_reveal"
+      ],
+      "reliability": "high"
+    },
+    {
+      "id": "tilt_reveal",
+      "term": "Tilt reveal",
+      "aliases": [
+        "vertical reveal"
+      ],
+      "category": "Framing that changes during the shot",
+      "definition": "A tilt begins on one part of a subject or setting and ends on previously off-screen vertical information.",
+      "visual_effect": "The composition unfolds upward or downward without camera translation.",
+      "emotional_effect": "discovery, awe or suspense",
+      "use_when": "Reveal height, identity, an object or a consequence.",
+      "prompt_fragment": "tilt upward revealing towering subject",
+      "requires_start_framing": "The first frame must show a lower anchor while withholding the reveal above.",
+      "pairs_well_with": [
+        "tilt_up",
+        "boom_up"
+      ],
+      "conflicts_with": [],
+      "reliability": "high"
+    },
+    {
+      "id": "pan_reveal",
+      "term": "Pan reveal",
+      "aliases": [
+        "horizontal reveal"
+      ],
+      "category": "Framing that changes during the shot",
+      "definition": "A pan moves from an initial visual anchor to information hidden beyond a side edge.",
+      "visual_effect": "The frame unfolds laterally and establishes a spatial relationship.",
+      "emotional_effect": "discovery, suspense or wit",
+      "use_when": "Reveal another character, threat, landscape or punchline.",
+      "prompt_fragment": "pan right revealing hidden subject",
+      "requires_start_framing": "The opening composition must withhold the reveal beyond one side.",
+      "pairs_well_with": [
+        "pan_right",
+        "foreground_reveal"
+      ],
+      "conflicts_with": [],
+      "reliability": "high"
+    },
+    {
+      "id": "rack_focus_reveal",
+      "term": "Rack-focus reveal",
+      "aliases": [
+        "focus pull reveal"
+      ],
+      "category": "Framing that changes during the shot",
+      "definition": "Focus transfers between depth planes to reveal a subject without changing camera position or framing size.",
+      "visual_effect": "One plane sharpens as another softens, redirecting attention through depth.",
+      "emotional_effect": "discovery, connection or suspense",
+      "use_when": "Reveal a background threat or transfer importance between characters.",
+      "prompt_fragment": "rack focus from foreground to background",
+      "requires_start_framing": "Distinct foreground and background subjects must both be visible.",
+      "pairs_well_with": [
+        "reactive_reframing",
+        "locked_off_camera"
+      ],
+      "conflicts_with": [],
+      "reliability": "high"
+    },
+    {
+      "id": "foreground_reveal",
+      "term": "Foreground reveal",
+      "aliases": [
+        "occluder reveal",
+        "slide reveal"
+      ],
+      "category": "Framing that changes during the shot",
+      "definition": "The camera moves laterally or vertically out from behind a near occluder.",
+      "visual_effect": "A hidden subject or environment appears through changing foreground parallax.",
+      "emotional_effect": "discovery, voyeurism or anticipation",
+      "use_when": "Introduce a scene from concealment or add depth to an entrance.",
+      "prompt_fragment": "camera slides from behind foreground object",
+      "requires_start_framing": "A foreground object must initially conceal meaningful image area.",
+      "pairs_well_with": [
+        "parallax_slide",
+        "pass_by_transition"
+      ],
+      "conflicts_with": [],
+      "reliability": "high"
+    },
+    {
+      "id": "reactive_reframing",
+      "term": "Reactive reframing",
+      "aliases": [
+        "operator reframe",
+        "corrective reframe"
+      ],
+      "category": "Framing that changes during the shot",
+      "definition": "The operator pans, tilts or adjusts composition during the take in response to unexpected subject movement.",
+      "visual_effect": "Headroom, lead room or subject placement visibly corrects as action changes.",
+      "emotional_effect": "immediacy or documentary authenticity",
+      "use_when": "Keep spontaneous performance readable without a rehearsed camera path.",
+      "prompt_fragment": "camera reactively reframes moving subject",
+      "requires_start_framing": "A medium or wider frame with margin around the subject.",
+      "pairs_well_with": [
+        "controlled_handheld",
+        "locked_on_subject_tracking"
+      ],
+      "conflicts_with": [
+        "motion_control_precision"
+      ],
+      "reliability": "high"
+    },
+    {
+      "id": "locked_off_camera",
+      "term": "Locked-off camera",
+      "aliases": [
+        "locked shot"
+      ],
+      "category": "Stability, texture and operator feel",
+      "definition": "The camera remains fixed to a rigid support with no intended movement for the duration.",
+      "visual_effect": "All screen motion comes from subjects or environment while framing stays exact.",
+      "emotional_effect": "objectivity, tension or stillness",
+      "use_when": "Contrast moving action with an immovable viewpoint.",
+      "prompt_fragment": "completely locked-off static camera",
+      "requires_start_framing": null,
+      "pairs_well_with": [
+        "time_lapse",
+        "freeze_frame"
+      ],
+      "conflicts_with": [
+        "handheld_camera_rig",
+        "tracking_shot"
+      ],
+      "reliability": "high"
+    },
+    {
+      "id": "controlled_handheld",
+      "term": "Controlled handheld",
+      "aliases": [
+        "restrained handheld"
+      ],
+      "category": "Stability, texture and operator feel",
+      "definition": "The operator handholds the camera while deliberately limiting shake and correction amplitude.",
+      "visual_effect": "Small organic drift remains without losing readable composition.",
+      "emotional_effect": "intimacy, realism or presence",
+      "use_when": "Add life to dialogue or drama without chaotic motion.",
+      "prompt_fragment": "subtle controlled handheld movement",
+      "requires_start_framing": "A medium or wider frame with safety margin.",
+      "pairs_well_with": [
+        "handheld_camera_rig",
+        "following_shot"
+      ],
+      "conflicts_with": [
+        "locked_off_camera",
+        "shaky_cam"
+      ],
+      "reliability": "high"
+    },
+    {
+      "id": "shaky_cam",
+      "term": "Shaky cam",
+      "aliases": [
+        "rough handheld",
+        "agitated handheld"
+      ],
+      "category": "Stability, texture and operator feel",
+      "definition": "The operator permits or adds large irregular handheld movement and rapid corrections.",
+      "visual_effect": "The horizon, framing and subject position fluctuate visibly.",
+      "emotional_effect": "panic, danger or confusion",
+      "use_when": "Place the viewer inside combat, disaster or psychological distress.",
+      "prompt_fragment": "intense shaky handheld camera",
+      "requires_start_framing": "A wide enough opening to tolerate subject displacement.",
+      "pairs_well_with": [
+        "handheld_camera_rig",
+        "frame_skipping"
+      ],
+      "conflicts_with": [
+        "locked_off_camera",
+        "gimbal_horizon_lock"
+      ],
+      "reliability": "high"
+    },
+    {
+      "id": "shoulder_mounted_sway",
+      "term": "Shoulder-mounted sway",
+      "aliases": [
+        "shoulder bounce"
+      ],
+      "category": "Stability, texture and operator feel",
+      "definition": "A shoulder-supported camera inherits the operator’s gait and torso rotation.",
+      "visual_effect": "The frame has weighted vertical bounce and side-to-side rotational sway.",
+      "emotional_effect": "documentary realism or urgency",
+      "use_when": "Give following footage physical mass and human cadence.",
+      "prompt_fragment": "natural shoulder-camera walking sway",
+      "requires_start_framing": "A medium or wide subject frame with travel margin.",
+      "pairs_well_with": [
+        "shoulder_mounted_rig",
+        "walking_forward"
+      ],
+      "conflicts_with": [
+        "locked_off_camera"
+      ],
+      "reliability": "medium"
+    },
+    {
+      "id": "floating_stabilization",
+      "term": "Floating stabilization",
+      "aliases": [
+        "Steadicam float"
+      ],
+      "category": "Stability, texture and operator feel",
+      "definition": "Mechanical stabilization isolates footfalls while allowing gradual operator-driven drift.",
+      "visual_effect": "Translation feels smooth but not perfectly horizon-locked or robotic.",
+      "emotional_effect": "dreamlike immersion or elegance",
+      "use_when": "Move through architecture or crowds with a human floating quality.",
+      "prompt_fragment": "gentle floating stabilized camera",
+      "requires_start_framing": "A walkable route and planned subject distance.",
+      "pairs_well_with": [
+        "steadicam_rig",
+        "walk_and_talk"
+      ],
+      "conflicts_with": [
+        "shaky_cam"
+      ],
+      "reliability": "high"
+    },
+    {
+      "id": "gimbal_horizon_lock",
+      "term": "Gimbal horizon lock",
+      "aliases": [
+        "horizon-locked stabilization"
+      ],
+      "category": "Stability, texture and operator feel",
+      "definition": "Motorized stabilization actively holds roll and often pan or tilt while the support moves.",
+      "visual_effect": "The horizon stays unusually level and movement appears frictionless.",
+      "emotional_effect": "polish, calm or detachment",
+      "use_when": "Create clean running, vehicle or orbit footage.",
+      "prompt_fragment": "perfectly horizon-locked gimbal motion",
+      "requires_start_framing": "A visible horizon or strong vertical references.",
+      "pairs_well_with": [
+        "motorized_gimbal",
+        "orbit_shot"
+      ],
+      "conflicts_with": [
+        "shaky_cam",
+        "roll_clockwise"
+      ],
+      "reliability": "high"
+    },
+    {
+      "id": "organic_camera_drift",
+      "term": "Organic camera drift",
+      "aliases": [
+        "breathing camera",
+        "subtle drift"
+      ],
+      "category": "Stability, texture and operator feel",
+      "definition": "The frame wanders slowly through tiny unpatterned pan, tilt or translation changes.",
+      "visual_effect": "A nominally static view feels gently alive rather than mechanically fixed.",
+      "emotional_effect": "intimacy, observation or unease",
+      "use_when": "Avoid sterile stillness in dialogue, memory or suspense.",
+      "prompt_fragment": "subtle organic camera drift",
+      "requires_start_framing": "A stable composition with room for slight edge movement.",
+      "pairs_well_with": [
+        "controlled_handheld",
+        "creeping_zoom"
+      ],
+      "conflicts_with": [
+        "motion_control_precision"
+      ],
+      "reliability": "high"
+    },
+    {
+      "id": "micro_jitter",
+      "term": "Micro-jitter",
+      "aliases": [
+        "camera buzz",
+        "high-frequency shake"
+      ],
+      "category": "Stability, texture and operator feel",
+      "definition": "The image undergoes small rapid vibration around its intended framing.",
+      "visual_effect": "Fine detail and edges tremble without large compositional displacement.",
+      "emotional_effect": "anxiety, machinery or imperfection",
+      "use_when": "Suggest vibration, engine energy, impact or unstable mounting.",
+      "prompt_fragment": "fine high-frequency camera vibration",
+      "requires_start_framing": "A sharp detailed frame where small vibration will be visible.",
+      "pairs_well_with": [
+        "vehicle_tracking_shot",
+        "short_shutter_staccato"
+      ],
+      "conflicts_with": [
+        "motion_control_precision"
+      ],
+      "reliability": "medium"
+    },
+    {
+      "id": "motion_control_precision",
+      "term": "Motion-control precision",
+      "aliases": [
+        "robotic camera move",
+        "repeatable motion control"
+      ],
+      "category": "Stability, texture and operator feel",
+      "definition": "A programmed motorized rig repeats an exact camera path, orientation and timing.",
+      "visual_effect": "Movement appears geometrically smooth and precisely timed.",
+      "emotional_effect": "control, artificiality or technical wonder",
+      "use_when": "Create repeat passes, product shots, visual effects or exact transitions.",
+      "prompt_fragment": "precise repeatable motion-control camera",
+      "requires_start_framing": "A marked start frame and unobstructed programmed path.",
+      "pairs_well_with": [
+        "match_move_cut",
+        "hyperlapse"
+      ],
+      "conflicts_with": [
+        "organic_camera_drift",
+        "reactive_reframing"
+      ],
+      "reliability": "medium"
+    },
+    {
+      "id": "dolly_zoom",
+      "term": "Dolly zoom",
+      "aliases": [
+        "Vertigo effect",
+        "zolly",
+        "contra-zoom"
+      ],
+      "category": "Named signature moves from film history",
+      "definition": "The camera dollies while the lens zooms oppositely to preserve subject size, unlike a crash or snap zoom which does not translate the camera.",
+      "visual_effect": "The subject stays stable while background perspective expands or compresses dramatically.",
+      "emotional_effect": "vertigo, dread or realisation",
+      "use_when": "Visualise shock, spatial distortion or psychological rupture.",
+      "prompt_fragment": "vertigo-style dolly zoom on subject",
+      "requires_start_framing": "A centred medium view with clear foreground-to-background depth.",
+      "pairs_well_with": [
+        "camera_dolly",
+        "optical_zoom"
+      ],
+      "conflicts_with": [
+        "locked_off_camera"
+      ],
+      "reliability": "high"
+    },
+    {
+      "id": "bullet_time",
+      "term": "Bullet time",
+      "aliases": [
+        "time-slice effect",
+        "frozen-time camera orbit"
+      ],
+      "category": "Named signature moves from film history",
+      "definition": "An array or virtual camera viewpoint moves around action that is frozen or slowed far beyond normal camera capture.",
+      "visual_effect": "Viewpoint changes substantially while subject time appears nearly stopped.",
+      "emotional_effect": "awe, analysis or hyperreal power",
+      "use_when": "Inspect a decisive action from impossible temporal angles.",
+      "prompt_fragment": "bullet time orbit around frozen action",
+      "requires_start_framing": "A clearly posed action apex with open space around the subject.",
+      "pairs_well_with": [
+        "orbit_shot",
+        "freeze_frame"
+      ],
+      "conflicts_with": [
+        "fast_motion"
+      ],
+      "reliability": "medium"
+    },
+    {
+      "id": "double_dolly_shot",
+      "term": "Double-dolly shot",
+      "aliases": [
+        "Spike Lee double dolly"
+      ],
+      "category": "Named signature moves from film history",
+      "definition": "The performer and camera ride separate dollies moving together so the body appears to glide without walking.",
+      "visual_effect": "The subject remains eerily fixed relative to camera while the environment slides past.",
+      "emotional_effect": "dissociation, fate or dreamlike focus",
+      "use_when": "Externalise shock, resolve or altered consciousness.",
+      "prompt_fragment": "spike lee double-dolly floating subject",
+      "requires_start_framing": "A frontal or rear medium view with a straight travel path.",
+      "pairs_well_with": [
+        "camera_dolly",
+        "locked_on_subject_tracking"
+      ],
+      "conflicts_with": [
+        "walking_forward"
+      ],
+      "reliability": "medium"
+    },
+    {
+      "id": "phantom_ride",
+      "term": "Phantom ride",
+      "aliases": [
+        "phantom ride shot"
+      ],
+      "category": "Named signature moves from film history",
+      "definition": "A camera mounted at the front of a moving vehicle faces forward so the vehicle itself is absent.",
+      "visual_effect": "Tracks or road rush directly toward the viewer from a machine-like viewpoint.",
+      "emotional_effect": "novelty, speed or inevitability",
+      "use_when": "Create an early-cinema-style journey or driverless forward view.",
+      "prompt_fragment": "front-mounted phantom ride camera",
+      "requires_start_framing": "A forward-facing wide view aligned with the travel route.",
+      "pairs_well_with": [
+        "vehicle_tracking_shot",
+        "pov_tracking"
+      ],
+      "conflicts_with": [
+        "locked_off_camera"
+      ],
+      "reliability": "high"
+    },
+    {
+      "id": "raimi_cam",
+      "term": "Raimi Cam",
+      "aliases": [
+        "shaky cam plank rig",
+        "Evil Dead force shot"
+      ],
+      "category": "Named signature moves from film history",
+      "definition": "A camera is driven rapidly on a low improvised or stabilized path to represent an attacking unseen force.",
+      "visual_effect": "The viewpoint races close to the ground with aggressive obstacles and directional corrections.",
+      "emotional_effect": "menace, pursuit or manic energy",
+      "use_when": "Give an invisible entity a violent embodied point of view.",
+      "prompt_fragment": "raimi-style rushing evil force camera",
+      "requires_start_framing": "A low forward-facing wide view with a clear high-speed route.",
+      "pairs_well_with": [
+        "pov_tracking",
+        "chase_shot"
+      ],
+      "conflicts_with": [
+        "locked_off_camera"
+      ],
+      "reliability": "medium"
+    },
+    {
+      "id": "bayhem_orbit",
+      "term": "Bayhem orbit",
+      "aliases": [
+        "Michael Bay hero orbit",
+        "Bay shot"
+      ],
+      "category": "Named signature moves from film history",
+      "definition": "The camera makes a dramatic low-angle orbit around heroic subjects while the background carries large-scale action.",
+      "visual_effect": "Subjects remain dominant as the world rotates and spectacle layers behind them.",
+      "emotional_effect": "heroism, swagger or sensory overload",
+      "use_when": "Introduce action heroes, vehicles or triumphant teams.",
+      "prompt_fragment": "michael bay low-angle hero orbit",
+      "requires_start_framing": "A centred low-angle group or hero with circular clearance.",
+      "pairs_well_with": [
+        "orbit_shot",
+        "short_shutter_staccato"
+      ],
+      "conflicts_with": [
+        "locked_off_camera"
+      ],
+      "reliability": "medium"
+    },
+    {
+      "id": "copacabana_tracking_shot",
+      "term": "Copacabana tracking shot",
+      "aliases": [
+        "Goodfellas-style tracking shot"
+      ],
+      "category": "Named signature moves from film history",
+      "definition": "A long Steadicam-style following move travels with characters through multiple connected spaces and background events.",
+      "visual_effect": "Continuous geography, entrances and social hierarchy unfold without a cut.",
+      "emotional_effect": "access, momentum or seduction",
+      "use_when": "Immerse viewers in a world through a choreographed arrival.",
+      "prompt_fragment": "goodfellas-style continuous club tracking shot",
+      "requires_start_framing": "A rear three-quarter character view at the entrance to a connected route.",
+      "pairs_well_with": [
+        "steadicam_rig",
+        "following_shot"
+      ],
+      "conflicts_with": [
+        "locked_off_camera"
+      ],
+      "reliability": "medium"
+    },
+    {
+      "id": "kubrick_corridor_tracking",
+      "term": "Kubrick corridor tracking",
+      "aliases": [
+        "Kubrick hallway shot"
+      ],
+      "category": "Named signature moves from film history",
+      "definition": "The camera tracks centrally along a strongly symmetrical corridor, often following or leading a subject.",
+      "visual_effect": "One-point geometry streams toward or away from the viewer with controlled symmetry.",
+      "emotional_effect": "dread, inevitability or formal control",
+      "use_when": "Turn architecture and forward motion into psychological pressure.",
+      "prompt_fragment": "kubrick-style symmetrical corridor tracking",
+      "requires_start_framing": "A centred corridor vanishing point with the subject on axis.",
+      "pairs_well_with": [
+        "camera_dolly",
+        "leading_shot"
+      ],
+      "conflicts_with": [
+        "shaky_cam"
+      ],
+      "reliability": "high"
+    },
+    {
+      "id": "spielberg_oner",
+      "term": "Spielberg oner",
+      "aliases": [
+        "Spielberg long take"
+      ],
+      "category": "Named signature moves from film history",
+      "definition": "A single flowing take uses camera movement and actor blocking to create changing compositions without visible cuts.",
+      "visual_effect": "The shot repeatedly reframes relationships while preserving continuous time and space.",
+      "emotional_effect": "clarity, immersion or virtuosity",
+      "use_when": "Stage dialogue or action whose emotional focus shifts organically.",
+      "prompt_fragment": "spielberg-style moving master in one take",
+      "requires_start_framing": "A wide or medium master frame with choreographed actor entrances and paths.",
+      "pairs_well_with": [
+        "reactive_reframing",
+        "dolly_and_pan"
+      ],
+      "conflicts_with": [
+        "freeze_frame"
+      ],
+      "reliability": "medium"
+    },
+    {
+      "id": "russian_ark_long_take",
+      "term": "Russian Ark-style long take",
+      "aliases": [
+        "continuous Steadicam journey"
+      ],
+      "category": "Named signature moves from film history",
+      "definition": "A feature-length-style unbroken moving take passes through many spaces and encounters without editorial cuts.",
+      "visual_effect": "Locations and time unfold as one continuous camera journey.",
+      "emotional_effect": "immersion, historical flow or wonder",
+      "use_when": "Create an ambitious uninterrupted passage through a world.",
+      "prompt_fragment": "russian ark-style uninterrupted steadicam journey",
+      "requires_start_framing": "A wide entrance view leading into a fully choreographed multi-room route.",
+      "pairs_well_with": [
+        "steadicam_rig",
+        "camera_handoff"
+      ],
+      "conflicts_with": [
+        "match_move_cut"
+      ],
+      "reliability": "low"
+    }
+  ],
+  "motion_terms": [
+    {
+      "id": "walking_forward",
+      "term": "Walking forward",
+      "aliases": [
+        "walking ahead"
+      ],
+      "category": "Locomotion and directional travel",
+      "definition": "The subject advances upright at a walking gait without an aerial phase.",
+      "body_mechanics": "Weight transfers heel-to-toe between alternating legs while opposite arms counter-swing and the torso advances steadily.",
+      "duration_feel": "usually two to six seconds",
+      "prompt_fragment": "walking steadily forward",
+      "camera_pairing": [
+        "following_shot",
+        "leading_shot"
+      ],
+      "reliability": "high"
+    },
+    {
+      "id": "running",
+      "term": "Running",
+      "aliases": [
+        "jogging",
+        "running forward"
+      ],
+      "category": "Locomotion and directional travel",
+      "definition": "The subject travels with repeated flight phases at a sustainable pace below an all-out sprint.",
+      "body_mechanics": "Each foot lands under the body, pushes off, and leaves both feet airborne briefly while bent arms counter-swing.",
+      "duration_feel": "usually one to five seconds",
+      "prompt_fragment": "running forward at steady pace",
+      "camera_pairing": [
+        "side_tracking_shot",
+        "chase_shot"
+      ],
+      "reliability": "high"
+    },
+    {
+      "id": "sprinting",
+      "term": "Sprinting",
+      "aliases": [
+        "running full speed",
+        "dashing"
+      ],
+      "category": "Locomotion and directional travel",
+      "definition": "The subject travels at near-maximum speed with forceful acceleration and long flight phases.",
+      "body_mechanics": "The torso leans forward, knees drive high, arms pump powerfully, and each forefoot strike propels a long rapid stride.",
+      "duration_feel": "usually under three seconds",
+      "prompt_fragment": "sprinting explosively forward",
+      "camera_pairing": [
+        "chase_shot",
+        "side_tracking_shot"
+      ],
+      "reliability": "high"
+    },
+    {
+      "id": "backpedaling",
+      "term": "Backpedaling",
+      "aliases": [
+        "moving backward while facing forward"
+      ],
+      "category": "Locomotion and directional travel",
+      "definition": "The subject travels backward while the torso and gaze remain oriented generally forward.",
+      "body_mechanics": "Short backward steps land on the forefoot as the hips stay low and the arms balance or guard the body.",
+      "duration_feel": "usually one to three seconds",
+      "prompt_fragment": "backpedaling quickly while facing forward",
+      "camera_pairing": [
+        "leading_shot",
+        "controlled_handheld"
+      ],
+      "reliability": "high"
+    },
+    {
+      "id": "sidestepping",
+      "term": "Sidestepping",
+      "aliases": [
+        "side step"
+      ],
+      "category": "Locomotion and directional travel",
+      "definition": "The subject makes one or more lateral steps without fully turning the torso into the travel direction.",
+      "body_mechanics": "The lead foot moves sideways and the trailing foot closes or follows while the shoulders remain mostly forward.",
+      "duration_feel": "usually under two seconds",
+      "prompt_fragment": "taking a quick sidestep",
+      "camera_pairing": [
+        "side_tracking_shot",
+        "reactive_reframing"
+      ],
+      "reliability": "high"
+    },
+    {
+      "id": "strafing",
+      "term": "Strafing",
+      "aliases": [
+        "lateral travel while facing target"
+      ],
+      "category": "Locomotion and directional travel",
+      "definition": "The subject moves continuously sideways while keeping the chest, gaze or weapon oriented toward a target.",
+      "body_mechanics": "The outside foot leads and the inside foot follows without crossing, keeping the hips low and upper body aimed.",
+      "duration_feel": "usually one to four seconds",
+      "prompt_fragment": "strafing sideways while facing target",
+      "camera_pairing": [
+        "side_tracking_shot",
+        "locked_on_subject_tracking"
+      ],
+      "reliability": "high"
+    },
+    {
+      "id": "circling_movement",
+      "term": "Circling",
+      "aliases": [
+        "moving around a target"
+      ],
+      "category": "Locomotion and directional travel",
+      "definition": "The subject travels along a curved path around another subject or fixed point.",
+      "body_mechanics": "Feet step tangentially around the centre while the torso and gaze often remain turned inward.",
+      "duration_feel": "usually two to six seconds",
+      "prompt_fragment": "circling cautiously around opponent",
+      "camera_pairing": [
+        "orbit_shot",
+        "locked_on_subject_tracking"
+      ],
+      "reliability": "high"
+    },
+    {
+      "id": "changing_direction",
+      "term": "Changing direction",
+      "aliases": [
+        "cutting",
+        "direction change"
+      ],
+      "category": "Locomotion and directional travel",
+      "definition": "The subject redirects travel from one path to another rather than continuing straight.",
+      "body_mechanics": "A plant step absorbs momentum, the hips and shoulders rotate toward the new path, and the opposite leg drives away.",
+      "duration_feel": "usually under one second",
+      "prompt_fragment": "planting foot and changing direction",
+      "camera_pairing": [
+        "reactive_reframing",
+        "controlled_handheld"
+      ],
+      "reliability": "high"
+    },
+    {
+      "id": "accelerating_into_run",
+      "term": "Accelerating into a run",
+      "aliases": [
+        "building into a sprint"
+      ],
+      "category": "Locomotion and directional travel",
+      "definition": "The subject increases speed progressively from standing or walking into running.",
+      "body_mechanics": "The torso leans forward, step frequency and stride length increase, and arm drive grows over successive steps.",
+      "duration_feel": "usually one to three seconds",
+      "prompt_fragment": "accelerating smoothly into a run",
+      "camera_pairing": [
+        "following_shot",
+        "speed_ramp"
+      ],
+      "reliability": "high"
+    },
+    {
+      "id": "decelerating_to_stop",
+      "term": "Decelerating into a stop",
+      "aliases": [
+        "slowing to a stop"
+      ],
+      "category": "Locomotion and directional travel",
+      "definition": "The subject reduces forward speed progressively until becoming stationary.",
+      "body_mechanics": "Stride length shortens, the torso comes upright or leans back slightly, and several braking steps absorb remaining momentum.",
+      "duration_feel": "usually one to three seconds",
+      "prompt_fragment": "decelerating gradually into a stop",
+      "camera_pairing": [
+        "leading_shot",
+        "dolly_out"
+      ],
+      "reliability": "high"
+    },
+    {
+      "id": "punching",
+      "term": "Punching",
+      "aliases": [
+        "throwing a punch",
+        "striking with fist"
+      ],
+      "category": "Combat, impact and reaction",
+      "definition": "The subject drives a closed fist toward a target and retracts it to guard.",
+      "body_mechanics": "Force begins through the feet and hip rotation, travels through the shoulder, extends the elbow, lands through aligned knuckles, then recoils.",
+      "duration_feel": "usually under one second",
+      "prompt_fragment": "throwing a fast straight punch",
+      "camera_pairing": [
+        "short_shutter_staccato",
+        "speed_ramp"
+      ],
+      "reliability": "high"
+    },
+    {
+      "id": "kicking",
+      "term": "Kicking",
+      "aliases": [
+        "throwing a kick"
+      ],
+      "category": "Combat, impact and reaction",
+      "definition": "The subject strikes a target with the foot or lower leg while balancing on the support leg.",
+      "body_mechanics": "The support foot plants and pivots, the striking knee chambers, the hip extends or rotates, and the leg retracts after contact.",
+      "duration_feel": "usually under one second",
+      "prompt_fragment": "delivering a powerful roundhouse kick",
+      "camera_pairing": [
+        "side_tracking_shot",
+        "slow_motion"
+      ],
+      "reliability": "high"
+    },
+    {
+      "id": "blocking_strike",
+      "term": "Blocking",
+      "aliases": [
+        "blocking an attack"
+      ],
+      "category": "Combat, impact and reaction",
+      "definition": "The subject places a limb or guard in the path of an incoming strike to stop or absorb it.",
+      "body_mechanics": "The body braces, the forearm or shin intercepts the attack, joints stay flexed, and weight shifts to dissipate force.",
+      "duration_feel": "usually under one second",
+      "prompt_fragment": "raising forearm to block strike",
+      "camera_pairing": [
+        "controlled_handheld",
+        "short_shutter_staccato"
+      ],
+      "reliability": "high"
+    },
+    {
+      "id": "parrying",
+      "term": "Parrying",
+      "aliases": [
+        "deflecting a strike"
+      ],
+      "category": "Combat, impact and reaction",
+      "definition": "The subject redirects an incoming attack away from its path rather than absorbing it as a block.",
+      "body_mechanics": "A small timed hand, forearm or weapon movement contacts the attack obliquely and guides it past the body.",
+      "duration_feel": "usually under one second",
+      "prompt_fragment": "parrying the incoming attack aside",
+      "camera_pairing": [
+        "locked_on_subject_tracking",
+        "slow_motion"
+      ],
+      "reliability": "medium"
+    },
+    {
+      "id": "evading_attack",
+      "term": "Evading",
+      "aliases": [
+        "dodging",
+        "slipping an attack"
+      ],
+      "category": "Combat, impact and reaction",
+      "definition": "The subject moves the body clear of an incoming attack without making a blocking contact.",
+      "body_mechanics": "The head, torso or feet shift off the attack line while balance stays loaded for recovery or counteraction.",
+      "duration_feel": "usually under one second",
+      "prompt_fragment": "quickly dodging the incoming strike",
+      "camera_pairing": [
+        "reactive_reframing",
+        "controlled_handheld"
+      ],
+      "reliability": "high"
+    },
+    {
+      "id": "recoiling_from_impact",
+      "term": "Recoiling",
+      "aliases": [
+        "impact recoil"
+      ],
+      "category": "Combat, impact and reaction",
+      "definition": "The subject jerks away from a strike, blast or sudden contact while remaining generally upright.",
+      "body_mechanics": "The contacted body part moves first, the torso follows, and limbs flare or tighten before balance is recovered.",
+      "duration_feel": "usually under one second",
+      "prompt_fragment": "recoiling sharply from impact",
+      "camera_pairing": [
+        "slow_motion",
+        "shaky_cam"
+      ],
+      "reliability": "high"
+    },
+    {
+      "id": "knocked_backward",
+      "term": "Knocked backward",
+      "aliases": [
+        "sent flying back",
+        "blown backward"
+      ],
+      "category": "Combat, impact and reaction",
+      "definition": "An external impact forces the subject rapidly backward beyond an ordinary recoil.",
+      "body_mechanics": "The torso snaps away, the feet lose or scramble for purchase, and the body travels backward before landing or recovering.",
+      "duration_feel": "usually one to two seconds",
+      "prompt_fragment": "knocked violently backward by impact",
+      "camera_pairing": [
+        "speed_ramp",
+        "dolly_out"
+      ],
+      "reliability": "high"
+    },
+    {
+      "id": "grappling",
+      "term": "Grappling",
+      "aliases": [
+        "wrestling",
+        "clinching"
+      ],
+      "category": "Combat, impact and reaction",
+      "definition": "Two subjects seize and control one another at close range through grips and body pressure.",
+      "body_mechanics": "Hands establish holds, hips lower, feet adjust for leverage, and each body pushes, pulls or turns against the other.",
+      "duration_feel": "usually two to six seconds",
+      "prompt_fragment": "two fighters grappling for control",
+      "camera_pairing": [
+        "orbit_shot",
+        "controlled_handheld"
+      ],
+      "reliability": "high"
+    },
+    {
+      "id": "stumbling",
+      "term": "Stumbling",
+      "aliases": [
+        "losing footing"
+      ],
+      "category": "Falling, recovery and posture change",
+      "definition": "The subject loses smooth gait and takes uncontrolled corrective steps without necessarily falling.",
+      "body_mechanics": "The centre of mass moves outside the support base, arms spread, and rapid uneven steps attempt to catch it.",
+      "duration_feel": "usually one to two seconds",
+      "prompt_fragment": "stumbling forward and losing balance",
+      "camera_pairing": [
+        "snorricam_shot",
+        "controlled_handheld"
+      ],
+      "reliability": "high"
+    },
+    {
+      "id": "tripping_and_falling",
+      "term": "Tripping and falling",
+      "aliases": [
+        "taking a fall"
+      ],
+      "category": "Falling, recovery and posture change",
+      "definition": "The subject’s foot is obstructed or misplaced and the body falls toward the ground.",
+      "body_mechanics": "Forward momentum continues as the caught foot stops, the torso pitches, hands reach out, and knees or body contact the ground.",
+      "duration_feel": "usually one to two seconds",
+      "prompt_fragment": "tripping and falling forward",
+      "camera_pairing": [
+        "side_tracking_shot",
+        "slow_motion"
+      ],
+      "reliability": "high"
+    },
+    {
+      "id": "collapsing",
+      "term": "Collapsing",
+      "aliases": [
+        "crumpling",
+        "dropping suddenly"
+      ],
+      "category": "Falling, recovery and posture change",
+      "definition": "The subject loses postural support and sinks or drops largely in place.",
+      "body_mechanics": "Knees buckle, the spine folds or slackens, and body weight descends without a strong travel impulse.",
+      "duration_feel": "usually one to two seconds",
+      "prompt_fragment": "knees buckling, collapsing downward",
+      "camera_pairing": [
+        "tilt_down",
+        "controlled_handheld"
+      ],
+      "reliability": "high"
+    },
+    {
+      "id": "getting_up",
+      "term": "Getting up from a fall",
+      "aliases": [
+        "rising from the ground"
+      ],
+      "category": "Falling, recovery and posture change",
+      "definition": "The subject transitions from lying or seated on the ground to standing.",
+      "body_mechanics": "Hands or one knee create support, hips lift, one foot plants, and the legs extend until balance returns upright.",
+      "duration_feel": "usually two to four seconds",
+      "prompt_fragment": "pushing up from ground to stand",
+      "camera_pairing": [
+        "pull_back_to_reveal",
+        "leading_shot"
+      ],
+      "reliability": "high"
+    },
+    {
+      "id": "catching_balance",
+      "term": "Catching balance",
+      "aliases": [
+        "regaining balance"
+      ],
+      "category": "Falling, recovery and posture change",
+      "definition": "The subject arrests an impending fall and returns the centre of mass over the feet.",
+      "body_mechanics": "Arms counter-swing, one or more recovery steps widen support, and the torso corrects opposite the original lean.",
+      "duration_feel": "usually under two seconds",
+      "prompt_fragment": "staggering, then catching balance",
+      "camera_pairing": [
+        "reactive_reframing",
+        "controlled_handheld"
+      ],
+      "reliability": "high"
+    },
+    {
+      "id": "bracing",
+      "term": "Bracing",
+      "aliases": [
+        "bracing for impact",
+        "planting stance"
+      ],
+      "category": "Falling, recovery and posture change",
+      "definition": "The subject deliberately prepares the body to resist force or absorb an expected impact.",
+      "body_mechanics": "Feet widen and plant, knees and elbows flex, the core tightens, and arms guard or press against support.",
+      "duration_feel": "usually under one second",
+      "prompt_fragment": "planting feet and bracing for impact",
+      "camera_pairing": [
+        "crash_zoom",
+        "short_shutter_staccato"
+      ],
+      "reliability": "high"
+    },
+    {
+      "id": "dropping_to_crouch",
+      "term": "Dropping to a crouch",
+      "aliases": [
+        "ducking down",
+        "dropping low"
+      ],
+      "category": "Falling, recovery and posture change",
+      "definition": "The subject rapidly lowers from standing into a compact crouched posture.",
+      "body_mechanics": "Knees and hips flex, the torso lowers between the legs, and hands adjust for balance or protection.",
+      "duration_feel": "usually under one second",
+      "prompt_fragment": "dropping quickly into a crouch",
+      "camera_pairing": [
+        "tilt_down",
+        "reactive_reframing"
+      ],
+      "reliability": "high"
+    },
+    {
+      "id": "dancing",
+      "term": "Dancing",
+      "aliases": [
+        "performing choreography"
+      ],
+      "category": "Expressive and performance movement",
+      "definition": "The subject organises rhythmic full-body movement into expressive or choreographed patterns.",
+      "body_mechanics": "Weight shifts between feet while hips, torso, arms and head coordinate to a repeated rhythm and spatial phrase.",
+      "duration_feel": "usually three to eight seconds",
+      "prompt_fragment": "dancing fluidly with full-body movement",
+      "camera_pairing": [
+        "orbit_shot",
+        "floating_stabilization"
+      ],
+      "reliability": "high"
+    },
+    {
+      "id": "celebrating",
+      "term": "Celebrating",
+      "aliases": [
+        "cheering",
+        "victory celebration"
+      ],
+      "category": "Expressive and performance movement",
+      "definition": "The subject expresses success or joy through enlarged upward and outward movement.",
+      "body_mechanics": "Arms rise or spread, the torso lifts, steps bounce or jump, and the face opens into a smile or shout.",
+      "duration_feel": "usually one to four seconds",
+      "prompt_fragment": "raising arms and celebrating victory",
+      "camera_pairing": [
+        "crane_sweep",
+        "slow_motion"
+      ],
+      "reliability": "high"
+    },
+    {
+      "id": "gesturing",
+      "term": "Gesturing",
+      "aliases": [
+        "speaking with hands",
+        "hand gesture"
+      ],
+      "category": "Expressive and performance movement",
+      "definition": "The subject moves hands or arms deliberately to communicate meaning alongside or instead of speech.",
+      "body_mechanics": "A hand leaves rest, traces a readable directional or symbolic shape, holds briefly, and returns or transitions.",
+      "duration_feel": "usually one to three seconds",
+      "prompt_fragment": "gesturing clearly while speaking",
+      "camera_pairing": [
+        "walk_and_talk",
+        "reactive_reframing"
+      ],
+      "reliability": "high"
+    },
+    {
+      "id": "flinching",
+      "term": "Flinching",
+      "aliases": [
+        "startle reaction"
+      ],
+      "category": "Expressive and performance movement",
+      "definition": "The subject makes a rapid involuntary protective reaction to a sudden stimulus.",
+      "body_mechanics": "Eyes blink, shoulders rise, the head retracts, and hands may lift before the body relaxes.",
+      "duration_feel": "usually under one second",
+      "prompt_fragment": "flinching suddenly in surprise",
+      "camera_pairing": [
+        "snap_zoom",
+        "reactive_reframing"
+      ],
+      "reliability": "high"
+    },
+    {
+      "id": "waving",
+      "term": "Waving",
+      "aliases": [
+        "waving hello",
+        "waving goodbye"
+      ],
+      "category": "Expressive and performance movement",
+      "definition": "The subject raises a hand and moves it repeatedly to signal greeting, farewell or attention.",
+      "body_mechanics": "The arm lifts, palm faces outward, and the wrist or forearm swings side to side several times.",
+      "duration_feel": "usually one to three seconds",
+      "prompt_fragment": "raising hand and waving goodbye",
+      "camera_pairing": [
+        "leading_shot",
+        "locked_on_subject_tracking"
+      ],
+      "reliability": "high"
+    },
+    {
+      "id": "nodding",
+      "term": "Nodding",
+      "aliases": [
+        "nodding yes"
+      ],
+      "category": "Expressive and performance movement",
+      "definition": "The subject dips and raises the head to signal agreement, recognition or encouragement.",
+      "body_mechanics": "The chin lowers through neck flexion and returns upward in one or more controlled cycles.",
+      "duration_feel": "usually under two seconds",
+      "prompt_fragment": "giving a slow deliberate nod",
+      "camera_pairing": [
+        "creeping_zoom",
+        "locked_on_subject_tracking"
+      ],
+      "reliability": "high"
+    },
+    {
+      "id": "shrugging",
+      "term": "Shrugging",
+      "aliases": [
+        "shrugging shoulders"
+      ],
+      "category": "Expressive and performance movement",
+      "definition": "The subject raises and releases the shoulders to signal uncertainty, indifference or helplessness.",
+      "body_mechanics": "Both shoulders lift toward the ears, elbows or palms may turn outward, and the shoulders settle.",
+      "duration_feel": "usually under two seconds",
+      "prompt_fragment": "shrugging with open palms",
+      "camera_pairing": [
+        "controlled_handheld",
+        "reactive_reframing"
+      ],
+      "reliability": "high"
+    },
+    {
+      "id": "turning_head",
+      "term": "Turning the head",
+      "aliases": [
+        "looking over shoulder"
+      ],
+      "category": "Expressive and performance movement",
+      "definition": "The subject rotates the head to redirect gaze while the torso remains mostly oriented elsewhere.",
+      "body_mechanics": "The eyes lead or follow neck rotation, the chin travels laterally, and the movement settles on a new eyeline.",
+      "duration_feel": "usually under two seconds",
+      "prompt_fragment": "turning head to look behind",
+      "camera_pairing": [
+        "rack_focus_reveal",
+        "creeping_zoom"
+      ],
+      "reliability": "high"
+    },
+    {
+      "id": "slow_deliberate_movement",
+      "term": "Slow deliberate movement",
+      "aliases": [
+        "moving slowly",
+        "deliberately"
+      ],
+      "category": "Movement quality and speed modifiers",
+      "definition": "The subject performs an action at reduced speed with intentional control rather than temporal slow motion.",
+      "body_mechanics": "Acceleration stays gentle, pauses are readable, and each weight transfer finishes before the next begins.",
+      "duration_feel": "usually three to eight seconds",
+      "prompt_fragment": "moving slowly and deliberately",
+      "camera_pairing": [
+        "creeping_zoom",
+        "locked_on_subject_tracking"
+      ],
+      "reliability": "high"
+    },
+    {
+      "id": "explosive_movement",
+      "term": "Explosive movement",
+      "aliases": [
+        "explosively",
+        "burst movement"
+      ],
+      "category": "Movement quality and speed modifiers",
+      "definition": "The subject initiates movement with a sudden high-force burst and rapid acceleration.",
+      "body_mechanics": "Muscles preload briefly, the body drives forcefully from the ground, and speed peaks almost immediately.",
+      "duration_feel": "usually under one second",
+      "prompt_fragment": "moving with explosive sudden force",
+      "camera_pairing": [
+        "speed_ramp",
+        "short_shutter_staccato"
+      ],
+      "reliability": "high"
+    },
+    {
+      "id": "fluid_movement",
+      "term": "Fluid movement",
+      "aliases": [
+        "fluidly",
+        "flowing movement"
+      ],
+      "category": "Movement quality and speed modifiers",
+      "definition": "The subject links actions continuously with smooth curves and minimal abrupt stopping.",
+      "body_mechanics": "Momentum transfers through joints in sequence so one gesture blends into the next.",
+      "duration_feel": "usually two to six seconds",
+      "prompt_fragment": "moving fluidly without abrupt stops",
+      "camera_pairing": [
+        "floating_stabilization",
+        "orbit_shot"
+      ],
+      "reliability": "high"
+    },
+    {
+      "id": "hesitant_movement",
+      "term": "Hesitant movement",
+      "aliases": [
+        "hesitantly",
+        "tentative movement"
+      ],
+      "category": "Movement quality and speed modifiers",
+      "definition": "The subject begins, pauses and partially withdraws before committing to movement.",
+      "body_mechanics": "Weight shifts forward then back, limbs start incompletely, and short pauses interrupt progress.",
+      "duration_feel": "usually two to five seconds",
+      "prompt_fragment": "moving hesitantly with brief pauses",
+      "camera_pairing": [
+        "creeping_zoom",
+        "controlled_handheld"
+      ],
+      "reliability": "high"
+    },
+    {
+      "id": "momentum_driven_movement",
+      "term": "Momentum-driven movement",
+      "aliases": [
+        "with momentum",
+        "carried by momentum"
+      ],
+      "category": "Movement quality and speed modifiers",
+      "definition": "The subject’s continuing motion is visibly governed by existing speed and mass rather than fresh controlled steps.",
+      "body_mechanics": "The centre of mass travels beyond easy stopping, limbs trail or counterbalance, and recovery requires braking motion.",
+      "duration_feel": "usually one to three seconds",
+      "prompt_fragment": "carried forward by strong momentum",
+      "camera_pairing": [
+        "side_tracking_shot",
+        "slow_shutter_motion"
+      ],
+      "reliability": "medium"
+    },
+    {
+      "id": "jerky_movement",
+      "term": "Jerky movement",
+      "aliases": [
+        "jerkily",
+        "twitchy movement"
+      ],
+      "category": "Movement quality and speed modifiers",
+      "definition": "The subject moves through abrupt uneven starts, stops and direction changes.",
+      "body_mechanics": "Short muscle contractions produce discontinuous limb and torso positions with little smooth transition.",
+      "duration_feel": "usually one to three seconds",
+      "prompt_fragment": "moving in abrupt jerky motions",
+      "camera_pairing": [
+        "frame_skipping",
+        "shaky_cam"
+      ],
+      "reliability": "high"
+    },
+    {
+      "id": "weightless_movement",
+      "term": "Weightless movement",
+      "aliases": [
+        "floating movement",
+        "zero-gravity motion"
+      ],
+      "category": "Movement quality and speed modifiers",
+      "definition": "The subject moves as though gravity and ground support exert little or no downward constraint.",
+      "body_mechanics": "The body drifts from small pushes, limbs lag and rotate freely, and no footfall establishes weight.",
+      "duration_feel": "usually three to eight seconds",
+      "prompt_fragment": "floating weightlessly through the air",
+      "camera_pairing": [
+        "slow_motion",
+        "organic_camera_drift"
+      ],
+      "reliability": "high"
+    }
+  ],
+  "notes": "Researched against official documentation and production references from Google Veo, Adobe Firefly, Tiffen Steadicam, ARRI, Sony and the Academy. Reliability is a qualitative cross-model estimate as of 2026-08-11: simple pans, tilts, zooms, tracking and common body actions are generally more reliable than exact rig physics, multi-axis compounds, historical signatures or complex temporal effects. Disambiguation is embedded in the definitions: zoom changes focal length while dolly translates; truck moves laterally; whip pan is a blurred high-speed pan; tracking is position-agnostic while following trails and leading precedes; crash zoom is visibly aggressive, snap zoom nearly instantaneous, and dolly zoom combines opposing lens and camera movement; slow motion advances at a reduced constant rate, speed ramp varies rate, and freeze frame stops advancement. Sources: Google video prompt guide https://docs.cloud.google.com/gemini-enterprise-agent-platform/models/video/video-gen-prompt-guide ; Adobe motion presets https://helpx.adobe.com/firefly/mobile/work-with-audio-and-video/work-with-video/use-motion-presets-for-video-generation.html ; Adobe prompting guide https://helpx.adobe.com/firefly/web/work-with-audio-and-video/work-with-video/writing-effective-text-prompts-for-video-generation.html ; Tiffen Steadicam history https://tiffen.com/pages/history-of-steadicam ; ARRI stabilizers https://www.arri.com/en/cine-systems/camera-stabilizer-systems/trinity-2-and-artemis-2 ; Sony PTZ cameras https://www.sony.com/ptz ; Academy technical database https://awardsdatabase.oscars.org/"
+}

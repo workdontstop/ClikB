@@ -1,0 +1,4 @@
+netstat -ano | findstr :8080
+
+taskkill /PID                             5668 /F
+

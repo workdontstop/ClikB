@@ -1,0 +1,5 @@
+USE:
+Tracking shot, Following shot, Leading shot, Side tracking shot, Chase shot, Walk-and-talk shot, Moving point-of-view shot, Vehicle-to-vehicle tracking shot, Locked-on subject tracking, Over-the-shoulder tracking shot, Aerial follow shot, Reactive reframing, Compound pan-and-tilt, Parallax slide, Arc shot, Orbit shot, Gimbal horizon lock, Floating stabilization, Motion-control precision, Locked-off camera
+
+AVOID:
+Pull-back-to-reveal, Zoom-out reveal, Whip-pan transition, Push-through transition, Pass-by transition, Phantom ride, Hyperlapse, Time-lapse, Crash zoom, Frame-fill transition
